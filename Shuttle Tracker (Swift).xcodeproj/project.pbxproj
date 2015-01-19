@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3343385C1A6CC720005AE689 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = 3343385B1A6CC720005AE689 /* Podfile */; };
 		338B849E1A6CB6D500B20258 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 338B849D1A6CB6D500B20258 /* AppDelegate.swift */; };
 		338B84A01A6CB6D500B20258 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 338B849F1A6CB6D500B20258 /* ViewController.swift */; };
 		338B84A31A6CB6D500B20258 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 338B84A11A6CB6D500B20258 /* Main.storyboard */; };
@@ -26,6 +27,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3343385B1A6CC720005AE689 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = SOURCE_ROOT; };
 		338B84981A6CB6D500B20258 /* Shuttle Tracker (Swift).app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Shuttle Tracker (Swift).app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		338B849C1A6CB6D500B20258 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		338B849D1A6CB6D500B20258 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -91,6 +93,7 @@
 			isa = PBXGroup;
 			children = (
 				338B849C1A6CB6D500B20258 /* Info.plist */,
+				3343385B1A6CC720005AE689 /* Podfile */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -195,6 +198,7 @@
 			files = (
 				338B84A31A6CB6D500B20258 /* Main.storyboard in Resources */,
 				338B84A81A6CB6D500B20258 /* LaunchScreen.xib in Resources */,
+				3343385C1A6CC720005AE689 /* Podfile in Resources */,
 				338B84A51A6CB6D500B20258 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
