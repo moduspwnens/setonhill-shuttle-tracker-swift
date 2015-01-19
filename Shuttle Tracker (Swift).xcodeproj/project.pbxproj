@@ -11,7 +11,6 @@
 		334338621A6D4E3C005AE689 /* STMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 334338611A6D4E3C005AE689 /* STMapViewController.swift */; };
 		334338641A6D50AD005AE689 /* STShuttleDetailTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 334338631A6D50AD005AE689 /* STShuttleDetailTableViewController.swift */; };
 		338B849E1A6CB6D500B20258 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 338B849D1A6CB6D500B20258 /* AppDelegate.swift */; };
-		338B84A01A6CB6D500B20258 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 338B849F1A6CB6D500B20258 /* ViewController.swift */; };
 		338B84A31A6CB6D500B20258 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 338B84A11A6CB6D500B20258 /* Main.storyboard */; };
 		338B84A51A6CB6D500B20258 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 338B84A41A6CB6D500B20258 /* Images.xcassets */; };
 		338B84A81A6CB6D500B20258 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 338B84A61A6CB6D500B20258 /* LaunchScreen.xib */; };
@@ -37,7 +36,6 @@
 		338B84981A6CB6D500B20258 /* Shuttle Tracker (Swift).app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Shuttle Tracker (Swift).app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		338B849C1A6CB6D500B20258 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		338B849D1A6CB6D500B20258 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		338B849F1A6CB6D500B20258 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		338B84A21A6CB6D500B20258 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		338B84A41A6CB6D500B20258 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		338B84A71A6CB6D500B20258 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
@@ -94,7 +92,6 @@
 				338B849D1A6CB6D500B20258 /* AppDelegate.swift */,
 				334338611A6D4E3C005AE689 /* STMapViewController.swift */,
 				334338631A6D50AD005AE689 /* STShuttleDetailTableViewController.swift */,
-				338B849F1A6CB6D500B20258 /* ViewController.swift */,
 				338B84A11A6CB6D500B20258 /* Main.storyboard */,
 				338B84A41A6CB6D500B20258 /* Images.xcassets */,
 				338B84A61A6CB6D500B20258 /* LaunchScreen.xib */,
@@ -284,7 +281,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				338B84A01A6CB6D500B20258 /* ViewController.swift in Sources */,
 				334338641A6D50AD005AE689 /* STShuttleDetailTableViewController.swift in Sources */,
 				338B849E1A6CB6D500B20258 /* AppDelegate.swift in Sources */,
 				334338621A6D4E3C005AE689 /* STMapViewController.swift in Sources */,
