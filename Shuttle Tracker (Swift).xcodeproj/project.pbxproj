@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		3343385C1A6CC720005AE689 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = 3343385B1A6CC720005AE689 /* Podfile */; };
+		334338621A6D4E3C005AE689 /* STMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 334338611A6D4E3C005AE689 /* STMapViewController.swift */; };
+		334338641A6D50AD005AE689 /* STShuttleDetailTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 334338631A6D50AD005AE689 /* STShuttleDetailTableViewController.swift */; };
 		338B849E1A6CB6D500B20258 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 338B849D1A6CB6D500B20258 /* AppDelegate.swift */; };
 		338B84A01A6CB6D500B20258 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 338B849F1A6CB6D500B20258 /* ViewController.swift */; };
 		338B84A31A6CB6D500B20258 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 338B84A11A6CB6D500B20258 /* Main.storyboard */; };
@@ -30,6 +32,8 @@
 /* Begin PBXFileReference section */
 		3343385B1A6CC720005AE689 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = SOURCE_ROOT; };
 		3343385E1A6CC9FA005AE689 /* ST-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ST-Bridging-Header.h"; sourceTree = "<group>"; };
+		334338611A6D4E3C005AE689 /* STMapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = STMapViewController.swift; sourceTree = "<group>"; };
+		334338631A6D50AD005AE689 /* STShuttleDetailTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = STShuttleDetailTableViewController.swift; sourceTree = "<group>"; };
 		338B84981A6CB6D500B20258 /* Shuttle Tracker (Swift).app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Shuttle Tracker (Swift).app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		338B849C1A6CB6D500B20258 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		338B849D1A6CB6D500B20258 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -88,6 +92,8 @@
 			isa = PBXGroup;
 			children = (
 				338B849D1A6CB6D500B20258 /* AppDelegate.swift */,
+				334338611A6D4E3C005AE689 /* STMapViewController.swift */,
+				334338631A6D50AD005AE689 /* STShuttleDetailTableViewController.swift */,
 				338B849F1A6CB6D500B20258 /* ViewController.swift */,
 				338B84A11A6CB6D500B20258 /* Main.storyboard */,
 				338B84A41A6CB6D500B20258 /* Images.xcassets */,
@@ -279,7 +285,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				338B84A01A6CB6D500B20258 /* ViewController.swift in Sources */,
+				334338641A6D50AD005AE689 /* STShuttleDetailTableViewController.swift in Sources */,
 				338B849E1A6CB6D500B20258 /* AppDelegate.swift in Sources */,
+				334338621A6D4E3C005AE689 /* STMapViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

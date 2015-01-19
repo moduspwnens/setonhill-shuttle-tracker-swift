@@ -5,28 +5,45 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
-        <scene sceneID="QVq-ZV-Xta">
+        <!--Map View Controller-->
+        <scene sceneID="UAV-Ls-SaU">
             <objects>
-                <viewController id="1Jc-4y-gjx" sceneMemberID="viewController">
+                <viewController id="KC4-RA-XvR" customClass="STMapViewController" customModule="Shuttle_Tracker__Swift_" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="n1S-DE-p6b"/>
-                        <viewControllerLayoutGuide type="bottom" id="wGU-fw-pMa"/>
+                        <viewControllerLayoutGuide type="top" id="QJe-u6-Z9K"/>
+                        <viewControllerLayoutGuide type="bottom" id="gYC-O1-b48"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="CDy-2U-IJr">
+                    <view key="view" contentMode="scaleToFill" id="w36-0n-oeS">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
+                    <navigationItem key="navigationItem" id="OWT-qG-VvB"/>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="gDH-54-pPz" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="1oo-Cw-gCq" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="93" y="648"/>
+            <point key="canvasLocation" x="913" y="708"/>
         </scene>
-        <!--Root View Controller-->
+        <!--Navigation Controller-->
+        <scene sceneID="EMr-yO-1eP">
+            <objects>
+                <navigationController id="Snv-5h-Sf7" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="keZ-6g-8lI">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="KC4-RA-XvR" kind="relationship" relationship="rootViewController" id="y1i-YV-o89"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="NoR-9a-6fE" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="93" y="708"/>
+        </scene>
+        <!--Shuttle Detail Table View Controller-->
         <scene sceneID="dgW-R7-bAq">
             <objects>
-                <tableViewController clearsSelectionOnViewWillAppear="NO" id="Uze-eW-vQ2" sceneMemberID="viewController">
+                <tableViewController clearsSelectionOnViewWillAppear="NO" id="Uze-eW-vQ2" customClass="STShuttleDetailTableViewController" customModule="Shuttle_Tracker__Swift_" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="B1K-6O-bdr">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -44,7 +61,7 @@
                             <outlet property="delegate" destination="Uze-eW-vQ2" id="p48-7k-pYp"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Root View Controller" id="WKD-1w-hv3"/>
+                    <navigationItem key="navigationItem" id="WKD-1w-hv3"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Q08-0K-ZRK" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -72,7 +89,7 @@
                 <splitViewController id="dnW-eY-isQ" sceneMemberID="viewController">
                     <connections>
                         <segue destination="saj-CT-zuU" kind="relationship" relationship="masterViewController" id="pdm-fL-h7K"/>
-                        <segue destination="1Jc-4y-gjx" kind="relationship" relationship="detailViewController" id="gDj-vu-7Wh"/>
+                        <segue destination="Snv-5h-Sf7" kind="relationship" relationship="detailViewController" id="WOP-NQ-rp6"/>
                     </connections>
                 </splitViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XCR-Zo-EBM" userLabel="First Responder" sceneMemberID="firstResponder"/>
