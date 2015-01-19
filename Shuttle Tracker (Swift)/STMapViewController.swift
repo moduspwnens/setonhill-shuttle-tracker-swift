@@ -34,8 +34,18 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
         toolbarItems.append(UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: nil, action: nil))
         
         // Now let's create the label that'll sit in the middle of the toolbar.
-        let toolbarLabel = UILabel(frame: CGRect(x:0, y:11, width:150, height:22))
-        toolbarLabel.font = UIFont.systemFontOfSize(12)
+        // Let's make the label's height half the size of the toolbar.
+        let labelHeight = (self.toolbar!.frame.size.height * 0.5)
+        let labelFontSize: CGFloat = 12.0
+        let labelFont = UIFont.systemFontOfSize(labelFontSize)
+        
+        // For the width, let's use the worst-case width.
+        let worstCaseLabelText = String(format: NSLocalizedString("%d Shuttles Shown", comment: "") , 999)
+        let worstCaseLabelWidth = worstCaseLabelText.sizeWithAttributes([NSFontAttributeName: labelFont]).width
+        
+        // With all of this, we now know what size the frame of the label should be.
+        let toolbarLabel = UILabel(frame: CGRect(x:0, y:((self.toolbar!.frame.size.height - labelHeight) * 0.5), width:worstCaseLabelWidth, height:labelHeight))
+        toolbarLabel.font = labelFont
         toolbarLabel.textAlignment = .Center
         
         // We'll want to keep a reference to this so it can be updated easily later.
