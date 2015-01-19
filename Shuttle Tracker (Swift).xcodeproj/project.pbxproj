@@ -14,6 +14,7 @@
 		338B84A51A6CB6D500B20258 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 338B84A41A6CB6D500B20258 /* Images.xcassets */; };
 		338B84A81A6CB6D500B20258 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 338B84A61A6CB6D500B20258 /* LaunchScreen.xib */; };
 		338B84B41A6CB6D500B20258 /* Shuttle_Tracker__Swift_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 338B84B31A6CB6D500B20258 /* Shuttle_Tracker__Swift_Tests.swift */; };
+		65E820A4C3D2426B9FB4FB70 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FBD8433D1867AC805E0FE8F5 /* libPods.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -28,6 +29,7 @@
 
 /* Begin PBXFileReference section */
 		3343385B1A6CC720005AE689 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = SOURCE_ROOT; };
+		3343385E1A6CC9FA005AE689 /* ST-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ST-Bridging-Header.h"; sourceTree = "<group>"; };
 		338B84981A6CB6D500B20258 /* Shuttle Tracker (Swift).app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Shuttle Tracker (Swift).app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		338B849C1A6CB6D500B20258 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		338B849D1A6CB6D500B20258 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -38,6 +40,9 @@
 		338B84AD1A6CB6D500B20258 /* Shuttle Tracker (Swift)Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Shuttle Tracker (Swift)Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		338B84B21A6CB6D500B20258 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		338B84B31A6CB6D500B20258 /* Shuttle_Tracker__Swift_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shuttle_Tracker__Swift_Tests.swift; sourceTree = "<group>"; };
+		3AF6AFB84FEBB310F90745AE /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		E02B4E3073CD16D6307FCF11 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		FBD8433D1867AC805E0FE8F5 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -45,6 +50,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				65E820A4C3D2426B9FB4FB70 /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -64,6 +70,8 @@
 				338B849A1A6CB6D500B20258 /* Shuttle Tracker (Swift) */,
 				338B84B01A6CB6D500B20258 /* Shuttle Tracker (Swift)Tests */,
 				338B84991A6CB6D500B20258 /* Products */,
+				9B46CE9D6AD0FA285861F5A8 /* Pods */,
+				647DF6555ACE503754367504 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -94,6 +102,7 @@
 			children = (
 				338B849C1A6CB6D500B20258 /* Info.plist */,
 				3343385B1A6CC720005AE689 /* Podfile */,
+				3343385E1A6CC9FA005AE689 /* ST-Bridging-Header.h */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -115,6 +124,23 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		647DF6555ACE503754367504 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				FBD8433D1867AC805E0FE8F5 /* libPods.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		9B46CE9D6AD0FA285861F5A8 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				3AF6AFB84FEBB310F90745AE /* Pods.debug.xcconfig */,
+				E02B4E3073CD16D6307FCF11 /* Pods.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -122,9 +148,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 338B84B71A6CB6D500B20258 /* Build configuration list for PBXNativeTarget "Shuttle Tracker (Swift)" */;
 			buildPhases = (
+				AE58EFE3E46C948E4BA674BC /* Check Pods Manifest.lock */,
 				338B84941A6CB6D500B20258 /* Sources */,
 				338B84951A6CB6D500B20258 /* Frameworks */,
 				338B84961A6CB6D500B20258 /* Resources */,
+				080F5DC2990EC13C8A00439C /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -211,6 +239,39 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		080F5DC2990EC13C8A00439C /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		AE58EFE3E46C948E4BA674BC /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		338B84941A6CB6D500B20258 /* Sources */ = {
@@ -341,6 +402,7 @@
 		};
 		338B84B81A6CB6D500B20258 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3AF6AFB84FEBB310F90745AE /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -348,11 +410,13 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Shuttle Tracker (Swift)/ST-Bridging-Header.h";
 			};
 			name = Debug;
 		};
 		338B84B91A6CB6D500B20258 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E02B4E3073CD16D6307FCF11 /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -360,6 +424,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Shuttle Tracker (Swift)/ST-Bridging-Header.h";
 			};
 			name = Release;
 		};
