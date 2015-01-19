@@ -161,6 +161,7 @@
 				TargetAttributes = {
 					338B84971A6CB6D500B20258 = {
 						CreatedOnToolsVersion = 6.1.1;
+						DevelopmentTeam = LSS8D2J74J;
 					};
 					338B84AC1A6CB6D500B20258 = {
 						CreatedOnToolsVersion = 6.1.1;
@@ -338,7 +339,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = "Shuttle Tracker (Swift)/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -348,7 +351,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = "Shuttle Tracker (Swift)/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -407,6 +412,7 @@
 				338B84B91A6CB6D500B20258 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		338B84BA1A6CB6D500B20258 /* Build configuration list for PBXNativeTarget "Shuttle Tracker (Swift)Tests" */ = {
 			isa = XCConfigurationList;
@@ -415,6 +421,7 @@
 				338B84BC1A6CB6D500B20258 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
