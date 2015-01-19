@@ -3,9 +3,10 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
-        <!--Map View Controller-->
+        <!--Seton Hill Shuttles-->
         <scene sceneID="UAV-Ls-SaU">
             <objects>
                 <viewController id="KC4-RA-XvR" customClass="STMapViewController" customModule="Shuttle_Tracker__Swift_" customModuleProvider="target" sceneMemberID="viewController">
@@ -16,9 +17,48 @@
                     <view key="view" contentMode="scaleToFill" id="w36-0n-oeS">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="tlt-L2-P0g">
+                                <rect key="frame" x="0.0" y="64" width="600" height="492"/>
+                                <connections>
+                                    <outlet property="delegate" destination="KC4-RA-XvR" id="DIj-nj-trg"/>
+                                </connections>
+                            </mapView>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dOv-dt-w47">
+                                <rect key="frame" x="0.0" y="556" width="600" height="44"/>
+                                <items/>
+                            </toolbar>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="tlt-L2-P0g" firstAttribute="top" secondItem="QJe-u6-Z9K" secondAttribute="bottom" id="0pC-xC-kkQ"/>
+                            <constraint firstItem="tlt-L2-P0g" firstAttribute="bottom" secondItem="dOv-dt-w47" secondAttribute="bottom" constant="-44" id="14y-Ft-G9Y"/>
+                            <constraint firstItem="tlt-L2-P0g" firstAttribute="bottom" secondItem="dOv-dt-w47" secondAttribute="bottom" constant="-44" id="CZT-wO-2rK"/>
+                            <constraint firstItem="gYC-O1-b48" firstAttribute="top" secondItem="dOv-dt-w47" secondAttribute="bottom" id="Gsv-sg-fRQ"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="dOv-dt-w47" secondAttribute="trailing" constant="-16" id="IpY-wr-qzr"/>
+                            <constraint firstItem="tlt-L2-P0g" firstAttribute="leading" secondItem="w36-0n-oeS" secondAttribute="leadingMargin" constant="-16" id="NZ4-r2-gjy"/>
+                            <constraint firstItem="tlt-L2-P0g" firstAttribute="top" secondItem="dOv-dt-w47" secondAttribute="top" constant="-492" id="O1A-yE-Tuo"/>
+                            <constraint firstItem="gYC-O1-b48" firstAttribute="top" secondItem="tlt-L2-P0g" secondAttribute="bottom" id="ZMt-Wb-6lH"/>
+                            <constraint firstItem="gYC-O1-b48" firstAttribute="top" secondItem="tlt-L2-P0g" secondAttribute="bottom" constant="44" id="be6-EU-GDW"/>
+                            <constraint firstItem="dOv-dt-w47" firstAttribute="leading" secondItem="w36-0n-oeS" secondAttribute="leadingMargin" constant="-16" id="dCD-vA-fZs"/>
+                            <constraint firstItem="tlt-L2-P0g" firstAttribute="bottom" secondItem="dOv-dt-w47" secondAttribute="bottom" constant="-44" id="kgS-wQ-VLc"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="tlt-L2-P0g" secondAttribute="trailing" constant="-16" id="lx8-st-epf"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="14y-Ft-G9Y"/>
+                                <exclude reference="O1A-yE-Tuo"/>
+                                <exclude reference="kgS-wQ-VLc"/>
+                                <exclude reference="ZMt-Wb-6lH"/>
+                                <exclude reference="be6-EU-GDW"/>
+                            </mask>
+                        </variation>
                     </view>
-                    <navigationItem key="navigationItem" id="OWT-qG-VvB"/>
+                    <navigationItem key="navigationItem" title="Seton Hill Shuttles" id="OWT-qG-VvB"/>
+                    <connections>
+                        <outlet property="mapView" destination="tlt-L2-P0g" id="50V-Ag-MCl"/>
+                        <outlet property="toolbar" destination="dOv-dt-w47" id="Exa-4W-p5m"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1oo-Cw-gCq" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

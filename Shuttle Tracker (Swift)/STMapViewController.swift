@@ -7,20 +7,75 @@
 //
 
 import UIKit
+import MapKit
 
-class STMapViewController: UIViewController {
-
+class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewControllerDelegate, UIAlertViewDelegate {
+    
+    @IBOutlet weak var mapView: MKMapView?
+    @IBOutlet weak var toolbar: UIToolbar?
+    weak var shuttleStatusLabel: UILabel?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.navigationItem.title = "Seton Hill Shuttles";
-
-        // Do any additional setup after loading the view.
+        self.loadToolbarItems()
+        
+        self.shuttleStatusLabel?.text = "Test text!";
+    }
+    
+    func loadToolbarItems() {
+        
+        // Create the array that will hold the toolbar items.
+        var toolbarItems = [UIBarButtonItem]()
+        
+        // The first item (the one on the left) will be the user tracking bar button item.
+        let newUserTrackingBarButtonItem = MKUserTrackingBarButtonItem(mapView: self.mapView);
+        toolbarItems.append(newUserTrackingBarButtonItem)
+        
+        // Next, we'll need a flexible item to allow for space between the user tracking bar button item and label.
+        toolbarItems.append(UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: nil, action: nil))
+        
+        // Now let's create the label that'll sit in the middle of the toolbar.
+        let toolbarLabel = UILabel(frame: CGRect(x:0, y:11, width:150, height:22))
+        toolbarLabel.font = UIFont.systemFontOfSize(12)
+        toolbarLabel.textAlignment = .Center
+        
+        // We'll want to keep a reference to this so it can be updated easily later.
+        self.shuttleStatusLabel = toolbarLabel
+        
+        // We'll make this tappable, so we can have it be the "secret" way of re-centering the map.
+        toolbarLabel.userInteractionEnabled = true
+        let tapGesture = UITapGestureRecognizer(target: self, action: "shuttleStatusLabelPressed:")
+        toolbarLabel.addGestureRecognizer(tapGesture)
+        
+        // We can't just add a label as a bar button item, so we'll need to create a bar button item as a container for it.
+        let labelBarButtonItem = UIBarButtonItem(customView: toolbarLabel)
+        toolbarItems.append(labelBarButtonItem)
+        
+        // And another flexible item for space between the label and info button.
+        toolbarItems.append(UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: nil, action: nil))
+        
+        // The final item will be an "info" style button on the right side of the toolbar.
+        let infoButton = UIButton.buttonWithType(.InfoDark) as UIButton
+        infoButton.addTarget(self, action: "infoButtonPressed:", forControlEvents: .TouchUpInside)
+        let infoBarButtonItem = UIBarButtonItem(customView: infoButton)
+        toolbarItems.append(infoBarButtonItem)
+        
+        // Now set the toolbar's items to the array we've created.
+        self.toolbar?.setItems(toolbarItems, animated: false);
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func infoButtonPressed(sender: UIButton) {
+        println("Info button pressed.")
+    }
+    
+    func shuttleStatusLabelPressed(sender: UILabel) {
+        println("Shuttle status label pressed.")
     }
     
 
