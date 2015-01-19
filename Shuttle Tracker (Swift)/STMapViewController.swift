@@ -19,8 +19,6 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
         super.viewDidLoad()
         
         self.loadToolbarItems()
-        
-        self.shuttleStatusLabel?.text = "Test text!";
     }
     
     func loadToolbarItems() {
@@ -62,7 +60,7 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
         toolbarItems.append(infoBarButtonItem)
         
         // Now set the toolbar's items to the array we've created.
-        self.toolbar?.setItems(toolbarItems, animated: false);
+        self.toolbar?.setItems(toolbarItems, animated: false)
     }
 
     override func didReceiveMemoryWarning() {
