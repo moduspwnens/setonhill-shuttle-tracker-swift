@@ -1,6 +1,9 @@
+FRAMEWORK_SEARCH_PATHS = "$PODS_FRAMEWORK_BUILD_PATH"
 GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
-HEADER_SEARCH_PATHS = "${PODS_ROOT}/Headers/Public" "${PODS_ROOT}/Headers/Public/Reachability"
-OTHER_CFLAGS = $(inherited) -isystem "${PODS_ROOT}/Headers/Public" -isystem "${PODS_ROOT}/Headers/Public/Reachability"
-OTHER_LDFLAGS = -ObjC -l"Pods-Reachability" -framework "SystemConfiguration"
+LD_RUNPATH_SEARCH_PATHS = $(inherited) '@executable_path/Frameworks' '@loader_path/Frameworks'
+OTHER_CFLAGS = $(inherited) -iquote "$PODS_FRAMEWORK_BUILD_PATH/Alamofire.framework/Headers" -iquote "$PODS_FRAMEWORK_BUILD_PATH/Reachability.framework/Headers"
+OTHER_LDFLAGS = -ObjC -framework "Alamofire" -framework "Reachability"
 OTHER_LIBTOOLFLAGS = $(OTHER_LDFLAGS)
+OTHER_SWIFT_FLAGS = "-D COCOAPODS"
+PODS_FRAMEWORK_BUILD_PATH = $(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/Pods
 PODS_ROOT = ${SRCROOT}/Pods
