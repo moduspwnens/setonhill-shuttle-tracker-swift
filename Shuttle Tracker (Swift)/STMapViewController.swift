@@ -18,7 +18,26 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // Setup the toolbar items that couldn't quite be laid out in Interface Builder right.
         self.loadToolbarItems()
+        
+        // Center and zoom the map to the right spot.
+        self.centerAndZoomMap(false)
+        
+        // Listen for notification and act appropriately if the remotely-specified MapLayout variable changes.
+        NSNotificationCenter.defaultCenter()
+            .addObserverForRemoteConfigurationNotificationName(
+                "MapLayout",
+                object: nil,
+                queue: NSOperationQueue.mainQueue(),
+                usingBlock:
+                { _ in
+                    println("Default map layout changed. Re-centering map.")
+                    self.centerAndZoomMap(true)
+                }
+        )
+        
+        
     }
     
     func loadToolbarItems() {
@@ -83,7 +102,28 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
     }
     
     func shuttleStatusLabelPressed(sender: UILabel) {
-        println("Shuttle status label pressed.")
+        // I'm not sure if tapping the label is intuitive or not. Regardless, it needs to be somewhere, so it's here for now.
+        self.centerAndZoomMap(true)
+    }
+    
+    func centerAndZoomMap(animated: Bool) {
+        
+        // Create the region from the variables saved in defaults.
+        let mapLayoutDictionary : NSDictionary = NSUserDefaults.standardUserDefaults().dictionaryForKey("MapLayout")!
+        
+        let defaultRegion = MKCoordinateRegionMake(
+            CLLocationCoordinate2DMake(
+                (mapLayoutDictionary.valueForKey("MapDefaultCenterLatitude") as NSNumber).doubleValue,
+                (mapLayoutDictionary.valueForKey("MapDefaultCenterLongitude") as NSNumber).doubleValue
+            ),
+            MKCoordinateSpanMake(
+                (mapLayoutDictionary.valueForKey("MapDefaultZoomLatitudeDelta") as NSNumber).doubleValue,
+                (mapLayoutDictionary.valueForKey("MapDefaultZoomLongitudeDelta") as NSNumber).doubleValue
+            )
+        )
+        
+        // Now set the mapview to use it.
+        self.mapView?.setRegion(defaultRegion, animated: animated)
     }
     
 
