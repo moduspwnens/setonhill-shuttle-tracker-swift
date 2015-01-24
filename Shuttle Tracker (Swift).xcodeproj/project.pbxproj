@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3343385C1A6CC720005AE689 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = 3343385B1A6CC720005AE689 /* Podfile */; };
 		334338621A6D4E3C005AE689 /* STMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 334338611A6D4E3C005AE689 /* STMapViewController.swift */; };
 		334338641A6D50AD005AE689 /* STShuttleDetailTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 334338631A6D50AD005AE689 /* STShuttleDetailTableViewController.swift */; };
 		334338661A6D77DB005AE689 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 334338651A6D77DB005AE689 /* MapKit.framework */; };
@@ -34,7 +33,6 @@
 
 /* Begin PBXFileReference section */
 		23D462BEAC3BE6FEC16840B5 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		3343385B1A6CC720005AE689 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		3343385E1A6CC9FA005AE689 /* ST-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ST-Bridging-Header.h"; sourceTree = "<group>"; };
 		334338611A6D4E3C005AE689 /* STMapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = STMapViewController.swift; sourceTree = "<group>"; };
 		334338631A6D50AD005AE689 /* STShuttleDetailTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = STShuttleDetailTableViewController.swift; sourceTree = "<group>"; };
@@ -116,7 +114,6 @@
 			children = (
 				33FC588D1A73FBCA002505D5 /* BaseDefaults.plist */,
 				338B849C1A6CB6D500B20258 /* Info.plist */,
-				3343385B1A6CC720005AE689 /* Podfile */,
 				3343385E1A6CC9FA005AE689 /* ST-Bridging-Header.h */,
 			);
 			name = "Supporting Files";
@@ -244,7 +241,6 @@
 				338B84A31A6CB6D500B20258 /* Main.storyboard in Resources */,
 				33FC588E1A73FBCA002505D5 /* BaseDefaults.plist in Resources */,
 				338B84A81A6CB6D500B20258 /* LaunchScreen.xib in Resources */,
-				3343385C1A6CC720005AE689 /* Podfile in Resources */,
 				338B84A51A6CB6D500B20258 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
