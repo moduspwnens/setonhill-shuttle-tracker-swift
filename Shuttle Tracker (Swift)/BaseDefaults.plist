@@ -4,14 +4,17 @@
 <dict>
 	<key>AppConfigRemoteURL</key>
 	<string>http://s.setonhill.edu/ios/config.cfm</string>
-	<key>MapDefaultCenterLatitude</key>
-	<real>40.3064196</real>
-	<key>MapDefaultCenterLongitude</key>
-	<real>-79.5507295</real>
-	<key>MapDefaultZoomLatitudeDelta</key>
-	<real>0.023</real>
-	<key>MapDefaultZoomLongitudeDelta</key>
-	<real>0.0274</real>
+	<key>MapLayout</key>
+	<dict>
+		<key>MapDefaultCenterLatitude</key>
+		<real>40.3064196</real>
+		<key>MapDefaultCenterLongitude</key>
+		<real>-79.5507295</real>
+		<key>MapDefaultZoomLatitudeDelta</key>
+		<real>0.023</real>
+		<key>MapDefaultZoomLongitudeDelta</key>
+		<real>0.0274</real>
+	</dict>
 	<key>ShowMapTypeSelector</key>
 	<false/>
 	<key>ShuttleAnimationDuration</key>
