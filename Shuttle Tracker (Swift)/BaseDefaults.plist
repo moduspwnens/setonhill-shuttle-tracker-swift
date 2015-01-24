@@ -2,12 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>ShuttleDataRefreshInterval</key>
-	<real>5</real>
-	<key>ShuttleAnimationDuration</key>
-	<integer>5</integer>
-	<key>ShuttleScheduleLinks</key>
-	<array/>
+	<key>AppConfigRemoteURL</key>
+	<string>http://s.setonhill.edu/ios/config.cfm</string>
 	<key>MapDefaultCenterLatitude</key>
 	<real>40.3064196</real>
 	<key>MapDefaultCenterLongitude</key>
@@ -18,5 +14,13 @@
 	<real>0.0274</real>
 	<key>ShowMapTypeSelector</key>
 	<false/>
+	<key>ShuttleAnimationDuration</key>
+	<integer>5</integer>
+	<key>ShuttleDataRefreshInterval</key>
+	<real>5</real>
+	<key>ShuttleScheduleLinks</key>
+	<array/>
+	<key>ShuttleStatusUpdateURL</key>
+	<string>http://s.setonhill.edu/ios/shuttles.cfm</string>
 </dict>
 </plist>
