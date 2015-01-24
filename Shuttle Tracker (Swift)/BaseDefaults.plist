@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>ShuttleDataRefreshInterval</key>
+	<real>5</real>
+	<key>ShuttleAnimationDuration</key>
+	<integer>5</integer>
+	<key>ShuttleScheduleLinks</key>
+	<array/>
+	<key>MapDefaultCenterLatitude</key>
+	<real>40.3064196</real>
+	<key>MapDefaultCenterLongitude</key>
+	<real>-79.5507295</real>
+	<key>MapDefaultZoomLatitudeDelta</key>
+	<real>0.023</real>
+	<key>MapDefaultZoomLongitudeDelta</key>
+	<real>0.0274</real>
+	<key>ShowMapTypeSelector</key>
+	<false/>
+</dict>
+</plist>

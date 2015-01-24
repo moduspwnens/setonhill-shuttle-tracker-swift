@@ -17,6 +17,7 @@
 		338B84A81A6CB6D500B20258 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 338B84A61A6CB6D500B20258 /* LaunchScreen.xib */; };
 		338B84B41A6CB6D500B20258 /* Shuttle_Tracker__Swift_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 338B84B31A6CB6D500B20258 /* Shuttle_Tracker__Swift_Tests.swift */; };
 		33FC588C1A73EBFE002505D5 /* STRemoteConfigurationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33FC588B1A73EBFE002505D5 /* STRemoteConfigurationManager.swift */; };
+		33FC588E1A73FBCA002505D5 /* BaseDefaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = 33FC588D1A73FBCA002505D5 /* BaseDefaults.plist */; };
 		815B1C4FEC9B348E66BEEA58 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23D462BEAC3BE6FEC16840B5 /* Pods.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 /* End PBXBuildFile section */
 
@@ -47,6 +48,7 @@
 		338B84B21A6CB6D500B20258 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		338B84B31A6CB6D500B20258 /* Shuttle_Tracker__Swift_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shuttle_Tracker__Swift_Tests.swift; sourceTree = "<group>"; };
 		33FC588B1A73EBFE002505D5 /* STRemoteConfigurationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = STRemoteConfigurationManager.swift; sourceTree = "<group>"; };
+		33FC588D1A73FBCA002505D5 /* BaseDefaults.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = BaseDefaults.plist; sourceTree = "<group>"; };
 		3AF6AFB84FEBB310F90745AE /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		E02B4E3073CD16D6307FCF11 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -109,6 +111,7 @@
 		338B849B1A6CB6D500B20258 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				33FC588D1A73FBCA002505D5 /* BaseDefaults.plist */,
 				338B849C1A6CB6D500B20258 /* Info.plist */,
 				3343385B1A6CC720005AE689 /* Podfile */,
 				3343385E1A6CC9FA005AE689 /* ST-Bridging-Header.h */,
@@ -236,6 +239,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				338B84A31A6CB6D500B20258 /* Main.storyboard in Resources */,
+				33FC588E1A73FBCA002505D5 /* BaseDefaults.plist in Resources */,
 				338B84A81A6CB6D500B20258 /* LaunchScreen.xib in Resources */,
 				3343385C1A6CC720005AE689 /* Podfile in Resources */,
 				338B84A51A6CB6D500B20258 /* Images.xcassets in Resources */,

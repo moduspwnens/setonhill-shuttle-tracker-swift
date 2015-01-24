@@ -16,7 +16,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        // Override point for customization after application launch.
+        
+        
+        // Load base defaults (in case they haven't been set already).
+        self.remoteConfigurationManager.loadBaseDefaults()
+        
         return true
     }
 
