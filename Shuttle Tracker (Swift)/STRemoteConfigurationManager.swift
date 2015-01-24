@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Alamofire
 
 class STRemoteConfigurationManager: NSObject {
     
@@ -29,7 +30,90 @@ class STRemoteConfigurationManager: NSObject {
     }
     
     func updateRemoteDefaults() {
-        println("Updating remote defaults...")
+        
+        // Grab the URL from which we should be accessing remote config variables.
+        let requestURLString = NSUserDefaults.standardUserDefaults().objectForKey("AppConfigRemoteURL") as String
+        
+        // Also include the app's version and its UUID, so we can modify configuration remotely based on those things, if necessary.
+        let requestParameters = [
+            "version" : NSBundle.mainBundle().infoDictionary?["CFBundleVersion"]! as String,
+            "uuid" : UIDevice.currentDevice().identifierForVendor.UUIDString
+        ]
+        
+        println("Updating remote defaults from \(requestURLString) with parameters: \(requestParameters)")
+        
+        Alamofire.request(.GET, requestURLString, parameters: requestParameters)
+            .responseJSON { (request, response, JSON, error) in
+                if error != nil || JSON == nil {
+                    println("Unable to update remote configuration. An error occurred while contacting server.")
+                    
+                    // I don't have it alerting the user or anything because this is just the remote config. This method will be called again when they re-open the app, and unless there were big changes in the config, the app should still "just work."
+                }
+                else {
+                    // Received valid JSON response! Let's get the values out, save them to the defaults, and send notifications that they've been updated.
+                    
+                    // Let's keep a counter so that we can log how many were changed.
+                    var defaultsUpdated = 0
+                    
+                    for (eachKey, newValue) in JSON! as NSDictionary {
+                        let oldValueWrapper : AnyObject? = NSUserDefaults.standardUserDefaults().objectForKey(eachKey as String)
+                        
+                        if oldValueWrapper == nil {
+                            // There is no value already set for this default, which means it wasn't in the base defaults. If it's not in the base defaults, there's no logic for doing anything with it, so it can be safely ignored.
+                            continue
+                        }
+                        
+                        // At this point, we may as well unwrap it since we know it's not nil.
+                        let oldValue : AnyObject = oldValueWrapper!
+                        
+                        // Let's keep track of whether or not it was updated. If it's the same, then we don't need to do anything.
+                        var valueWasUpdated = false
+                        
+                        // Use datatype-specific equality comparisons.
+                        if oldValue is NSNumber && newValue is NSNumber {
+                            valueWasUpdated = !( oldValue.isEqualToNumber(newValue as NSNumber) )
+                        }
+                        else if oldValue is String && newValue is String {
+                            valueWasUpdated = !( oldValue.isEqualToString(newValue as String) )
+                        }
+                        else if oldValue is NSArray && newValue is NSArray {
+                            valueWasUpdated = !( oldValue.isEqualToArray(newValue as NSArray) )
+                        }
+                        else if oldValue is NSDictionary && newValue is NSDictionary {
+                            valueWasUpdated = !( oldValue.isEqualToDictionary(newValue as NSDictionary) )
+                        }
+                        else {
+                            // The datatypes between the old and new value don't match. We should skip processing this because if code elsewhere is expecting, say, an array, and it finds a string, it will likely cause a crash.
+                            print("Data type mismatch, or unknown data type for \(eachKey) : \(oldValue) : \(newValue)")
+                            continue
+                        }
+                        
+                        if (valueWasUpdated) {
+                            
+                            // The value changed, so update the defaults.
+                            NSUserDefaults.standardUserDefaults().setObject(newValue, forKey: eachKey as String)
+                            
+                            // Update our counter.
+                            defaultsUpdated++
+                            
+                            // Send along the key name, old value, and new value so the receiving function can determine what exactly changed (if necessary).
+                            var notificationInfo : [NSObject : AnyObject]! = [
+                                "key" : eachKey,
+                                "oldValue" : oldValue,
+                                "newValue" : newValue
+                            ]
+                            
+                            // Set notification name. This will include the config key so that listeners can just listen for changes to config variables that affect them.
+                            let notificationName = "ConfigVariablesUpdated-\(eachKey)"
+                            
+                            // Send the notification.
+                            NSNotificationCenter.defaultCenter().postNotificationName(notificationName, object:self, userInfo:notificationInfo)
+                        }
+                    }
+                    
+                    println("Remote defaults updated (\(defaultsUpdated) changed).")
+                }
+        }
     }
     
 }
