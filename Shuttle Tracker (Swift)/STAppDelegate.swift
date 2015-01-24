@@ -48,25 +48,24 @@ class STAppDelegate: UIResponder, UIApplicationDelegate {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
     
+    func updateNetworkActivityIndicator() {
+        UIApplication.sharedApplication().networkActivityIndicatorVisible = (self.networkingCount > 0)
+    }
+    
     class func didStartNetworking() {
-        let appDelegate = UIApplication.sharedApplication().delegate as STAppDelegate
         dispatch_async(dispatch_get_main_queue(),{
-            if appDelegate.networkingCount == 0 {
-                UIApplication.sharedApplication().networkActivityIndicatorVisible = true
-            }
+            let appDelegate = UIApplication.sharedApplication().delegate as STAppDelegate
             appDelegate.networkingCount++
+            appDelegate.updateNetworkActivityIndicator()
         })
         
     }
 
     class func didStopNetworking() {
-        let appDelegate = UIApplication.sharedApplication().delegate as STAppDelegate
         dispatch_async(dispatch_get_main_queue(),{
+            let appDelegate = UIApplication.sharedApplication().delegate as STAppDelegate
             appDelegate.networkingCount--
-            
-            if appDelegate.networkingCount == 0 {
-                UIApplication.sharedApplication().networkActivityIndicatorVisible = false
-            }
+            appDelegate.updateNetworkActivityIndicator()
         })
     }
 }
