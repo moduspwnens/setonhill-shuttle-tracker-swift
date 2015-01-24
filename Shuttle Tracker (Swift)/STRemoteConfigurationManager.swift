@@ -55,8 +55,9 @@ class STRemoteConfigurationManager: NSObject {
                     // Let's keep a counter so that we can log how many were changed.
                     var defaultsUpdated = 0
                     
-                    for (eachKey, newValue) in JSON! as NSDictionary {
-                        let oldValueWrapper : AnyObject? = NSUserDefaults.standardUserDefaults().objectForKey(eachKey as String)
+                    for (eachKeyWrapper, newValue) in JSON! as NSDictionary {
+                        let eachKey = eachKeyWrapper as String
+                        let oldValueWrapper : AnyObject? = NSUserDefaults.standardUserDefaults().objectForKey(eachKey)
                         
                         if oldValueWrapper == nil {
                             // There is no value already set for this default, which means it wasn't in the base defaults. If it's not in the base defaults, there's no logic for doing anything with it, so it can be safely ignored.
@@ -91,7 +92,7 @@ class STRemoteConfigurationManager: NSObject {
                         if (valueWasUpdated) {
                             
                             // The value changed, so update the defaults.
-                            NSUserDefaults.standardUserDefaults().setObject(newValue, forKey: eachKey as String)
+                            NSUserDefaults.standardUserDefaults().setObject(newValue, forKey: eachKey)
                             
                             // Update our counter.
                             defaultsUpdated++
@@ -103,11 +104,9 @@ class STRemoteConfigurationManager: NSObject {
                                 "newValue" : newValue
                             ]
                             
-                            // Set notification name. This will include the config key so that listeners can just listen for changes to config variables that affect them.
-                            let notificationName = "ConfigVariablesUpdated-\(eachKey)"
-                            
                             // Send the notification.
-                            NSNotificationCenter.defaultCenter().postNotificationName(notificationName, object:self, userInfo:notificationInfo)
+                            NSNotificationCenter.defaultCenter().postRemoteConfigurationUpdateNotificationName(eachKey, object:self, userInfo:notificationInfo)
+                            
                         }
                     }
                     
