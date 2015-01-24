@@ -1,5 +1,5 @@
 //
-//  AppDelegate.swift
+//  STAppDelegate.swift
 //  Shuttle Tracker (Swift)
 //
 //  Created by Benn Linger on 1/18/15.
@@ -9,7 +9,7 @@
 import UIKit
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class STAppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
     var remoteConfigurationManager: STRemoteConfigurationManager = STRemoteConfigurationManager()
