@@ -13,7 +13,8 @@ class STAppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
     var remoteConfigurationManager: STRemoteConfigurationManager = STRemoteConfigurationManager()
-
+    var networkingCount = 0
+    
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         
@@ -46,7 +47,27 @@ class STAppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillTerminate(application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
+    
+    class func didStartNetworking() {
+        let appDelegate = UIApplication.sharedApplication().delegate as STAppDelegate
+        dispatch_async(dispatch_get_main_queue(),{
+            if appDelegate.networkingCount == 0 {
+                UIApplication.sharedApplication().networkActivityIndicatorVisible = true
+            }
+            appDelegate.networkingCount++
+        })
+        
+    }
 
-
+    class func didStopNetworking() {
+        let appDelegate = UIApplication.sharedApplication().delegate as STAppDelegate
+        dispatch_async(dispatch_get_main_queue(),{
+            appDelegate.networkingCount--
+            
+            if appDelegate.networkingCount == 0 {
+                UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+            }
+        })
+    }
 }
 

@@ -46,8 +46,13 @@ class STRemoteConfigurationManager: NSObject {
         
         println("Updating remote defaults from \(requestURLString) with parameters: \(requestParameters)")
         
+        STAppDelegate.didStartNetworking()
+        
         Alamofire.request(.GET, requestURLString, parameters: requestParameters)
             .responseJSON { (request, response, JSON, error) in
+                
+                STAppDelegate.didStopNetworking()
+                
                 if error != nil || JSON == nil {
                     println("Unable to update remote configuration. An error occurred while contacting server.")
                     

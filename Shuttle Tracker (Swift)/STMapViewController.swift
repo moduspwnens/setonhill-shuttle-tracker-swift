@@ -126,6 +126,19 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
         self.mapView?.setRegion(defaultRegion, animated: animated)
     }
     
+    // MARK: - MKMapViewDelegate methods
+    func mapViewWillStartLoadingMap(mapView: MKMapView!) {
+        STAppDelegate.didStartNetworking()
+    }
+    
+    func mapViewDidFinishLoadingMap(mapView: MKMapView!) {
+        STAppDelegate.didStopNetworking()
+    }
+    
+    func mapViewDidFailLoadingMap(mapView: MKMapView!, withError error: NSError!) {
+        STAppDelegate.didStopNetworking()
+    }
+    
 
     /*
     // MARK: - Navigation
