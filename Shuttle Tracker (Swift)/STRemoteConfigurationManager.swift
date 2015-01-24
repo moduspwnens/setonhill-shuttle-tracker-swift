@@ -34,10 +34,14 @@ class STRemoteConfigurationManager: NSObject {
         // Grab the URL from which we should be accessing remote config variables.
         let requestURLString = NSUserDefaults.standardUserDefaults().objectForKey("AppConfigRemoteURL") as String
         
-        // Also include the app's version and its UUID, so we can modify configuration remotely based on those things, if necessary.
+        
         let requestParameters = [
+            // Include the app's version and its UUID, so we can modify configuration remotely based on those things, if necessary.
             "version" : NSBundle.mainBundle().infoDictionary?["CFBundleVersion"]! as String,
-            "uuid" : UIDevice.currentDevice().identifierForVendor.UUIDString
+            "uuid" : UIDevice.currentDevice().identifierForVendor.UUIDString,
+            
+            // Include the app's selected localization, in case we want to make any changes to the configuration remotely because of it.
+            "locale" : NSBundle.mainBundle().preferredLocalizations[0] as String
         ]
         
         println("Updating remote defaults from \(requestURLString) with parameters: \(requestParameters)")
