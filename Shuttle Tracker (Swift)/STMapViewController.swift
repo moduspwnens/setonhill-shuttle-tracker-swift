@@ -46,7 +46,7 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
         var toolbarItems = [UIBarButtonItem]()
         
         // The first item (the one on the left) will be the user tracking bar button item.
-        let newUserTrackingBarButtonItem = MKUserTrackingBarButtonItem(mapView: self.mapView);
+        let newUserTrackingBarButtonItem = MKUserTrackingBarButtonItem(mapView: self.mapView)
         toolbarItems.append(newUserTrackingBarButtonItem)
         
         // Next, we'll need a flexible item to allow for space between the user tracking bar button item and label.
