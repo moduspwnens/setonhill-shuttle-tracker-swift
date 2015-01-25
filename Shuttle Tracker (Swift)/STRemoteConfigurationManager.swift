@@ -44,7 +44,7 @@ class STRemoteConfigurationManager: NSObject {
             "locale" : NSBundle.mainBundle().preferredLocalizations[0] as String
         ]
         
-        println("Updating remote defaults from \(requestURLString) with parameters: \(requestParameters)")
+        //println("Updating remote defaults from \(requestURLString) with parameters: \(requestParameters)")
         
         STAppDelegate.didStartNetworking()
         
@@ -119,7 +119,7 @@ class STRemoteConfigurationManager: NSObject {
                         }
                     }
                     
-                    println("Remote defaults updated (\(defaultsUpdated) changed).")
+                    //println("Remote defaults updated (\(defaultsUpdated) changed).")
                 }
         }
     }
