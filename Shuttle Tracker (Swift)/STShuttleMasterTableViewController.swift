@@ -12,7 +12,6 @@ class STShuttleMasterTableViewController: UITableViewController, UISplitViewCont
     
     @IBOutlet var doneBarButtonItem: UIBarButtonItem?
     private var detailViewController : UIViewController?
-    private var collapsedWhenAppeared : Bool = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
