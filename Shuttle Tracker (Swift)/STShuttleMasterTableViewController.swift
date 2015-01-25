@@ -71,7 +71,7 @@ class STShuttleMasterTableViewController: UITableViewController, UISplitViewCont
     // MARK: - UISplitViewControllerDelegate methods
     
     func splitViewController(splitViewController: UISplitViewController, collapseSecondaryViewController secondaryViewController: UIViewController!, ontoPrimaryViewController primaryViewController: UIViewController!) -> Bool {
-        // This makes sure that on devices that show a collapsed split view controller (iPhones other than 6+), the map view controller is shown by default.
+        // This makes sure that on devices that show a collapsed split view controller (iPhones other than 6+ in landscape), the map view controller is shown by default.
         return false
     }
     
