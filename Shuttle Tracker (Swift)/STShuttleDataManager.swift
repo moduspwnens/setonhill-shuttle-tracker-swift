@@ -15,7 +15,7 @@ let kShuttleStatusUpdateErrorOccurredNotification = "kShuttleStatusUpdateErrorOc
 
 class STShuttleDataManager: NSObject {
     
-    var alamofireManager : Alamofire.Manager?
+    private var alamofireManager : Alamofire.Manager?
     
     override init() {
         super.init()

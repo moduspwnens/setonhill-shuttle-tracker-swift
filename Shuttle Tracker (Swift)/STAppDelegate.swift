@@ -13,10 +13,10 @@ import Alamofire
 class STAppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-    let remoteConfigurationManager: STRemoteConfigurationManager = STRemoteConfigurationManager()
-    let shuttleDataManager: STShuttleDataManager = STShuttleDataManager()
-    var networkingCount = 0
-    var shuttleStatusUpdateTimer: NSTimer?
+    private let remoteConfigurationManager: STRemoteConfigurationManager = STRemoteConfigurationManager()
+    private let shuttleDataManager: STShuttleDataManager = STShuttleDataManager()
+    private var networkingCount = 0
+    private var shuttleStatusUpdateTimer: NSTimer?
     
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {

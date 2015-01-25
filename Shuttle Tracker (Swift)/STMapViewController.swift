@@ -13,7 +13,7 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
     
     @IBOutlet weak var mapView: MKMapView?
     @IBOutlet weak var toolbar: UIToolbar?
-    weak var shuttleStatusLabel: UILabel?
+    private weak var shuttleStatusLabel: UILabel?
     
     override func viewDidLoad() {
         super.viewDidLoad()
