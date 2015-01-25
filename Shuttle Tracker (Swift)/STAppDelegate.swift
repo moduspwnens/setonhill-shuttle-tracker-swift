@@ -7,13 +7,16 @@
 //
 
 import UIKit
+import Alamofire
 
 @UIApplicationMain
 class STAppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-    var remoteConfigurationManager: STRemoteConfigurationManager = STRemoteConfigurationManager()
+    let remoteConfigurationManager: STRemoteConfigurationManager = STRemoteConfigurationManager()
+    let shuttleDataManager: STShuttleDataManager = STShuttleDataManager()
     var networkingCount = 0
+    var shuttleStatusUpdateTimer: NSTimer?
     
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
@@ -31,17 +34,27 @@ class STAppDelegate: UIResponder, UIApplicationDelegate {
         // Load base defaults (in case they haven't been set already).
         self.remoteConfigurationManager.loadBaseDefaults()
         
+        // Listen for notification and act appropriately if the remotely-specified ShuttleDataRefreshInterval variable changes.
+        NSNotificationCenter.defaultCenter()
+            .addObserverForRemoteConfigurationNotificationName(
+                "ShuttleDataRefreshInterval",
+                object: nil,
+                queue: NSOperationQueue.mainQueue(),
+                usingBlock:
+                { _ in
+                    self.beginShuttleStatusUpdates(false)
+                }
+        )
+        
         return true
     }
 
     func applicationWillResignActive(application: UIApplication) {
-        // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
-        // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
+        
     }
 
     func applicationDidEnterBackground(application: UIApplication) {
-        // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
-        // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+        self.shuttleStatusUpdateTimer?.invalidate()
     }
 
     func applicationWillEnterForeground(application: UIApplication) {
@@ -51,10 +64,27 @@ class STAppDelegate: UIResponder, UIApplicationDelegate {
     func applicationDidBecomeActive(application: UIApplication) {
         // Check to see if any remotely settable configuration variables have changed.
         self.remoteConfigurationManager.updateRemoteDefaults()
+        
+        // Start loading shuttle locations/statuses.
+        self.beginShuttleStatusUpdates(true)
     }
 
     func applicationWillTerminate(application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    }
+    
+    func beginShuttleStatusUpdates(immediately: Bool) {
+        // Invalidate existing timer if it's already set.
+        self.shuttleStatusUpdateTimer?.invalidate()
+        
+        // Get update interval from user defaults.
+        let updateInterval : NSTimeInterval = NSUserDefaults.standardUserDefaults().doubleForKey("ShuttleDataRefreshInterval")
+        
+        self.shuttleStatusUpdateTimer = NSTimer.scheduledTimerWithTimeInterval(updateInterval, target: self.shuttleDataManager, selector: "updateData", userInfo: nil, repeats: true)
+        
+        if immediately {
+            self.shuttleStatusUpdateTimer?.fire()
+        }
     }
     
     func updateNetworkActivityIndicator() {

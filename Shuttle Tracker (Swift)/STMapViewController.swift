@@ -37,6 +37,20 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
                 }
         )
         
+        // Listen for notification of shuttle status updates and failures.
+        NSNotificationCenter.defaultCenter().addObserver(
+            self,
+            selector: "shuttleStatusUpdateCompleted:",
+            name: kShuttleStatusesUpdatedNotification,
+            object: nil
+        )
+        
+        NSNotificationCenter.defaultCenter().addObserver(
+            self,
+            selector: "shuttleStatusUpdateFailed:",
+            name: kShuttleStatusUpdateErrorOccurredNotification,
+            object: nil
+        )
         
     }
     
@@ -129,6 +143,16 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
         
         // Now set the mapview to use it.
         self.mapView?.setRegion(defaultRegion, animated: animated)
+    }
+    
+    func shuttleStatusUpdateCompleted(notification: NSNotification) {
+        println("Shuttles updated. \n\(notification.userInfo!)")
+        
+    }
+
+    func shuttleStatusUpdateFailed(notification: NSNotification) {
+        println("Shuttles update failed. \n\(notification.userInfo!)")
+        self.shuttleStatusLabel?.text = ""
     }
     
     // MARK: - MKMapViewDelegate methods
