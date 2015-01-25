@@ -14,6 +14,7 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
     @IBOutlet weak var mapView: MKMapView?
     @IBOutlet weak var toolbar: UIToolbar?
     private weak var shuttleStatusLabel: UILabel?
+    private var mapLayoutObserver : NSObjectProtocol?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,7 +30,7 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
         self.centerAndZoomMap(false)
         
         // Listen for notification and act appropriately if the remotely-specified MapLayout variable changes.
-        NSNotificationCenter.defaultCenter()
+        self.mapLayoutObserver = NSNotificationCenter.defaultCenter()
             .addObserverForRemoteConfigurationNotificationName(
                 "MapLayout",
                 object: nil,
@@ -118,6 +119,9 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
     
     deinit {
         NSNotificationCenter.defaultCenter().removeObserver(self)
+        if self.mapLayoutObserver != nil {
+            NSNotificationCenter.defaultCenter().removeObserver(self.mapLayoutObserver!)
+        }
     }
     
     func infoButtonPressed(sender: UIButton) {

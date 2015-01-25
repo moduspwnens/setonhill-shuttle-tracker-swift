@@ -17,7 +17,7 @@ class STAppDelegate: UIResponder, UIApplicationDelegate {
     private let shuttleDataManager: STShuttleDataManager = STShuttleDataManager()
     private var networkingCount = 0
     private var shuttleStatusUpdateTimer: NSTimer?
-    
+    private var shuttleDataRefreshIntervalObserver : NSObjectProtocol?
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         
@@ -25,7 +25,7 @@ class STAppDelegate: UIResponder, UIApplicationDelegate {
         self.remoteConfigurationManager.loadBaseDefaults()
         
         // Listen for notification and act appropriately if the remotely-specified ShuttleDataRefreshInterval variable changes.
-        NSNotificationCenter.defaultCenter()
+        self.shuttleDataRefreshIntervalObserver = NSNotificationCenter.defaultCenter()
             .addObserverForRemoteConfigurationNotificationName(
                 "ShuttleDataRefreshInterval",
                 object: nil,
@@ -64,7 +64,7 @@ class STAppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     deinit {
-        NSNotificationCenter.defaultCenter().removeObserver(self)
+        NSNotificationCenter.defaultCenter().removeObserver(self.shuttleDataRefreshIntervalObserver!)
     }
     
     func beginShuttleStatusUpdates(immediately: Bool) {
