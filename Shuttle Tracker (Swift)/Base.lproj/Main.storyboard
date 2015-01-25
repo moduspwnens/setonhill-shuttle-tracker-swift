@@ -27,27 +27,89 @@
                                 <rect key="frame" x="0.0" y="556" width="600" height="44"/>
                                 <items/>
                             </toolbar>
+                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4fb-BN-VuT">
+                                <rect key="frame" x="0.0" y="64" width="600" height="492"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pa4-TW-L3B">
+                                        <rect key="frame" x="140" y="124" width="320" height="244"/>
+                                        <subviews>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="ShuttleSilhouette" translatesAutoresizingMaskIntoConstraints="NO" id="XkU-ZA-hKA">
+                                                <rect key="frame" x="70" y="8" width="181" height="114"/>
+                                            </imageView>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="This is the error's description. It'll probably be a sentence or two." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uJn-V8-Ng0">
+                                                <rect key="frame" x="8" y="164" width="304" height="72"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Error Title" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hfn-co-4GE">
+                                                <rect key="frame" x="8" y="105" width="304" height="62"/>
+                                                <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="34"/>
+                                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="244" id="1UH-PQ-bZY"/>
+                                            <constraint firstAttribute="width" constant="320" id="TcR-mF-Qo3"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="centerX" secondItem="pa4-TW-L3B" secondAttribute="centerX" id="dtq-NB-hOW"/>
+                                    <constraint firstAttribute="bottom" secondItem="pa4-TW-L3B" secondAttribute="bottom" constant="121" id="gt3-yz-WTX"/>
+                                    <constraint firstAttribute="trailing" secondItem="pa4-TW-L3B" secondAttribute="trailing" constant="187" id="jdj-tt-WPD"/>
+                                    <constraint firstAttribute="centerY" secondItem="pa4-TW-L3B" secondAttribute="centerY" id="n6X-ek-5Kb"/>
+                                    <constraint firstItem="pa4-TW-L3B" firstAttribute="top" secondItem="4fb-BN-VuT" secondAttribute="top" constant="121" id="pUU-yb-xgP"/>
+                                    <constraint firstAttribute="centerX" secondItem="pa4-TW-L3B" secondAttribute="centerX" id="rNe-Gm-5cg"/>
+                                    <constraint firstAttribute="centerY" secondItem="pa4-TW-L3B" secondAttribute="centerY" id="vV2-mK-sZ0"/>
+                                    <constraint firstItem="pa4-TW-L3B" firstAttribute="leading" secondItem="4fb-BN-VuT" secondAttribute="leading" constant="187" id="xzJ-ja-snD"/>
+                                </constraints>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="gt3-yz-WTX"/>
+                                        <exclude reference="jdj-tt-WPD"/>
+                                        <exclude reference="n6X-ek-5Kb"/>
+                                        <exclude reference="pUU-yb-xgP"/>
+                                        <exclude reference="rNe-Gm-5cg"/>
+                                        <exclude reference="xzJ-ja-snD"/>
+                                    </mask>
+                                </variation>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="tlt-L2-P0g" firstAttribute="top" secondItem="QJe-u6-Z9K" secondAttribute="bottom" id="0pC-xC-kkQ"/>
                             <constraint firstItem="tlt-L2-P0g" firstAttribute="bottom" secondItem="dOv-dt-w47" secondAttribute="bottom" constant="-44" id="14y-Ft-G9Y"/>
+                            <constraint firstItem="gYC-O1-b48" firstAttribute="top" secondItem="4fb-BN-VuT" secondAttribute="bottom" constant="44" id="ALD-nl-MiJ"/>
                             <constraint firstItem="tlt-L2-P0g" firstAttribute="bottom" secondItem="dOv-dt-w47" secondAttribute="bottom" constant="-44" id="CZT-wO-2rK"/>
+                            <constraint firstAttribute="trailing" secondItem="dOv-dt-w47" secondAttribute="trailing" id="CtA-jn-eXK"/>
                             <constraint firstItem="gYC-O1-b48" firstAttribute="top" secondItem="dOv-dt-w47" secondAttribute="bottom" id="Gsv-sg-fRQ"/>
+                            <constraint firstItem="dOv-dt-w47" firstAttribute="leading" secondItem="w36-0n-oeS" secondAttribute="leading" id="HxK-ue-Ezt"/>
                             <constraint firstAttribute="trailingMargin" secondItem="dOv-dt-w47" secondAttribute="trailing" constant="-16" id="IpY-wr-qzr"/>
                             <constraint firstItem="tlt-L2-P0g" firstAttribute="leading" secondItem="w36-0n-oeS" secondAttribute="leadingMargin" constant="-16" id="NZ4-r2-gjy"/>
                             <constraint firstItem="tlt-L2-P0g" firstAttribute="top" secondItem="dOv-dt-w47" secondAttribute="top" constant="-492" id="O1A-yE-Tuo"/>
+                            <constraint firstAttribute="trailing" secondItem="tlt-L2-P0g" secondAttribute="trailing" id="Uhs-6Z-y3d"/>
                             <constraint firstItem="gYC-O1-b48" firstAttribute="top" secondItem="tlt-L2-P0g" secondAttribute="bottom" id="ZMt-Wb-6lH"/>
                             <constraint firstItem="gYC-O1-b48" firstAttribute="top" secondItem="tlt-L2-P0g" secondAttribute="bottom" constant="44" id="be6-EU-GDW"/>
                             <constraint firstItem="dOv-dt-w47" firstAttribute="leading" secondItem="w36-0n-oeS" secondAttribute="leadingMargin" constant="-16" id="dCD-vA-fZs"/>
+                            <constraint firstItem="4fb-BN-VuT" firstAttribute="leading" secondItem="w36-0n-oeS" secondAttribute="leading" id="dbh-Dh-JaR"/>
+                            <constraint firstAttribute="trailing" secondItem="4fb-BN-VuT" secondAttribute="trailing" id="eno-VW-Zh2"/>
+                            <constraint firstItem="tlt-L2-P0g" firstAttribute="leading" secondItem="w36-0n-oeS" secondAttribute="leading" id="iPA-xa-Fca"/>
                             <constraint firstItem="tlt-L2-P0g" firstAttribute="bottom" secondItem="dOv-dt-w47" secondAttribute="bottom" constant="-44" id="kgS-wQ-VLc"/>
                             <constraint firstAttribute="trailingMargin" secondItem="tlt-L2-P0g" secondAttribute="trailing" constant="-16" id="lx8-st-epf"/>
+                            <constraint firstItem="4fb-BN-VuT" firstAttribute="top" secondItem="QJe-u6-Z9K" secondAttribute="bottom" id="wML-xu-enF"/>
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">
                                 <exclude reference="14y-Ft-G9Y"/>
+                                <exclude reference="NZ4-r2-gjy"/>
                                 <exclude reference="O1A-yE-Tuo"/>
                                 <exclude reference="kgS-wQ-VLc"/>
+                                <exclude reference="lx8-st-epf"/>
+                                <exclude reference="IpY-wr-qzr"/>
+                                <exclude reference="dCD-vA-fZs"/>
                                 <exclude reference="ZMt-Wb-6lH"/>
                                 <exclude reference="be6-EU-GDW"/>
                             </mask>
@@ -55,6 +117,9 @@
                     </view>
                     <navigationItem key="navigationItem" title="Seton Hill Shuttles" id="OWT-qG-VvB"/>
                     <connections>
+                        <outlet property="connectionErrorSubtitleLabel" destination="uJn-V8-Ng0" id="G3J-O5-Pl7"/>
+                        <outlet property="connectionErrorTitleLabel" destination="hfn-co-4GE" id="94T-Et-6ms"/>
+                        <outlet property="connectionErrorView" destination="4fb-BN-VuT" id="YU6-JI-7VQ"/>
                         <outlet property="mapView" destination="tlt-L2-P0g" id="50V-Ag-MCl"/>
                         <outlet property="toolbar" destination="dOv-dt-w47" id="Exa-4W-p5m"/>
                     </connections>
@@ -137,4 +202,7 @@
             <point key="canvasLocation" x="-727" y="316"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="ShuttleSilhouette" width="512" height="323"/>
+    </resources>
 </document>

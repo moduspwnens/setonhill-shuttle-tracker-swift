@@ -13,11 +13,18 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
     
     @IBOutlet weak var mapView: MKMapView?
     @IBOutlet weak var toolbar: UIToolbar?
+    @IBOutlet weak var connectionErrorView: UIView?
+    @IBOutlet weak var connectionErrorTitleLabel: UILabel?
+    @IBOutlet weak var connectionErrorSubtitleLabel: UILabel?
     private weak var shuttleStatusLabel: UILabel?
     private var mapLayoutObserver : NSObjectProtocol?
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // Set the labels' text on the connection error view.
+        self.connectionErrorTitleLabel?.text = NSLocalizedString("Cannot Connect", comment:"")
+        self.connectionErrorSubtitleLabel?.text = NSLocalizedString("You must connect to a Wi-Fi or cellular data network to view shuttle positions.", comment:"")
         
         // Set the left bar button item.
         self.navigationItem.leftBarButtonItem = self.splitViewController?.displayModeButtonItem()
