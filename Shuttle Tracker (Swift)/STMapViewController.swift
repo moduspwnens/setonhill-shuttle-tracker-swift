@@ -8,6 +8,7 @@
 
 import UIKit
 import MapKit
+import Reachability
 
 class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewControllerDelegate, UIAlertViewDelegate {
     
@@ -18,6 +19,7 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
     @IBOutlet weak var connectionErrorSubtitleLabel: UILabel?
     private weak var shuttleStatusLabel: UILabel?
     private var mapLayoutObserver : NSObjectProtocol?
+    private var internetReachability: Reachability = Reachability.reachabilityForInternetConnection()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -64,6 +66,20 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
             object: nil
         )
         
+        
+        // Set up listener for Internet reachability.
+        NSNotificationCenter.defaultCenter().addObserver(
+            self,
+            selector: "evaluateConnectionErrorViewVisibility:",
+            name: kReachabilityChangedNotification,
+            object: nil
+        )
+        
+        // Check now, in case the app loaded with no Internet connection.
+        self.evaluateConnectionErrorViewVisibility(nil)
+        
+        // Start Internet reachability notifier.
+        self.internetReachability.startNotifier()
     }
     
     func loadToolbarItems() {
@@ -160,8 +176,15 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
         self.mapView?.setRegion(defaultRegion, animated: animated)
     }
     
+    func evaluateConnectionErrorViewVisibility(notification: NSNotification?) {
+        
+        // If there's no Internet connection, it should be visible.
+        let internetConnectionReachable = (self.internetReachability.currentReachabilityStatus() != NetworkStatus.NotReachable)
+        self.connectionErrorView?.hidden = internetConnectionReachable
+    }
+    
     func shuttleStatusUpdateCompleted(notification: NSNotification) {
-        println("Shuttles updated. \n\(notification.userInfo!)")
+        //println("Shuttles updated. \n\(notification.userInfo!)")
         
     }
 
