@@ -11,6 +11,7 @@ import UIKit
 class STShuttleMasterTableViewController: UITableViewController, UISplitViewControllerDelegate {
     
     @IBOutlet var doneBarButtonItem: UIBarButtonItem?
+    private var detailViewController : UIViewController?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -20,6 +21,9 @@ class STShuttleMasterTableViewController: UITableViewController, UISplitViewCont
         
         // Back button should be blank (icon with no text)
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .Plain, target: nil, action: nil)
+        
+        // Keep a reference to our detail view controller so it doesn't need to be reloaded if the split view controller collapses.
+        self.detailViewController = self.splitViewController?.viewControllers[1] as UIViewController!
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -32,6 +36,11 @@ class STShuttleMasterTableViewController: UITableViewController, UISplitViewCont
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    @IBAction func doneButtonPressed(sender: AnyObject?) {
+        // Show the detail view controller again.
+        self.splitViewController?.showDetailViewController(self.detailViewController, sender: self)
     }
 
     // MARK: - Table view data source

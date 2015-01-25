@@ -95,7 +95,7 @@
                     <navigationItem key="navigationItem" id="WKD-1w-hv3">
                         <barButtonItem key="rightBarButtonItem" systemItem="done" id="cT2-Jr-hwo">
                             <connections>
-                                <segue destination="Snv-5h-Sf7" kind="showDetail" id="ipT-bv-KHZ"/>
+                                <action selector="doneButtonPressed:" destination="Uze-eW-vQ2" id="ecO-Lf-kPO"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -137,7 +137,4 @@
             <point key="canvasLocation" x="-727" y="316"/>
         </scene>
     </scenes>
-    <inferredMetricsTieBreakers>
-        <segue reference="ipT-bv-KHZ"/>
-    </inferredMetricsTieBreakers>
 </document>
