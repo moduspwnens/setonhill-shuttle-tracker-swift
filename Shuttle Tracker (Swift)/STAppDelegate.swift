@@ -21,16 +21,6 @@ class STAppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         
-        /*
-            Set the UISplitViewControllerDelegate.
-            This should be doable from the storyboard, but it won't let me. Reference here:
-                http://stackoverflow.com/questions/8975039/splitview-in-storyboard-cant-connect-delegate
-        */
-        let splitViewController = self.window?.rootViewController as UISplitViewController
-        let primaryNavController = splitViewController.viewControllers.first as UINavigationController
-        let shuttleDetailViewController = primaryNavController.viewControllers.first as STShuttleDetailTableViewController
-        splitViewController.delegate = shuttleDetailViewController
-        
         // Load base defaults (in case they haven't been set already).
         self.remoteConfigurationManager.loadBaseDefaults()
         

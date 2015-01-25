@@ -18,6 +18,10 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // Set the left bar button item.
+        self.navigationItem.leftBarButtonItem = self.splitViewController?.displayModeButtonItem()
+        self.navigationItem.leftItemsSupplementBackButton = true
+        
         // Setup the toolbar items that couldn't quite be laid out in Interface Builder right.
         self.loadToolbarItems()
         

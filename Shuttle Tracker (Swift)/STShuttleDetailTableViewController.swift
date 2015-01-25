@@ -15,6 +15,9 @@ class STShuttleDetailTableViewController: UITableViewController, UISplitViewCont
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // Set this instance as the split view controller's delegate.
+        self.splitViewController?.delegate = self
+        
         // Back button should be blank (icon with no text)
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .Plain, target: nil, action: nil)
     }
