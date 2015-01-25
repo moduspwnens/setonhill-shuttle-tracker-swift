@@ -63,6 +63,10 @@ class STAppDelegate: UIResponder, UIApplicationDelegate {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
     
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
+    }
+    
     func beginShuttleStatusUpdates(immediately: Bool) {
         // Invalidate existing timer if it's already set.
         self.shuttleStatusUpdateTimer?.invalidate()
