@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		334338621A6D4E3C005AE689 /* STMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 334338611A6D4E3C005AE689 /* STMapViewController.swift */; };
-		334338641A6D50AD005AE689 /* STShuttleDetailTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 334338631A6D50AD005AE689 /* STShuttleDetailTableViewController.swift */; };
+		334338641A6D50AD005AE689 /* STShuttleMasterTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 334338631A6D50AD005AE689 /* STShuttleMasterTableViewController.swift */; };
 		334338661A6D77DB005AE689 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 334338651A6D77DB005AE689 /* MapKit.framework */; };
 		338B849E1A6CB6D500B20258 /* STAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 338B849D1A6CB6D500B20258 /* STAppDelegate.swift */; };
 		338B84A31A6CB6D500B20258 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 338B84A11A6CB6D500B20258 /* Main.storyboard */; };
@@ -37,7 +37,7 @@
 		23D462BEAC3BE6FEC16840B5 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3343385E1A6CC9FA005AE689 /* ST-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ST-Bridging-Header.h"; sourceTree = "<group>"; };
 		334338611A6D4E3C005AE689 /* STMapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = STMapViewController.swift; sourceTree = "<group>"; };
-		334338631A6D50AD005AE689 /* STShuttleDetailTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = STShuttleDetailTableViewController.swift; sourceTree = "<group>"; };
+		334338631A6D50AD005AE689 /* STShuttleMasterTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = STShuttleMasterTableViewController.swift; sourceTree = "<group>"; };
 		334338651A6D77DB005AE689 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		338B84981A6CB6D500B20258 /* Shuttle Tracker (Swift).app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Shuttle Tracker (Swift).app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		338B849C1A6CB6D500B20258 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -106,7 +106,7 @@
 				33FC588B1A73EBFE002505D5 /* STRemoteConfigurationManager.swift */,
 				33FC58C31A74941F002505D5 /* STShuttle.swift */,
 				33FC58C11A748735002505D5 /* STShuttleDataManager.swift */,
-				334338631A6D50AD005AE689 /* STShuttleDetailTableViewController.swift */,
+				334338631A6D50AD005AE689 /* STShuttleMasterTableViewController.swift */,
 				338B84A11A6CB6D500B20258 /* Main.storyboard */,
 				338B84A41A6CB6D500B20258 /* Images.xcassets */,
 				338B84A61A6CB6D500B20258 /* LaunchScreen.xib */,
@@ -314,7 +314,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				33FC58C41A74941F002505D5 /* STShuttle.swift in Sources */,
-				334338641A6D50AD005AE689 /* STShuttleDetailTableViewController.swift in Sources */,
+				334338641A6D50AD005AE689 /* STShuttleMasterTableViewController.swift in Sources */,
 				33FC58901A743332002505D5 /* NSNotificationCenter+RemoteConfiguration.swift in Sources */,
 				33FC58C21A748735002505D5 /* STShuttleDataManager.swift in Sources */,
 				338B849E1A6CB6D500B20258 /* STAppDelegate.swift in Sources */,

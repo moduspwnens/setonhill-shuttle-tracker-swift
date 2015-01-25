@@ -79,10 +79,10 @@
             </objects>
             <point key="canvasLocation" x="93" y="708"/>
         </scene>
-        <!--Shuttle Detail Table View Controller-->
+        <!--Shuttle Master Table View Controller-->
         <scene sceneID="dgW-R7-bAq">
             <objects>
-                <tableViewController clearsSelectionOnViewWillAppear="NO" id="Uze-eW-vQ2" customClass="STShuttleDetailTableViewController" customModule="Shuttle_Tracker__Swift_" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController clearsSelectionOnViewWillAppear="NO" id="Uze-eW-vQ2" customClass="STShuttleMasterTableViewController" customModule="Shuttle_Tracker__Swift_" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="B1K-6O-bdr">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
