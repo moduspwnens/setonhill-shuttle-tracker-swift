@@ -12,6 +12,7 @@ class STShuttleMasterTableViewController: UITableViewController, UISplitViewCont
     
     @IBOutlet var doneBarButtonItem: UIBarButtonItem?
     private var detailViewController : UIViewController?
+    private var collapsedWhenAppeared : Bool = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,6 +42,17 @@ class STShuttleMasterTableViewController: UITableViewController, UISplitViewCont
     @IBAction func doneButtonPressed(sender: AnyObject?) {
         // Show the detail view controller again.
         self.splitViewController?.showDetailViewController(self.detailViewController, sender: self)
+    }
+    
+    override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
+        
+        // Overriding this method is necessary to detect when the "Done" button should disappear on the iPhone 6+.
+        
+        if self.splitViewController!.collapsed {
+            // We're shifting out of a collapsed view, so the "Done" button should be removed.
+            self.navigationItem.rightBarButtonItem = nil
+        }
     }
 
     // MARK: - Table view data source
