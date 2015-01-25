@@ -87,10 +87,8 @@ class STShuttleDataManager: NSObject {
                         newShuttle.subtitle = vehicleDictionary["subtitle"] as String
                         
                         let positionDictionary = vehicleDictionary["latest_position"] as NSDictionary
-                        newShuttle.coordinate = CLLocationCoordinate2DMake(
-                            positionDictionary["latitude"]!.doubleValue,
-                            positionDictionary["longitude"]!.doubleValue
-                        )
+                        newShuttle.latitude = positionDictionary["latitude"]!.doubleValue
+                        newShuttle.longitude = positionDictionary["longitude"]!.doubleValue
                         newShuttle.heading = positionDictionary["heading"]!.floatValue
                         newShuttle.speed = positionDictionary["speed"]!.floatValue
                         newShuttle.shuttleType = ShuttleType(rawValue: vehicleDictionary["type"]!.integerValue)!
