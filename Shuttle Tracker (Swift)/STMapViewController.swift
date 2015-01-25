@@ -97,6 +97,10 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
         // Dispose of any resources that can be recreated.
     }
     
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
+    }
+    
     func infoButtonPressed(sender: UIButton) {
         println("Info button pressed.")
     }
