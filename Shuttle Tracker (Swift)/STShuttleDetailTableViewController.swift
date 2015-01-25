@@ -8,18 +8,22 @@
 
 import UIKit
 
-class STShuttleDetailTableViewController: UITableViewController {
-
+class STShuttleDetailTableViewController: UITableViewController, UISplitViewControllerDelegate {
+    
+    @IBOutlet var doneBarButtonItem: UIBarButtonItem?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // Back button should be blank (icon with no text)
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .Plain, target: nil, action: nil)
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem()
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        // Add/remove the "Done" button based on whether or not the split view controller is collapsed.
+        self.navigationItem.rightBarButtonItem = self.splitViewController!.collapsed ? self.doneBarButtonItem : nil
     }
 
     override func didReceiveMemoryWarning() {
@@ -40,7 +44,15 @@ class STShuttleDetailTableViewController: UITableViewController {
         // Return the number of rows in the section.
         return 0
     }
-
+    
+    // MARK: - UISplitViewControllerDelegate methods
+    
+    func splitViewController(splitViewController: UISplitViewController, collapseSecondaryViewController secondaryViewController: UIViewController!, ontoPrimaryViewController primaryViewController: UIViewController!) -> Bool {
+        // This makes sure that on devices that show a collapsed split view controller (iPhones other than 6+), the map view controller is shown by default.
+        return false
+    }
+    
+    
     /*
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("reuseIdentifier", forIndexPath: indexPath) as UITableViewCell

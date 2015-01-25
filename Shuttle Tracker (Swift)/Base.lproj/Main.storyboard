@@ -92,7 +92,16 @@
                             <outlet property="delegate" destination="Uze-eW-vQ2" id="p48-7k-pYp"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="WKD-1w-hv3"/>
+                    <navigationItem key="navigationItem" id="WKD-1w-hv3">
+                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="cT2-Jr-hwo">
+                            <connections>
+                                <segue destination="Snv-5h-Sf7" kind="showDetail" id="ipT-bv-KHZ"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="doneBarButtonItem" destination="cT2-Jr-hwo" id="u1M-dr-MVj"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Q08-0K-ZRK" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -128,4 +137,7 @@
             <point key="canvasLocation" x="-727" y="316"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="ipT-bv-KHZ"/>
+    </inferredMetricsTieBreakers>
 </document>
