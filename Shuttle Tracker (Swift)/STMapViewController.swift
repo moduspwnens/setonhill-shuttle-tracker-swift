@@ -84,6 +84,7 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
         
         // The final item will be an "info" style button on the right side of the toolbar.
         let infoButton = UIButton.buttonWithType(.InfoDark) as UIButton
+        infoButton.hidden = true
         infoButton.addTarget(self, action: "infoButtonPressed:", forControlEvents: .TouchUpInside)
         let infoBarButtonItem = UIBarButtonItem(customView: infoButton)
         toolbarItems.append(infoBarButtonItem)
