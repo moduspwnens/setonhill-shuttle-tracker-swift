@@ -54,8 +54,20 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
         // Listen for notification of shuttle status updates and failures.
         NSNotificationCenter.defaultCenter().addObserver(
             self,
-            selector: "shuttleStatusUpdateCompleted:",
-            name: kShuttleStatusesUpdatedNotification,
+            selector: "shuttleAdded:",
+            name: kShuttleAddedNotification,
+            object: nil
+        )
+        NSNotificationCenter.defaultCenter().addObserver(
+            self,
+            selector: "shuttleStatusUpdated:",
+            name: kShuttleStatusUpdateNotification,
+            object: nil
+        )
+        NSNotificationCenter.defaultCenter().addObserver(
+            self,
+            selector: "shuttleRemoved:",
+            name: kShuttleRemovedNotification,
             object: nil
         )
         
@@ -183,9 +195,17 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
         self.connectionErrorView?.hidden = internetConnectionReachable
     }
     
-    func shuttleStatusUpdateCompleted(notification: NSNotification) {
-        //println("Shuttles updated. \n\(notification.userInfo!)")
-        
+    // MARK: - Handle shuttle status updates
+    func shuttleAdded(notification: NSNotification) {
+        println("New shuttle added.")
+    }
+    
+    func shuttleStatusUpdated(notification: NSNotification) {
+        println("Shuttle status updated.")
+    }
+    
+    func shuttleRemoved(notification: NSNotification) {
+        println("Shuttle removed.")
     }
 
     func shuttleStatusUpdateFailed(notification: NSNotification) {

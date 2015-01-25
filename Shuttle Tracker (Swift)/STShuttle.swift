@@ -14,12 +14,22 @@ enum ShuttleType: NSInteger {
     case Other = 2
 }
 
+class STShuttleStatusInstance: NSObject {
+    var shuttle : STShuttle
+    var updateTime : NSDate
+    
+    init(shuttle: STShuttle, updateTime: NSDate) {
+        self.shuttle = shuttle
+        self.updateTime = updateTime
+        super.init()
+    }
+}
+
 class STShuttle: NSObject, MKAnnotation {
     var identifier : NSString?
     var title : NSString?
     var subtitle : NSString?
     var statusMessage : NSString?
-    var updateTime : NSDate?
     var heading : Float = -1
     var speed : Float = 0
     var latitude : CLLocationDegrees = 0

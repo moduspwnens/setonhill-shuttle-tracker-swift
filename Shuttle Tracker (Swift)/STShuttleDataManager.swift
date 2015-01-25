@@ -10,12 +10,15 @@ import Alamofire
 import MapKit
 
 // NSNotification names
-let kShuttleStatusesUpdatedNotification = "kShuttleStatusesUpdated"
 let kShuttleStatusUpdateErrorOccurredNotification = "kShuttleStatusUpdateErrorOccurred"
+let kShuttleStatusUpdateNotification = "kShuttleStatusUpdated"
+let kShuttleAddedNotification = "kShuttleAdded"
+let kShuttleRemovedNotification = "kShuttleRemoved"
 
 class STShuttleDataManager: NSObject {
     
     private var alamofireManager : Alamofire.Manager?
+    private var shuttleDictionary = NSMutableDictionary()
     
     override init() {
         super.init()
@@ -76,11 +79,13 @@ class STShuttleDataManager: NSObject {
                 else {
                     // Received valid JSON response!
                     
-                    var shuttlesReceivedMap = NSMutableDictionary()
+                    // Keep track of the ones we've found, so we can tell if any have been removed.
+                    var shuttleIdentifiersFound = NSMutableArray()
                     
                     for eachItem in JSON as NSArray {
                         let vehicleDictionary = (eachItem as NSDictionary)["vehicle"] as NSDictionary
                         
+                        // Create a new STShuttle object and populate its properties with what we've received in the JSON.
                         var newShuttle = STShuttle()
                         newShuttle.identifier = vehicleDictionary["id"] as String
                         newShuttle.title = vehicleDictionary["name"] as String
@@ -97,16 +102,75 @@ class STShuttleDataManager: NSObject {
                         let dateFormatter = NSDateFormatter()
                         dateFormatter.dateFormat = "yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'"
                         dateFormatter.timeZone = NSTimeZone(forSecondsFromGMT: 0)
-                        newShuttle.updateTime = dateFormatter.dateFromString(positionDictionary["timestamp"] as String)
+                        let updateTime = dateFormatter.dateFromString(positionDictionary["timestamp"] as String)!
                         
-                        shuttlesReceivedMap.setValue(newShuttle, forKey: newShuttle.identifier!)
+                        let newShuttleStatusInstance = STShuttleStatusInstance(shuttle: newShuttle, updateTime: updateTime)
+                        
+                        // Add this shuttle's identifier to the list of identifiers we've found.
+                        shuttleIdentifiersFound.addObject(newShuttle.identifier!)
+                        
+                        if let existingShuttleStatusInstance = self.shuttleDictionary.objectForKey(newShuttle.identifier!) as? STShuttleStatusInstance {
+                            // This shuttle exists locally, so it's probably already on the map.
+                            
+                            if !existingShuttleStatusInstance.shuttle.isEqualToShuttle(newShuttle) {
+                                // This shuttle is different from when we last saw it.
+                                
+                                // Update our local cache of shuttles.
+                                self.shuttleDictionary.setObject(newShuttleStatusInstance, forKey: newShuttle.identifier!)
+                                
+                                // Post a "shuttle updated" notification.
+                                NSNotificationCenter.defaultCenter().postNotificationName(
+                                    kShuttleStatusUpdateNotification,
+                                    object: nil,
+                                    userInfo: [
+                                        "shuttleStatus" : newShuttleStatusInstance
+                                    ]
+                                )
+                            }
+                            else {
+                                // Update our local cache of shuttles anyway. The latest version will have the correct "last updated" time.
+                                self.shuttleDictionary.setObject(newShuttleStatusInstance, forKey: newShuttle.identifier!)
+                            }
+                        }
+                        else {
+                            // This shuttle doesn't exist locally, so it's the first time we've seen it.
+                            
+                            // Add it to our local cache of shuttles.
+                            self.shuttleDictionary.setObject(newShuttleStatusInstance, forKey: newShuttle.identifier!)
+                            
+                            // Post a "shuttle added" notification.
+                            NSNotificationCenter.defaultCenter().postNotificationName(
+                                kShuttleAddedNotification,
+                                object: nil,
+                                userInfo: [
+                                    "shuttleStatus" : newShuttleStatusInstance
+                                ]
+                            )
+                        }
                     }
                     
-                    NSNotificationCenter.defaultCenter().postNotificationName(
-                        kShuttleStatusesUpdatedNotification,
-                        object: nil,
-                        userInfo: ["shuttles" : shuttlesReceivedMap]
-                    )
+                    // Now let's see if any shuttles were removed (i.e. we have them cached locally, but they weren't in the latest valid response).
+                    
+                    let existingShuttleIdentifiers = self.shuttleDictionary.allKeys
+                    for eachKey in existingShuttleIdentifiers {
+                        if !shuttleIdentifiersFound.containsObject(eachKey) {
+                            // This shuttle has been removed.
+                            
+                            let oldShuttleStatusInstance = self.shuttleDictionary.objectForKey(eachKey) as STShuttleStatusInstance
+                            
+                            // Remove from our local cache of shuttles.
+                            self.shuttleDictionary.removeObjectForKey(eachKey)
+                            
+                            // Post a "shuttle removed" notification.
+                            NSNotificationCenter.defaultCenter().postNotificationName(
+                                kShuttleRemovedNotification,
+                                object: nil,
+                                userInfo: [
+                                    "shuttleStatus" : oldShuttleStatusInstance
+                                ]
+                            )
+                        }
+                    }
                 }
         }
     }
