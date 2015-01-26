@@ -25,58 +25,36 @@ class STShuttleStatusInstance: NSObject {
     }
 }
 
-class STShuttle: NSObject, MKAnnotation {
+// Override "==" operator to allow for accurate direct comparison of STShuttle objects.
+func ==(lhs: STShuttle, rhs: STShuttle) -> Bool {
+    return lhs.hashValue == rhs.hashValue
+}
+
+class STShuttle: NSObject, MKAnnotation, Hashable {
     var identifier : NSString?
-    var title : NSString?
-    var subtitle : NSString?
+    dynamic var title : NSString?
+    dynamic var subtitle : NSString?
     var statusMessage : NSString?
     var heading : Float = -1
     var speed : Float = 0
     var latitude : CLLocationDegrees = 0
     var longitude : CLLocationDegrees = 0
-    var shuttleTypeAsNumber : NSNumber = NSNumber(integer: ShuttleType.Normal.rawValue)
+    var shuttleType = ShuttleType.Normal
     
     // Default initializer. It's OK to create an empty shuttle and fill in its properties later.
     override init() {
         super.init()
     }
     
-    // Dictionary initializer for easy creation from JSON response.
-    init(dictionary: NSDictionary) {
-        super.init()
-        self.setValuesForKeysWithDictionary(dictionary)
-    }
-    
-    // Dictionary representation for easy comparison.
-    func dictionaryRepresentation() -> NSDictionary {
-        let m = reflect(self)
-        var s = [String]()
-        for i in 0..<m.count
-        {
-            let (name,_)  = m[i]
-            if name == "super"{continue}
-            s.append(name)
-        }
-        return self.dictionaryWithValuesForKeys(s)
-    }
-    
-    // Custom isEqual method allows for easily checking whether or not there are changes between two shuttles.
-    func isEqualToShuttle(otherShuttle: STShuttle) -> Bool {
-        return self.dictionaryRepresentation().isEqualToDictionary(otherShuttle.dictionaryRepresentation())
-    }
-    
-    // Using computed property with behind-the-scenes storage as NSNumber so that dictionary representation/comparison will work.
-    var shuttleType:ShuttleType {
-        set {
-            self.shuttleTypeAsNumber = NSNumber(integer: newValue.rawValue)
-        }
+    // Implementing to make sure class implements Hashable, which allows it to implement Equatable. This will allow us to directly compare STShuttles with the == operator.
+    override var hashValue : Int {
         get {
-            return ShuttleType(rawValue: self.shuttleTypeAsNumber.integerValue)!
+            return "\(self.identifier)-\(self.title)-\(self.subtitle)-\(self.statusMessage)-\(self.heading)-\(self.speed)-\(self.latitude)-\(self.longitude)-\(self.shuttleType)".hashValue
         }
     }
     
     // Using computed property with behind-the-scenes storage as NSNumbers so that we're not storing the same CLLocationCoordinate2D.
-    var coordinate:CLLocationCoordinate2D {
+    dynamic var coordinate:CLLocationCoordinate2D {
         set {
             self.latitude = newValue.latitude
             self.longitude = newValue.longitude

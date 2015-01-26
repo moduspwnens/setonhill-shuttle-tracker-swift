@@ -12,6 +12,7 @@ import Reachability
 
 class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewControllerDelegate, UIAlertViewDelegate {
     
+    var shuttleDataManager: STShuttleDataManager?
     @IBOutlet weak var mapView: MKMapView?
     @IBOutlet weak var toolbar: UIToolbar?
     @IBOutlet weak var connectionErrorView: UIView?
@@ -54,19 +55,19 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
         // Listen for notification of shuttle status updates and failures.
         NSNotificationCenter.defaultCenter().addObserver(
             self,
-            selector: "shuttleAdded:",
+            selector: "shuttleAddedNotificationReceived:",
             name: kShuttleAddedNotification,
             object: nil
         )
         NSNotificationCenter.defaultCenter().addObserver(
             self,
-            selector: "shuttleStatusUpdated:",
+            selector: "shuttleUpdatedNotificationReceived:",
             name: kShuttleStatusUpdateNotification,
             object: nil
         )
         NSNotificationCenter.defaultCenter().addObserver(
             self,
-            selector: "shuttleRemoved:",
+            selector: "shuttleRemovedNotificationReceived:",
             name: kShuttleRemovedNotification,
             object: nil
         )
@@ -195,22 +196,49 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
         self.connectionErrorView?.hidden = internetConnectionReachable
     }
     
-    // MARK: - Handle shuttle status updates
-    func shuttleAdded(notification: NSNotification) {
-        println("New shuttle added.")
+    // MARK: - Shuttle status update handling
+    func shuttleAdded(shuttleStatusInstance: STShuttleStatusInstance) {
+        self.mapView?.addAnnotation(shuttleStatusInstance.shuttle)
     }
     
-    func shuttleStatusUpdated(notification: NSNotification) {
-        println("Shuttle status updated.")
+    func shuttleUpdated(shuttleStatusInstance: STShuttleStatusInstance) {
+        let newShuttle = shuttleStatusInstance.shuttle
+        
+        if var existingShuttle = self.getShuttleAnnotationWithIdentifier(newShuttle.identifier!) {
+            // Existing annotation needs to be updated.
+            existingShuttle.coordinate = newShuttle.coordinate
+            existingShuttle.title = newShuttle.title
+            existingShuttle.subtitle = newShuttle.subtitle
+        }
     }
     
-    func shuttleRemoved(notification: NSNotification) {
-        println("Shuttle removed.")
+    func shuttleRemoved(shuttleStatusInstance: STShuttleStatusInstance) {
+        if let existingShuttle = self.getShuttleAnnotationWithIdentifier(shuttleStatusInstance.shuttle.identifier!) {
+            self.mapView?.removeAnnotation(existingShuttle)
+        }
     }
-
+    
     func shuttleStatusUpdateFailed(notification: NSNotification) {
         println("Shuttles update failed. \n\(notification.userInfo!)")
         self.shuttleStatusLabel?.text = ""
+    }
+    
+    // MARK: - Shuttle status notification handling
+    // These methods are basically just to allow for shuttles to be added/removed without necessarily using an NSNotification.
+    
+    func shuttleRemovedNotificationReceived(notification: NSNotification) {
+        let thisShuttleStatusInstance = (notification.userInfo! as NSDictionary).objectForKey("shuttleStatus")! as STShuttleStatusInstance
+        self.shuttleRemoved(thisShuttleStatusInstance)
+    }
+    
+    func shuttleUpdatedNotificationReceived(notification: NSNotification) {
+        let thisShuttleStatusInstance = (notification.userInfo! as NSDictionary).objectForKey("shuttleStatus")! as STShuttleStatusInstance
+        self.shuttleUpdated(thisShuttleStatusInstance)
+    }
+    
+    func shuttleAddedNotificationReceived(notification: NSNotification) {
+        let thisShuttleStatusInstance = (notification.userInfo! as NSDictionary).objectForKey("shuttleStatus")! as STShuttleStatusInstance
+        self.shuttleAdded(thisShuttleStatusInstance)
     }
     
     // MARK: - MKMapViewDelegate methods
@@ -236,5 +264,20 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
         // Pass the selected object to the new view controller.
     }
     */
+    
+    // MARK: - Convenience methods
+    func getShuttleAnnotationWithIdentifier(identifier : NSString) -> STShuttle? {
+        // TODO: Keep separate NSDictionary for quick lookup of shuttle annotations based on identifier?
+        
+        for eachMapAnnotation in self.mapView!.annotations {
+            if eachMapAnnotation is STShuttle {
+                var existingShuttleAnnotation = eachMapAnnotation as STShuttle
+                if existingShuttleAnnotation.identifier == identifier {
+                    return existingShuttleAnnotation
+                }
+            }
+        }
+        return nil
+    }
 
 }

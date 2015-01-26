@@ -112,7 +112,7 @@ class STShuttleDataManager: NSObject {
                         if let existingShuttleStatusInstance = self.shuttleDictionary.objectForKey(newShuttle.identifier!) as? STShuttleStatusInstance {
                             // This shuttle exists locally, so it's probably already on the map.
                             
-                            if !existingShuttleStatusInstance.shuttle.isEqualToShuttle(newShuttle) {
+                            if existingShuttleStatusInstance.shuttle != newShuttle {
                                 // This shuttle is different from when we last saw it.
                                 
                                 // Update our local cache of shuttles.
