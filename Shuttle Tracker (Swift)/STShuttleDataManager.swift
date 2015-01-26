@@ -11,9 +11,13 @@ import MapKit
 
 // NSNotification names
 let kShuttleStatusUpdateErrorOccurredNotification = "kShuttleStatusUpdateErrorOccurred"
-let kShuttleStatusUpdateNotification = "kShuttleStatusUpdated"
-let kShuttleAddedNotification = "kShuttleAdded"
-let kShuttleRemovedNotification = "kShuttleRemoved"
+let kShuttleStatusChangedNotification = "kShuttleStatusChanged"
+
+enum ShuttleStatusChangeType: NSInteger {
+    case Updated = 0
+    case Added = 1
+    case Removed = 2
+}
 
 class STShuttleDataManager: NSObject {
     
@@ -120,10 +124,11 @@ class STShuttleDataManager: NSObject {
                                 
                                 // Post a "shuttle updated" notification.
                                 NSNotificationCenter.defaultCenter().postNotificationName(
-                                    kShuttleStatusUpdateNotification,
+                                    kShuttleStatusChangedNotification,
                                     object: nil,
                                     userInfo: [
-                                        "shuttleStatus" : newShuttleStatusInstance
+                                        "shuttleStatus" : newShuttleStatusInstance,
+                                        "type" : NSNumber(integer: ShuttleStatusChangeType.Updated.rawValue)
                                     ]
                                 )
                             }
@@ -140,10 +145,11 @@ class STShuttleDataManager: NSObject {
                             
                             // Post a "shuttle added" notification.
                             NSNotificationCenter.defaultCenter().postNotificationName(
-                                kShuttleAddedNotification,
+                                kShuttleStatusChangedNotification,
                                 object: nil,
                                 userInfo: [
-                                    "shuttleStatus" : newShuttleStatusInstance
+                                    "shuttleStatus" : newShuttleStatusInstance,
+                                    "type" : NSNumber(integer: ShuttleStatusChangeType.Added.rawValue)
                                 ]
                             )
                         }
@@ -163,10 +169,11 @@ class STShuttleDataManager: NSObject {
                             
                             // Post a "shuttle removed" notification.
                             NSNotificationCenter.defaultCenter().postNotificationName(
-                                kShuttleRemovedNotification,
+                                kShuttleStatusChangedNotification,
                                 object: nil,
                                 userInfo: [
-                                    "shuttleStatus" : oldShuttleStatusInstance
+                                    "shuttleStatus" : oldShuttleStatusInstance,
+                                    "type" : NSNumber(integer: ShuttleStatusChangeType.Removed.rawValue)
                                 ]
                             )
                         }

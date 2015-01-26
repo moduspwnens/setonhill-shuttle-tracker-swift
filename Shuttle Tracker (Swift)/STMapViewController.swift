@@ -55,20 +55,8 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
         // Listen for notification of shuttle status updates and failures.
         NSNotificationCenter.defaultCenter().addObserver(
             self,
-            selector: "shuttleAddedNotificationReceived:",
-            name: kShuttleAddedNotification,
-            object: nil
-        )
-        NSNotificationCenter.defaultCenter().addObserver(
-            self,
-            selector: "shuttleUpdatedNotificationReceived:",
-            name: kShuttleStatusUpdateNotification,
-            object: nil
-        )
-        NSNotificationCenter.defaultCenter().addObserver(
-            self,
-            selector: "shuttleRemovedNotificationReceived:",
-            name: kShuttleRemovedNotification,
+            selector: "shuttleStatusChangedNotificationReceived:",
+            name: kShuttleStatusChangedNotification,
             object: nil
         )
         
@@ -226,19 +214,21 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
     // MARK: - Shuttle status notification handling
     // These methods are basically just to allow for shuttles to be added/removed without necessarily using an NSNotification.
     
-    func shuttleRemovedNotificationReceived(notification: NSNotification) {
-        let thisShuttleStatusInstance = (notification.userInfo! as NSDictionary).objectForKey("shuttleStatus")! as STShuttleStatusInstance
-        self.shuttleRemoved(thisShuttleStatusInstance)
-    }
-    
-    func shuttleUpdatedNotificationReceived(notification: NSNotification) {
-        let thisShuttleStatusInstance = (notification.userInfo! as NSDictionary).objectForKey("shuttleStatus")! as STShuttleStatusInstance
-        self.shuttleUpdated(thisShuttleStatusInstance)
-    }
-    
-    func shuttleAddedNotificationReceived(notification: NSNotification) {
-        let thisShuttleStatusInstance = (notification.userInfo! as NSDictionary).objectForKey("shuttleStatus")! as STShuttleStatusInstance
-        self.shuttleAdded(thisShuttleStatusInstance)
+    func shuttleStatusChangedNotificationReceived(notification: NSNotification) {
+        // Pull out the notification. Find whether it was added, updated, or deleted, and then call the appropriate method.
+        
+        let userInfo = (notification.userInfo! as NSDictionary)
+        let thisShuttleStatusInstance = userInfo.objectForKey("shuttleStatus")! as STShuttleStatusInstance
+        let changeType = ShuttleStatusChangeType(rawValue: (userInfo.objectForKey("type")! as NSNumber).integerValue)!
+        
+        switch changeType {
+        case .Added:
+            self.shuttleAdded(thisShuttleStatusInstance)
+        case .Updated:
+            self.shuttleUpdated(thisShuttleStatusInstance)
+        case .Removed:
+            self.shuttleRemoved(thisShuttleStatusInstance)
+        }
     }
     
     // MARK: - MKMapViewDelegate methods
