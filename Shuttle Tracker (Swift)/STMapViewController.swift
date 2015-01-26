@@ -212,7 +212,6 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
     }
     
     // MARK: - Shuttle status notification handling
-    // These methods are basically just to allow for shuttles to be added/removed without necessarily using an NSNotification.
     
     func shuttleStatusChangedNotificationReceived(notification: NSNotification) {
         // Pull out the notification. Find whether it was added, updated, or deleted, and then call the appropriate method.
