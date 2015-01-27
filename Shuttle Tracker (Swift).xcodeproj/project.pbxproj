@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		333D82C61A7733130077C607 /* STShuttleAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 333D82C51A7733130077C607 /* STShuttleAnnotationView.swift */; };
 		334338621A6D4E3C005AE689 /* STMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 334338611A6D4E3C005AE689 /* STMapViewController.swift */; };
 		334338641A6D50AD005AE689 /* STShuttleMasterTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 334338631A6D50AD005AE689 /* STShuttleMasterTableViewController.swift */; };
 		334338661A6D77DB005AE689 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 334338651A6D77DB005AE689 /* MapKit.framework */; };
@@ -35,6 +36,7 @@
 
 /* Begin PBXFileReference section */
 		23D462BEAC3BE6FEC16840B5 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		333D82C51A7733130077C607 /* STShuttleAnnotationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = STShuttleAnnotationView.swift; sourceTree = "<group>"; };
 		3343385E1A6CC9FA005AE689 /* ST-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ST-Bridging-Header.h"; sourceTree = "<group>"; };
 		334338611A6D4E3C005AE689 /* STMapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = STMapViewController.swift; sourceTree = "<group>"; };
 		334338631A6D50AD005AE689 /* STShuttleMasterTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = STShuttleMasterTableViewController.swift; sourceTree = "<group>"; };
@@ -105,6 +107,7 @@
 				334338611A6D4E3C005AE689 /* STMapViewController.swift */,
 				33FC588B1A73EBFE002505D5 /* STRemoteConfigurationManager.swift */,
 				33FC58C31A74941F002505D5 /* STShuttle.swift */,
+				333D82C51A7733130077C607 /* STShuttleAnnotationView.swift */,
 				33FC58C11A748735002505D5 /* STShuttleDataManager.swift */,
 				334338631A6D50AD005AE689 /* STShuttleMasterTableViewController.swift */,
 				338B84A11A6CB6D500B20258 /* Main.storyboard */,
@@ -319,6 +322,7 @@
 				33FC58C21A748735002505D5 /* STShuttleDataManager.swift in Sources */,
 				338B849E1A6CB6D500B20258 /* STAppDelegate.swift in Sources */,
 				334338621A6D4E3C005AE689 /* STMapViewController.swift in Sources */,
+				333D82C61A7733130077C607 /* STShuttleAnnotationView.swift in Sources */,
 				33FC588C1A73EBFE002505D5 /* STRemoteConfigurationManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

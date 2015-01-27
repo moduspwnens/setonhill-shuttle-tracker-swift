@@ -191,6 +191,11 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
             existingShuttle.title = newShuttle.title
             existingShuttle.subtitle = newShuttle.subtitle
             
+            existingShuttle.heading = newShuttle.heading
+            let annotationView = self.mapView?.viewForAnnotation(existingShuttle)
+            annotationView?.setNeedsLayout()
+            annotationView?.layoutIfNeeded()
+            
             if animateChanges {
                 UIView.commitAnimations()
             }
@@ -322,6 +327,24 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
     
     func mapViewDidFailLoadingMap(mapView: MKMapView!, withError error: NSError!) {
         STAppDelegate.didStopNetworking()
+    }
+    
+    func mapView(mapView: MKMapView!, viewForAnnotation annotation: MKAnnotation!) -> MKAnnotationView! {
+        
+        // Only provide annotations for shuttle annotations.
+        if annotation is STShuttle {
+            var thisAnnotationView = mapView.dequeueReusableAnnotationViewWithIdentifier(kShuttleAnnotationViewIdentifier)
+            if thisAnnotationView == nil {
+                thisAnnotationView = STShuttleAnnotationView(annotation as STShuttle)
+            }
+            else {
+                thisAnnotationView.annotation = annotation
+                thisAnnotationView.prepareForReuse()
+            }
+            return thisAnnotationView
+        }
+        
+        return nil
     }
     
     func mapViewWillStartLocatingUser(mapView: MKMapView!) {

@@ -9,9 +9,9 @@
 import MapKit
 
 enum ShuttleType: NSInteger {
-    case Normal = 0
-    case Employee = 1
-    case Other = 2
+    case Red = 0
+    case Yellow = 1
+    case Green = 2
 }
 
 class STShuttleStatusInstance: NSObject {
@@ -39,7 +39,7 @@ class STShuttle: NSObject, MKAnnotation, Hashable {
     var speed : Float = 0
     var latitude : CLLocationDegrees = 0
     var longitude : CLLocationDegrees = 0
-    var shuttleType = ShuttleType.Normal
+    var shuttleType = ShuttleType.Red
     
     // Default initializer. It's OK to create an empty shuttle and fill in its properties later.
     override init() {
