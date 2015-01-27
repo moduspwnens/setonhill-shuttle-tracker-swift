@@ -9,14 +9,18 @@
 import Alamofire
 import MapKit
 
+let maxAllowableConsecutiveStatusUpdateFailures = 2
+
 // NSNotification names
 let kShuttleStatusUpdateErrorOccurredNotification = "kShuttleStatusUpdateErrorOccurred"
-let kShuttleStatusChangedNotification = "kShuttleStatusChanged"
+let kShuttleStatusUpdateReceivedNotification = "kShuttleStatusUpdateReceived"
+
 
 enum ShuttleStatusChangeType: NSInteger {
-    case Updated = 0
-    case Added = 1
-    case Removed = 2
+    case Updated = 0,
+    Added,
+    Removed,
+    Unchanged
 }
 
 class STShuttleDataManager: NSObject {
@@ -86,6 +90,11 @@ class STShuttleDataManager: NSObject {
                     // Keep track of the ones we've found, so we can tell if any have been removed.
                     var shuttleIdentifiersFound = NSMutableArray()
                     
+                    var shuttlesToAdd : [STShuttle] = []
+                    var shuttlesToUpdate : [STShuttle] = []
+                    var shuttlesToRemove : [STShuttle] = []
+                    var shuttlesToIgnore : [STShuttle] = []
+                    
                     for eachItem in JSON as NSArray {
                         let vehicleDictionary = (eachItem as NSDictionary)["vehicle"] as NSDictionary
                         
@@ -122,19 +131,15 @@ class STShuttleDataManager: NSObject {
                                 // Update our local cache of shuttles.
                                 self.shuttleDictionary.setObject(newShuttleStatusInstance, forKey: newShuttle.identifier!)
                                 
-                                // Post a "shuttle updated" notification.
-                                NSNotificationCenter.defaultCenter().postNotificationName(
-                                    kShuttleStatusChangedNotification,
-                                    object: nil,
-                                    userInfo: [
-                                        "shuttleStatus" : newShuttleStatusInstance,
-                                        "type" : NSNumber(integer: ShuttleStatusChangeType.Updated.rawValue)
-                                    ]
-                                )
+                                // Add to array of shuttles to update.
+                                shuttlesToUpdate.append(newShuttle)
                             }
                             else {
                                 // Update our local cache of shuttles anyway. The latest version will have the correct "last updated" time.
                                 self.shuttleDictionary.setObject(newShuttleStatusInstance, forKey: newShuttle.identifier!)
+                                
+                                // Add to array of shuttles to ignore.
+                                shuttlesToIgnore.append(newShuttle)
                             }
                         }
                         else {
@@ -143,15 +148,8 @@ class STShuttleDataManager: NSObject {
                             // Add it to our local cache of shuttles.
                             self.shuttleDictionary.setObject(newShuttleStatusInstance, forKey: newShuttle.identifier!)
                             
-                            // Post a "shuttle added" notification.
-                            NSNotificationCenter.defaultCenter().postNotificationName(
-                                kShuttleStatusChangedNotification,
-                                object: nil,
-                                userInfo: [
-                                    "shuttleStatus" : newShuttleStatusInstance,
-                                    "type" : NSNumber(integer: ShuttleStatusChangeType.Added.rawValue)
-                                ]
-                            )
+                            // Add to array of shuttles to add.
+                            shuttlesToAdd.append(newShuttle)
                         }
                     }
                     
@@ -160,24 +158,32 @@ class STShuttleDataManager: NSObject {
                     let existingShuttleIdentifiers = self.shuttleDictionary.allKeys
                     for eachKey in existingShuttleIdentifiers {
                         if !shuttleIdentifiersFound.containsObject(eachKey) {
-                            // This shuttle has been removed.
                             
+                            // This shuttle has been removed.
                             let oldShuttleStatusInstance = self.shuttleDictionary.objectForKey(eachKey) as STShuttleStatusInstance
                             
                             // Remove from our local cache of shuttles.
                             self.shuttleDictionary.removeObjectForKey(eachKey)
                             
-                            // Post a "shuttle removed" notification.
-                            NSNotificationCenter.defaultCenter().postNotificationName(
-                                kShuttleStatusChangedNotification,
-                                object: nil,
-                                userInfo: [
-                                    "shuttleStatus" : oldShuttleStatusInstance,
-                                    "type" : NSNumber(integer: ShuttleStatusChangeType.Removed.rawValue)
-                                ]
-                            )
+                            // Add to array of shuttles to delete.
+                            shuttlesToRemove.append(oldShuttleStatusInstance.shuttle)
+                            
                         }
                     }
+                    
+                    // Post a notification containing all the shuttles with their change statuses.
+                    NSNotificationCenter.defaultCenter().postNotificationName(
+                        kShuttleStatusUpdateReceivedNotification,
+                        object: nil,
+                        userInfo: [
+                            NSNumber(integer: ShuttleStatusChangeType.Added.rawValue) : shuttlesToAdd,
+                            NSNumber(integer: ShuttleStatusChangeType.Updated.rawValue) : shuttlesToUpdate,
+                            NSNumber(integer: ShuttleStatusChangeType.Removed.rawValue) : shuttlesToRemove,
+                            NSNumber(integer: ShuttleStatusChangeType.Unchanged.rawValue) : shuttlesToIgnore
+                        ]
+                    )
+                    
+                    
                 }
         }
     }

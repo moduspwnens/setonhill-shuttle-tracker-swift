@@ -12,7 +12,6 @@ import Reachability
 
 class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewControllerDelegate, UIAlertViewDelegate {
     
-    var shuttleDataManager: STShuttleDataManager?
     @IBOutlet weak var mapView: MKMapView?
     @IBOutlet weak var toolbar: UIToolbar?
     @IBOutlet weak var connectionErrorView: UIView?
@@ -20,14 +19,15 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
     @IBOutlet weak var connectionErrorSubtitleLabel: UILabel?
     private weak var shuttleStatusLabel: UILabel?
     private var mapLayoutObserver : NSObjectProtocol?
-    private var internetReachability: Reachability = Reachability.reachabilityForInternetConnection()
+    private var internetReachability = Reachability.reachabilityForInternetConnection()
+    private var consecutiveStatusUpdateFailures = 0
+    private var shuttleStatusDataLoadedAtLeastOnce = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Set the labels' text on the connection error view.
+        // Set the main label's text on the connection error view.
         self.connectionErrorTitleLabel?.text = NSLocalizedString("Cannot Connect", comment:"")
-        self.connectionErrorSubtitleLabel?.text = NSLocalizedString("You must connect to a Wi-Fi or cellular data network to view shuttle positions.", comment:"")
         
         // Set the left bar button item.
         self.navigationItem.leftBarButtonItem = self.splitViewController?.displayModeButtonItem()
@@ -55,8 +55,8 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
         // Listen for notification of shuttle status updates and failures.
         NSNotificationCenter.defaultCenter().addObserver(
             self,
-            selector: "shuttleStatusChangedNotificationReceived:",
-            name: kShuttleStatusChangedNotification,
+            selector: "shuttleStatusUpdateReceivedNotificationReceived:",
+            name: kShuttleStatusUpdateReceivedNotification,
             object: nil
         )
         
@@ -71,16 +71,13 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
         // Set up listener for Internet reachability.
         NSNotificationCenter.defaultCenter().addObserver(
             self,
-            selector: "evaluateConnectionErrorViewVisibility:",
+            selector: "reachabilityStatusChanged:",
             name: kReachabilityChangedNotification,
             object: nil
         )
         
         // Check now, in case the app loaded with no Internet connection.
-        self.evaluateConnectionErrorViewVisibility(nil)
-        
-        // Start Internet reachability notifier.
-        self.internetReachability.startNotifier()
+        self.evaluateConnectionErrorViewVisibility()
     }
     
     func loadToolbarItems() {
@@ -177,21 +174,14 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
         self.mapView?.setRegion(defaultRegion, animated: animated)
     }
     
-    func evaluateConnectionErrorViewVisibility(notification: NSNotification?) {
-        
-        // If there's no Internet connection, it should be visible.
-        let internetConnectionReachable = (self.internetReachability.currentReachabilityStatus() != NetworkStatus.NotReachable)
-        self.connectionErrorView?.hidden = internetConnectionReachable
-    }
     
     // MARK: - Shuttle status update handling
-    func shuttleAdded(shuttleStatusInstance: STShuttleStatusInstance) {
-        self.mapView?.addAnnotation(shuttleStatusInstance.shuttle)
+    
+    func shuttleAdded(shuttle: STShuttle) {
+        self.mapView?.addAnnotation(shuttle)
     }
     
-    func shuttleUpdated(shuttleStatusInstance: STShuttleStatusInstance) {
-        let newShuttle = shuttleStatusInstance.shuttle
-        
+    func shuttleUpdated(newShuttle: STShuttle) {
         if var existingShuttle = self.getShuttleAnnotationWithIdentifier(newShuttle.identifier!) {
             // Existing annotation needs to be updated.
             existingShuttle.coordinate = newShuttle.coordinate
@@ -200,33 +190,111 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
         }
     }
     
-    func shuttleRemoved(shuttleStatusInstance: STShuttleStatusInstance) {
-        if let existingShuttle = self.getShuttleAnnotationWithIdentifier(shuttleStatusInstance.shuttle.identifier!) {
+    func shuttleRemoved(shuttle: STShuttle) {
+        if let existingShuttle = self.getShuttleAnnotationWithIdentifier(shuttle.identifier!) {
             self.mapView?.removeAnnotation(existingShuttle)
         }
     }
     
     func shuttleStatusUpdateFailed(notification: NSNotification) {
-        println("Shuttles update failed. \n\(notification.userInfo!)")
-        self.shuttleStatusLabel?.text = ""
+        // Increment failure counter.
+        self.consecutiveStatusUpdateFailures++
+        
+        // See if anything should be done about it.
+        self.evaluateConsecutiveStatusUpdateFailures()
     }
     
-    // MARK: - Shuttle status notification handling
+    // MARK: - Direct notification handling
     
-    func shuttleStatusChangedNotificationReceived(notification: NSNotification) {
+    func shuttleStatusUpdateReceivedNotificationReceived(notification: NSNotification) {
+        
+        // Reset consecutive status update failure count.
+        self.consecutiveStatusUpdateFailures = 0
+        self.evaluateConsecutiveStatusUpdateFailures()
+        
         // Pull out the notification. Find whether it was added, updated, or deleted, and then call the appropriate method.
-        
         let userInfo = (notification.userInfo! as NSDictionary)
-        let thisShuttleStatusInstance = userInfo.objectForKey("shuttleStatus")! as STShuttleStatusInstance
-        let changeType = ShuttleStatusChangeType(rawValue: (userInfo.objectForKey("type")! as NSNumber).integerValue)!
         
-        switch changeType {
-        case .Added:
-            self.shuttleAdded(thisShuttleStatusInstance)
-        case .Updated:
-            self.shuttleUpdated(thisShuttleStatusInstance)
-        case .Removed:
-            self.shuttleRemoved(thisShuttleStatusInstance)
+        for eachNumberKey in userInfo.allKeys as [NSNumber] {
+            if let eachChangeType = ShuttleStatusChangeType(rawValue: eachNumberKey.integerValue) {
+                for eachShuttle in userInfo[eachNumberKey] as [STShuttle] {
+                    
+                    if !self.shuttleStatusDataLoadedAtLeastOnce {
+                        // This is the first time we've loaded shuttles since they've been clear, so anything but a removal should be treated as an "add."
+                        if eachChangeType != .Removed {
+                            self.shuttleAdded(eachShuttle)
+                        }
+                        continue
+                    }
+                    
+                    switch eachChangeType {
+                    case .Added:
+                        self.shuttleAdded(eachShuttle)
+                    case .Updated:
+                        self.shuttleUpdated(eachShuttle)
+                    case .Removed:
+                        self.shuttleRemoved(eachShuttle)
+                    default:
+                        ""
+                    }
+                }
+            }
+        }
+        
+        // Set flag that we've received data at least once.
+        self.shuttleStatusDataLoadedAtLeastOnce = true
+    }
+    
+    func evaluateConnectionErrorViewVisibility() {
+        
+        // If there's no Internet connection, the view should be visible.
+        let internetConnectionReachable = (self.internetReachability.currentReachabilityStatus() != NetworkStatus.NotReachable)
+        
+        if !internetConnectionReachable {
+            // Set the subtitle label's text on the connection error view indicating that the Internet connection is unreachable.
+            self.connectionErrorSubtitleLabel?.text = NSLocalizedString("You must connect to a Wi-Fi or cellular data network to view shuttle positions.", comment:"")
+        }
+        
+        if internetConnectionReachable && !self.shuttleStatusDataLoadedAtLeastOnce {
+            // Reset failure count. Internet just came back on, so let's give it a chance to succeed before showing the "You have Internet, but still couldn't update shuttle data" message.
+            self.consecutiveStatusUpdateFailures = 0
+        }
+        
+        self.connectionErrorView?.hidden = internetConnectionReachable
+        
+        // Let's make sure the logic for handling consecutive status update failures is also checked.
+        self.evaluateConsecutiveStatusUpdateFailures()
+    }
+    
+    func reachabilityStatusChanged(notification: NSNotification) {
+        self.evaluateConnectionErrorViewVisibility()
+    }
+    
+    // Implement behavior for handling if there have been enough consecutive status update failures to alert the user.
+    func evaluateConsecutiveStatusUpdateFailures() {
+        
+        if self.consecutiveStatusUpdateFailures == 0 {
+            // Everything is normal. Hide any error notices, etc.
+            if self.internetReachability.currentReachabilityStatus() != NetworkStatus.NotReachable {
+                self.connectionErrorView?.hidden = true
+            }
+        }
+        else if self.consecutiveStatusUpdateFailures > maxAllowableConsecutiveStatusUpdateFailures || !self.shuttleStatusDataLoadedAtLeastOnce {
+            // We've failed to get status updates too many times, or we've never actually retrieved data and failed on the first try.
+            
+            // The shuttle annotations should be removed. We don't want to lead the user to believe the shuttles may have just stopped.
+            self.removeAllShuttles()
+            
+            // Check if Internet is reachable.
+            if self.internetReachability.currentReachabilityStatus() == NetworkStatus.NotReachable {
+                // If the Internet connection is down, they already have a big warning view in their face about that. Don't do anything differently.
+            }
+            else {
+                // The user has an Internet connection, so if we do no further notification, the user won't know why the shuttles disappeared. 
+                // Let's show the connection error view and update the subtitle label's text so they know something is wrong.
+                self.connectionErrorSubtitleLabel?.text = NSLocalizedString("Unable to fetch shuttle status data. Will keep trying.", comment:"")
+                self.connectionErrorView?.hidden = false
+            }
         }
     }
     
@@ -267,6 +335,21 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
             }
         }
         return nil
+    }
+    
+    func removeAllShuttles() {
+        var annotationsToRemove: [MKAnnotation] = []
+        
+        for eachMapAnnotation in self.mapView!.annotations as [MKAnnotation] {
+            if eachMapAnnotation is STShuttle {
+                annotationsToRemove.append(eachMapAnnotation)
+            }
+        }
+        
+        self.mapView?.removeAnnotations(annotationsToRemove)
+        
+        // Reset "loaded data at least once" flag.
+        self.shuttleStatusDataLoadedAtLeastOnce = false
     }
 
 }

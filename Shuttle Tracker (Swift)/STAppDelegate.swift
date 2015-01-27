@@ -8,6 +8,7 @@
 
 import UIKit
 import Alamofire
+import Reachability
 
 @UIApplicationMain
 class STAppDelegate: UIResponder, UIApplicationDelegate {
@@ -18,6 +19,8 @@ class STAppDelegate: UIResponder, UIApplicationDelegate {
     private var networkingCount = 0
     private var shuttleStatusUpdateTimer: NSTimer?
     private var shuttleDataRefreshIntervalObserver : NSObjectProtocol?
+    private var internetReachability = Reachability.reachabilityForInternetConnection()
+    private var internetWasUnreachable = false
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         
@@ -35,6 +38,20 @@ class STAppDelegate: UIResponder, UIApplicationDelegate {
                     self.beginShuttleStatusUpdates(false)
                 }
         )
+        
+        // Set up listener for Internet reachability.
+        NSNotificationCenter.defaultCenter().addObserver(
+            self,
+            selector: "reachabilityStatusChanged:",
+            name: kReachabilityChangedNotification,
+            object: nil
+        )
+        
+        // Start Internet reachability notifier.
+        self.internetReachability.startNotifier()
+        
+        // Check if we're starting out with no Internet.
+        self.internetWasUnreachable = self.internetReachability.currentReachabilityStatus() == NetworkStatus.NotReachable
         
         return true
     }
@@ -64,6 +81,7 @@ class STAppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
         NSNotificationCenter.defaultCenter().removeObserver(self.shuttleDataRefreshIntervalObserver!)
     }
     
@@ -80,6 +98,22 @@ class STAppDelegate: UIResponder, UIApplicationDelegate {
             self.shuttleStatusUpdateTimer?.fire()
         }
     }
+    
+    // MARK: - Other event handlers
+    func reachabilityStatusChanged(notification: NSNotification) {
+        let currentNetworkStatus = (notification.object as Reachability).currentReachabilityStatus()
+        if currentNetworkStatus != NetworkStatus.NotReachable && self.internetWasUnreachable {
+            // The Internet just became available after previously being off. Immediately check for new shuttle status updates.
+            self.shuttleStatusUpdateTimer?.fire()
+            self.internetWasUnreachable = false
+        }
+        else if currentNetworkStatus == NetworkStatus.NotReachable {
+            // The Internet just became unavailable after previously being on.
+            self.internetWasUnreachable = true
+        }
+    }
+    
+    // MARK: - Shared network activity indicator handler methods
     
     func updateNetworkActivityIndicator() {
         UIApplication.sharedApplication().networkActivityIndicatorVisible = (self.networkingCount > 0)
