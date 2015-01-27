@@ -21,6 +21,7 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
     private var internetReachability = Reachability.reachabilityForInternetConnection()
     private var consecutiveStatusUpdateFailures = 0
     private var shuttleStatusDataLoadedAtLeastOnce = false
+    private var locationManager = CLLocationManager()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -323,6 +324,35 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
         STAppDelegate.didStopNetworking()
     }
     
+    func mapViewWillStartLocatingUser(mapView: MKMapView!) {
+        
+        // Check authorization status
+        let authStatus = CLLocationManager.authorizationStatus()
+        
+        // User has never been asked to decide on location authorization
+        if authStatus == .NotDetermined {
+            self.locationManager.requestWhenInUseAuthorization()
+        }
+        else if (authStatus == .Restricted) {
+            // This app is not authorized to use location services. 
+            // The user cannot change this app’s status, possibly due to active restrictions such as parental controls being in place.
+            let newAlertView = UIAlertView()
+            newAlertView.title = NSLocalizedString("Location Services restricted", comment:"")
+            newAlertView.message = NSLocalizedString("This device is restricted from allowing you to authorize showing its location.", comment:"")
+            newAlertView.addButtonWithTitle(NSLocalizedString("OK", comment:""))
+            newAlertView.show()
+        }
+        else if (authStatus == .Denied) {
+            // User has denied location use (either for this app or for all apps).
+            let newAlertView = UIAlertView()
+            newAlertView.title = NSLocalizedString("Turn on Location Services", comment:"")
+            newAlertView.message = NSLocalizedString("Open the Settings app and enable Location Services for this app to show your location.", comment:"");
+            newAlertView.addButtonWithTitle(NSLocalizedString("OK", comment:""))
+            newAlertView.show()
+            
+            // NOTE: Some apps will offer more specific instructions, but those seem to change a little with each iOS version, so being a little more vague will hopefully future-proof things a little.
+        }
+    }
 
     /*
     // MARK: - Navigation
