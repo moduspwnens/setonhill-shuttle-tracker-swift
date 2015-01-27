@@ -175,9 +175,24 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
     func shuttleUpdated(newShuttle: STShuttle) {
         if var existingShuttle = self.getShuttleAnnotationWithIdentifier(newShuttle.identifier!) {
             // Existing annotation needs to be updated.
+            
+            let animationDuration: NSTimeInterval = (NSUserDefaults.standardUserDefaults().valueForKey("ShuttleAnimationDuration") as NSNumber).doubleValue
+            
+            let animateChanges = (animationDuration > 0)
+            
+            if animateChanges {
+                UIView.beginAnimations(nil, context: nil)
+                UIView.setAnimationCurve(.Linear)
+                UIView.setAnimationDuration(animationDuration)
+            }
+            
             existingShuttle.coordinate = newShuttle.coordinate
             existingShuttle.title = newShuttle.title
             existingShuttle.subtitle = newShuttle.subtitle
+            
+            if animateChanges {
+                UIView.commitAnimations()
+            }
         }
     }
     
@@ -295,6 +310,7 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
     }
     
     // MARK: - MKMapViewDelegate methods
+    
     func mapViewWillStartLoadingMap(mapView: MKMapView!) {
         STAppDelegate.didStartNetworking()
     }
