@@ -22,9 +22,9 @@ class STRemoteConfigurationManager: NSObject {
         let standardDefaults = NSUserDefaults.standardUserDefaults()
         
         // Set any values to the base defaults that haven't been set before.
-        for (eachKey, eachValue) in baseDefaultsDictionary! {
-            if standardDefaults.objectForKey(eachKey as String) == nil {
-                standardDefaults.setObject(eachValue, forKey: eachKey as String)
+        for (eachKey, eachValue) in baseDefaultsDictionary! as [String: AnyObject] {
+            if standardDefaults.objectForKey(eachKey) == nil {
+                standardDefaults.setObject(eachValue, forKey: eachKey)
             }
         }
     }
@@ -64,8 +64,7 @@ class STRemoteConfigurationManager: NSObject {
                     // Let's keep a counter so that we can log how many were changed.
                     var defaultsUpdated = 0
                     
-                    for (eachKeyWrapper, newValue) in JSON! as NSDictionary {
-                        let eachKey = eachKeyWrapper as String
+                    for (eachKey, newValue) in JSON! as [String: AnyObject] {
                         let oldValueWrapper : AnyObject? = NSUserDefaults.standardUserDefaults().objectForKey(eachKey)
                         
                         if oldValueWrapper == nil {
@@ -114,7 +113,12 @@ class STRemoteConfigurationManager: NSObject {
                             ]
                             
                             // Send the notification.
-                            NSNotificationCenter.defaultCenter().postRemoteConfigurationUpdateNotificationName(eachKey, object:self, userInfo:notificationInfo)
+                            NSNotificationCenter.defaultCenter()
+                                .postRemoteConfigurationUpdateNotificationName(
+                                    eachKey,
+                                    object:self,
+                                    userInfo:notificationInfo
+                            )
                             
                         }
                     }
