@@ -10,6 +10,9 @@ import UIKit
 import Alamofire
 import Reachability
 
+let kAppEnteredBackgroundNotification = "kAppEnteredBackgroundNotification"
+let kAppWillEnterForegroundNotification = "kAppWillEnterForegroundNotification"
+
 @UIApplicationMain
 class STAppDelegate: UIResponder, UIApplicationDelegate {
 
@@ -48,27 +51,32 @@ class STAppDelegate: UIResponder, UIApplicationDelegate {
         // Check if we're starting out with no Internet.
         self.internetWasUnreachable = self.internetReachability.currentReachabilityStatus() == NetworkStatus.NotReachable
         
-        return true
-    }
-
-    func applicationWillResignActive(application: UIApplication) {
-        
-    }
-
-    func applicationDidEnterBackground(application: UIApplication) {
-        self.shuttleStatusUpdateTimer?.invalidate()
-    }
-
-    func applicationWillEnterForeground(application: UIApplication) {
-        // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
-    }
-
-    func applicationDidBecomeActive(application: UIApplication) {
         // Check to see if any remotely settable configuration variables have changed.
         self.remoteConfigurationManager.updateRemoteDefaults()
         
         // Start loading shuttle locations/statuses.
         self.beginShuttleStatusUpdates(true)
+        
+        return true
+    }
+
+    func applicationDidEnterBackground(application: UIApplication) {
+        // Stop loading shuttle locations/statuses.
+        self.shuttleStatusUpdateTimer?.invalidate()
+        
+        // Post notification to other objects.
+        NSNotificationCenter.defaultCenter().postNotificationName(kAppEnteredBackgroundNotification, object: self)
+    }
+
+    func applicationWillEnterForeground(application: UIApplication) {
+        // Check to see if any remotely settable configuration variables have changed.
+        self.remoteConfigurationManager.updateRemoteDefaults()
+        
+        // Start loading shuttle locations/statuses.
+        self.beginShuttleStatusUpdates(true)
+        
+        // Post notification to other objects.
+        NSNotificationCenter.defaultCenter().postNotificationName(kAppWillEnterForegroundNotification, object: self)
     }
 
     func applicationWillTerminate(application: UIApplication) {

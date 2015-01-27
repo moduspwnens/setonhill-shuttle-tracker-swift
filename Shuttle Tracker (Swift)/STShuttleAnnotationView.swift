@@ -51,25 +51,21 @@ class STShuttleAnnotationView: MKAnnotationView {
         self.updateShuttleImageViewAngle()
     }
     
-    override func prepareForReuse() {
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
         // Check if the shuttle type is different from when it was last set up. That'll call for a different image.
-        if self.lastSetShuttleType != self.shuttle.shuttleType {
+        if self.lastSetShuttleType != self.shuttle!.shuttleType {
             self.shuttleBlipImageView?.image = UIImage(named: self.getBlipImageName())
         }
         
-        // Correct heading blip rotation.
-        self.updateShuttleImageViewAngle()
-    }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
         self.updateShuttleImageViewAngle()
     }
     
     func updateShuttleImageViewAngle() {
         
         // First, convert the shuttle's heading (stored as degrees) to radians.
-        let angleInRadians = CGFloat(shuttle.heading / 57.2958)
+        let angleInRadians = CGFloat(shuttle!.heading / 57.2958)
         
         // Now apply the transformation.
         self.shuttleBlipImageView?.transform = CGAffineTransformMakeRotation(angleInRadians)
@@ -77,7 +73,7 @@ class STShuttleAnnotationView: MKAnnotationView {
     }
     
     func getBlipImageName() -> String {
-        switch shuttle.shuttleType {
+        switch shuttle!.shuttleType {
         case .Red:
             return "RedBlip"
         case .Yellow:
@@ -87,9 +83,9 @@ class STShuttleAnnotationView: MKAnnotationView {
         }
     }
     
-    var shuttle:STShuttle {
+    var shuttle:STShuttle? {
         get {
-            return self.annotation as STShuttle
+            return self.annotation? as STShuttle?
         }
         set {
             self.annotation = newValue

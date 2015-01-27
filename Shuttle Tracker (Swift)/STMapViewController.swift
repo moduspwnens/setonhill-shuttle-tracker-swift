@@ -22,6 +22,7 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
     private var consecutiveStatusUpdateFailures = 0
     private var shuttleStatusDataLoadedAtLeastOnce = false
     private var locationManager = CLLocationManager()
+    private var lastSuccessfulStatusUpdate = NSDate(timeIntervalSince1970: 0)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,6 +45,14 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
             self,
             selector: "defaultMapLayoutChanged:",
             name: "MapLayout",
+            object: nil
+        )
+        
+        // Listen for notification of when the app will enter the foreground.
+        NSNotificationCenter.defaultCenter().addObserver(
+            self,
+            selector: "applicationWillEnterForeground:",
+            name: kAppWillEnterForegroundNotification,
             object: nil
         )
         
@@ -255,6 +264,9 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
         
         // Set flag that we've received data at least once.
         self.shuttleStatusDataLoadedAtLeastOnce = true
+        
+        // Set last successful status update to now.
+        self.lastSuccessfulStatusUpdate = NSDate()
     }
     
     func evaluateConnectionErrorViewVisibility() {
@@ -315,6 +327,18 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
         self.centerAndZoomMap(true)
     }
     
+    func applicationWillEnterForeground(notification: NSNotification) {
+        
+        // Let's see if it's been long enough to assume our shuttle locations are out-of-date.
+        let timeSinceLastSuccessfulUpdate = NSDate().timeIntervalSinceDate(self.lastSuccessfulStatusUpdate)
+        let maxTimeIntervalAllowable : NSTimeInterval = NSUserDefaults.standardUserDefaults().doubleForKey("ShuttleDataRefreshInterval") * Double(maxAllowableConsecutiveStatusUpdateFailures+1)
+        
+        if timeSinceLastSuccessfulUpdate > maxTimeIntervalAllowable {
+            println("Assuming shuttle locations are out-of-date. Clearing.")
+            self.removeAllShuttles()
+        }
+    }
+    
     // MARK: - MKMapViewDelegate methods
     
     func mapViewWillStartLoadingMap(mapView: MKMapView!) {
@@ -339,7 +363,8 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
             }
             else {
                 thisAnnotationView.annotation = annotation
-                thisAnnotationView.prepareForReuse()
+                thisAnnotationView?.setNeedsLayout()
+                thisAnnotationView?.layoutIfNeeded()
             }
             return thisAnnotationView
         }
