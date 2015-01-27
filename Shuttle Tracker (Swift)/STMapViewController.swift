@@ -18,7 +18,6 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
     @IBOutlet weak var connectionErrorTitleLabel: UILabel?
     @IBOutlet weak var connectionErrorSubtitleLabel: UILabel?
     private weak var shuttleStatusLabel: UILabel?
-    private var mapLayoutObserver : NSObjectProtocol?
     private var internetReachability = Reachability.reachabilityForInternetConnection()
     private var consecutiveStatusUpdateFailures = 0
     private var shuttleStatusDataLoadedAtLeastOnce = false
@@ -40,16 +39,11 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
         self.centerAndZoomMap(false)
         
         // Listen for notification and act appropriately if the remotely-specified MapLayout variable changes.
-        self.mapLayoutObserver = NSNotificationCenter.defaultCenter()
-            .addObserverForRemoteConfigurationNotificationName(
-                "MapLayout",
-                object: nil,
-                queue: NSOperationQueue.mainQueue(),
-                usingBlock:
-                { _ in
-                    println("Default map layout changed. Re-centering map.")
-                    self.centerAndZoomMap(true)
-                }
+        NSNotificationCenter.defaultCenter().addObserverForRemoteConfigurationUpdate(
+            self,
+            selector: "defaultMapLayoutChanged:",
+            name: "MapLayout",
+            object: nil
         )
         
         // Listen for notification of shuttle status updates and failures.
@@ -140,9 +134,6 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
     
     deinit {
         NSNotificationCenter.defaultCenter().removeObserver(self)
-        if self.mapLayoutObserver != nil {
-            NSNotificationCenter.defaultCenter().removeObserver(self.mapLayoutObserver!)
-        }
     }
     
     func infoButtonPressed(sender: UIButton) {
@@ -296,6 +287,11 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
                 self.connectionErrorView?.hidden = false
             }
         }
+    }
+    
+    func defaultMapLayoutChanged(notification: NSNotification) {
+        println("Default map layout changed. Re-centering map.")
+        self.centerAndZoomMap(true)
     }
     
     // MARK: - MKMapViewDelegate methods
