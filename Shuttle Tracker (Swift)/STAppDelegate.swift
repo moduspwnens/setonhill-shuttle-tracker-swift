@@ -14,11 +14,10 @@ import Reachability
 class STAppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-    private let remoteConfigurationManager: STRemoteConfigurationManager = STRemoteConfigurationManager()
-    private let shuttleDataManager: STShuttleDataManager = STShuttleDataManager()
+    private let remoteConfigurationManager = STRemoteConfigurationManager()
+    private let shuttleDataManager = STShuttleDataManager()
     private var networkingCount = 0
     private var shuttleStatusUpdateTimer: NSTimer?
-    private var shuttleDataRefreshIntervalObserver : NSObjectProtocol?
     private var internetReachability = Reachability.reachabilityForInternetConnection()
     private var internetWasUnreachable = false
 
@@ -27,16 +26,12 @@ class STAppDelegate: UIResponder, UIApplicationDelegate {
         // Load base defaults (in case they haven't been set already).
         self.remoteConfigurationManager.loadBaseDefaults()
         
-        // Listen for notification and act appropriately if the remotely-specified ShuttleDataRefreshInterval variable changes.
-        self.shuttleDataRefreshIntervalObserver = NSNotificationCenter.defaultCenter()
-            .addObserverForRemoteConfigurationNotificationName(
-                "ShuttleDataRefreshInterval",
-                object: nil,
-                queue: NSOperationQueue.mainQueue(),
-                usingBlock:
-                { _ in
-                    self.beginShuttleStatusUpdates(false)
-                }
+        // Set up listener for ShuttleDataRefreshInterval variable changes.
+        NSNotificationCenter.defaultCenter().addObserverForRemoteConfigurationUpdate(
+            self,
+            selector: "shuttleDataRefreshIntervalChanged:",
+            name: "ShuttleDataRefreshInterval",
+            object: nil
         )
         
         // Set up listener for Internet reachability.
@@ -82,17 +77,24 @@ class STAppDelegate: UIResponder, UIApplicationDelegate {
     
     deinit {
         NSNotificationCenter.defaultCenter().removeObserver(self)
-        NSNotificationCenter.defaultCenter().removeObserver(self.shuttleDataRefreshIntervalObserver!)
     }
     
     func beginShuttleStatusUpdates(immediately: Bool) {
+        
         // Invalidate existing timer if it's already set.
         self.shuttleStatusUpdateTimer?.invalidate()
         
         // Get update interval from user defaults.
         let updateInterval : NSTimeInterval = NSUserDefaults.standardUserDefaults().doubleForKey("ShuttleDataRefreshInterval")
         
-        self.shuttleStatusUpdateTimer = NSTimer.scheduledTimerWithTimeInterval(updateInterval, target: self.shuttleDataManager, selector: "updateData", userInfo: nil, repeats: true)
+        // Create timer, set to repeat.
+        self.shuttleStatusUpdateTimer = NSTimer.scheduledTimerWithTimeInterval(
+            updateInterval,
+            target: self.shuttleDataManager,
+            selector: "updateData",
+            userInfo: nil,
+            repeats: true
+        )
         
         if immediately {
             self.shuttleStatusUpdateTimer?.fire()
@@ -111,6 +113,11 @@ class STAppDelegate: UIResponder, UIApplicationDelegate {
             // The Internet just became unavailable after previously being on.
             self.internetWasUnreachable = true
         }
+    }
+    
+    func shuttleDataRefreshIntervalChanged(notification: NSNotification) {
+        // Start the shuttle status updates again. This will create reset the timer with the new refresh interval.
+        self.beginShuttleStatusUpdates(false)
     }
     
     // MARK: - Shared network activity indicator handler methods
