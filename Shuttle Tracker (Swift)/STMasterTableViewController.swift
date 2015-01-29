@@ -1,5 +1,5 @@
 //
-//  STShuttleMasterTableViewController.swift
+//  STMasterTableViewController.swift
 //  Shuttle Tracker (Swift)
 //
 //  Created by Benn Linger on 1/19/15.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class STShuttleMasterTableViewController: UITableViewController, UISplitViewControllerDelegate {
+class STMasterTableViewController: UITableViewController, UISplitViewControllerDelegate {
     
     @IBOutlet var doneBarButtonItem: UIBarButtonItem?
     private var detailViewController : UIViewController?
