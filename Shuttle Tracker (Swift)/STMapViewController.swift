@@ -10,6 +10,8 @@ import UIKit
 import MapKit
 import Reachability
 
+let kVisibleShuttlesUpdated = "kVisibleShuttlesUpdated"
+
 class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewControllerDelegate, UIAlertViewDelegate {
     
     @IBOutlet weak var mapView: MKMapView?
@@ -225,6 +227,53 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
         self.evaluateConsecutiveStatusUpdateFailures()
     }
     
+    func updateVisibleDeviceCount() {
+        // The visible device count will only show a count of shuttles visible in the mapView.
+        
+        if !self.shuttleStatusDataLoadedAtLeastOnce {
+            // The status label should be blank. We don't want it showing "No Shuttles Shown" prior to even getting any shuttles.
+            self.shuttleStatusLabel?.text = ""
+            return
+        }
+        
+        // Get all visible annotations in the current mapView.
+        let annotationSet = self.mapView?.annotationsInMapRect(self.mapView!.visibleMapRect).allObjects
+        
+        // We need an array of these shuttles, since we'll be passing them in a notification to other objects.
+        var visibleShuttleArray = [STShuttle]()
+        
+        for eachAnnotation in annotationSet as [MKAnnotation] {
+            if eachAnnotation is STShuttle {
+                visibleShuttleArray.append(eachAnnotation as STShuttle)
+            }
+        }
+        
+        let visibleShuttleCount = visibleShuttleArray.count
+        var newStatusText : String
+        
+        if visibleShuttleCount == 0 {
+            newStatusText = NSLocalizedString("No Shuttles Shown", comment:"")
+        }
+        else if visibleShuttleCount == 1 {
+            newStatusText = String(format: NSLocalizedString("%d Shuttle Shown", comment: "Number of shuttles shown (singular)") , 1)
+        }
+        else {
+            newStatusText = String(format: NSLocalizedString("%d Shuttles Shown", comment: "Number of shuttles shown (plural)") , visibleShuttleCount)
+        }
+        
+        // Set the text of the label.
+        self.shuttleStatusLabel?.text = newStatusText
+        
+        // Post notification to any listening objects about the now-visible shuttles.
+        NSNotificationCenter.defaultCenter().postNotificationName(
+            kVisibleShuttlesUpdated,
+            object: nil,
+            userInfo: [
+                "shuttles" : visibleShuttleArray
+            ]
+        )
+    }
+    
     // MARK: - Direct notification handling
     
     func shuttleStatusUpdateReceivedNotificationReceived(notification: NSNotification) {
@@ -267,6 +316,9 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
         
         // Set last successful status update to now.
         self.lastSuccessfulStatusUpdate = NSDate()
+        
+        // Update visible device count.
+        self.updateVisibleDeviceCount()
     }
     
     func evaluateConnectionErrorViewVisibility() {
@@ -277,6 +329,9 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
         if !internetConnectionReachable {
             // Set the subtitle label's text on the connection error view indicating that the Internet connection is unreachable.
             self.connectionErrorSubtitleLabel?.text = NSLocalizedString("You must connect to a Wi-Fi or cellular data network to view shuttle positions.", comment:"")
+            
+            // Clear the shuttle status text label. We don't want it saying "3 Shuttles Shown" if that's just their old locations and we don't have Internet now.
+            self.shuttleStatusLabel?.text = ""
         }
         
         if internetConnectionReachable && !self.shuttleStatusDataLoadedAtLeastOnce {
@@ -308,6 +363,9 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
             
             // The shuttle annotations should be removed. We don't want to lead the user to believe the shuttles may have just stopped.
             self.removeAllShuttles()
+            
+            // Clear the shuttle status text label.
+            self.shuttleStatusLabel?.text = ""
             
             // Check if Internet is reachable.
             if self.internetReachability.currentReachabilityStatus() == NetworkStatus.NotReachable {
@@ -400,6 +458,10 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
             
             // NOTE: Some apps will offer more specific instructions, but those seem to change a little with each iOS version, so being a little more vague will hopefully future-proof things a little.
         }
+    }
+    
+    func mapView(mapView: MKMapView!, regionDidChangeAnimated animated: Bool) {
+        self.updateVisibleDeviceCount()
     }
 
     /*
