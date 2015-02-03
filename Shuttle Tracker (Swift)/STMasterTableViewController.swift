@@ -36,7 +36,7 @@ class STMasterTableViewController: UITableViewController, UISplitViewControllerD
         NSNotificationCenter.defaultCenter().addObserver(
             self,
             selector: "visibleShuttlesUpdated:",
-            name: kVisibleShuttlesUpdated,
+            name: kVisibleShuttlesUpdatedNotification,
             object: nil
         )
     }

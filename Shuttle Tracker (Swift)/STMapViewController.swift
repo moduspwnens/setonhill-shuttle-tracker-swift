@@ -10,7 +10,7 @@ import UIKit
 import MapKit
 import Reachability
 
-let kVisibleShuttlesUpdated = "kVisibleShuttlesUpdated"
+let kVisibleShuttlesUpdatedNotification = "kVisibleShuttlesUpdated"
 
 class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewControllerDelegate, UIAlertViewDelegate {
     
@@ -274,7 +274,7 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
         
         // Post notification to any listening objects about the now-visible shuttles.
         NSNotificationCenter.defaultCenter().postNotificationName(
-            kVisibleShuttlesUpdated,
+            kVisibleShuttlesUpdatedNotification,
             object: nil,
             userInfo: [
                 "shuttles" : visibleShuttleArray
