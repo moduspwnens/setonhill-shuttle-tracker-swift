@@ -33,16 +33,16 @@ class STShuttleDataManager: NSObject {
         self.setupAlamofireManager()
         
         // Listen for notification and act appropriately if the remotely-specified ShuttleDataRefreshInterval variable changes.
-        NSNotificationCenter.defaultCenter()
-            .addObserverForRemoteConfigurationNotificationName(
-                "ShuttleDataRefreshInterval",
-                object: nil,
-                queue: NSOperationQueue.mainQueue(),
-                usingBlock:
-                { _ in
-                    self.setupAlamofireManager()
-                }
+        NSNotificationCenter.defaultCenter().addObserverForRemoteConfigurationUpdate(
+            self,
+            selector: "shuttleDataRefreshIntervalChanged:",
+            name: "ShuttleDataRefreshInterval",
+            object: nil
         )
+    }
+    
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
     }
     
     func setupAlamofireManager() {
@@ -186,5 +186,12 @@ class STShuttleDataManager: NSObject {
                     
                 }
         }
+    }
+    
+    // MARK: - Direct notification handling
+    
+    func shuttleDataRefreshIntervalChanged(notification: NSNotification) {
+        // Create a new Alamofire manager with the latest update interval.
+        self.setupAlamofireManager()
     }
 }
