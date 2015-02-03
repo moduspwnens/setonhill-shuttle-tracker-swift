@@ -58,17 +58,6 @@ class STMasterTableViewController: UITableViewController, UISplitViewControllerD
         self.splitViewController?.showDetailViewController(self.detailViewController, sender: self)
     }
     
-    override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
-        super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
-        
-        // Overriding this method is necessary to detect when the "Done" button should disappear on the iPhone 6+.
-        
-        if self.splitViewController!.collapsed {
-            // We're shifting out of a collapsed view, so the "Done" button should be removed.
-            self.navigationItem.rightBarButtonItem = nil
-        }
-    }
-    
     deinit {
         NSNotificationCenter.defaultCenter().removeObserver(self)
     }
@@ -78,6 +67,14 @@ class STMasterTableViewController: UITableViewController, UISplitViewControllerD
     func splitViewController(splitViewController: UISplitViewController, collapseSecondaryViewController secondaryViewController: UIViewController!, ontoPrimaryViewController primaryViewController: UIViewController!) -> Bool {
         // This makes sure that on devices that show a collapsed split view controller (iPhones other than 6+ in landscape), the map view controller is shown by default.
         return false
+    }
+    
+    func primaryViewControllerForExpandingSplitViewController(splitViewController: UISplitViewController) -> UIViewController? {
+        // The delegate is being asked for the primary view controller for the purpose of showing both. The "Done" button should be hidden if both view controllers will be visible.
+        self.navigationItem.rightBarButtonItem = nil
+        
+        // Returning nil allows the split view controller to do what it'd do if we hadn't implemented this method.
+        return nil
     }
 
     // MARK: - Table view data source
