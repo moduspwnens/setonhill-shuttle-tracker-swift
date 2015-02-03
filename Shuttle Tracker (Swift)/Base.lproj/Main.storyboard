@@ -148,10 +148,10 @@
         <scene sceneID="dgW-R7-bAq">
             <objects>
                 <tableViewController clearsSelectionOnViewWillAppear="NO" id="Uze-eW-vQ2" customClass="STMasterTableViewController" customModule="Shuttle_Tracker__Swift_" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="B1K-6O-bdr">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="B1K-6O-bdr">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <connections>
                             <outlet property="dataSource" destination="Uze-eW-vQ2" id="8DW-5U-3vR"/>
                             <outlet property="delegate" destination="Uze-eW-vQ2" id="p48-7k-pYp"/>

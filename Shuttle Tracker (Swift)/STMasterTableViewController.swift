@@ -8,10 +8,17 @@
 
 import UIKit
 
+let kShuttleTableSectionIndex = 0
+
+let kTableViewShuttleCellReuseIdentifier = "kTableViewShuttleCellReuseIdentifier"
+
+let kShuttleSelectedNotification = "kShuttleSelected"
+
 class STMasterTableViewController: UITableViewController, UISplitViewControllerDelegate {
     
     @IBOutlet var doneBarButtonItem: UIBarButtonItem?
     private var detailViewController : UIViewController?
+    private var visibleShuttleArray = [STShuttle]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,6 +31,14 @@ class STMasterTableViewController: UITableViewController, UISplitViewControllerD
         
         // Keep a reference to our detail view controller so it doesn't need to be reloaded if the split view controller collapses.
         self.detailViewController = self.splitViewController?.viewControllers[1] as UIViewController!
+        
+        // Set up listener for when the array of visible shuttles changes. This'll happen if shuttles go off-screen, disappear completely, or the user pans the map away from them.
+        NSNotificationCenter.defaultCenter().addObserver(
+            self,
+            selector: "visibleShuttlesUpdated:",
+            name: kVisibleShuttlesUpdated,
+            object: nil
+        )
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -53,19 +68,9 @@ class STMasterTableViewController: UITableViewController, UISplitViewControllerD
             self.navigationItem.rightBarButtonItem = nil
         }
     }
-
-    // MARK: - Table view data source
-
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        // #warning Potentially incomplete method implementation.
-        // Return the number of sections.
-        return 0
-    }
-
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete method implementation.
-        // Return the number of rows in the section.
-        return 0
+    
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
     }
     
     // MARK: - UISplitViewControllerDelegate methods
@@ -74,61 +79,95 @@ class STMasterTableViewController: UITableViewController, UISplitViewControllerD
         // This makes sure that on devices that show a collapsed split view controller (iPhones other than 6+ in landscape), the map view controller is shown by default.
         return false
     }
+
+    // MARK: - Table view data source
+
+    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        // Return the number of sections.
+        return 1
+    }
+
+    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        // Return the number of rows in the section.
+        if section == kShuttleTableSectionIndex {
+            return self.visibleShuttleArray.count
+        }
+        
+        return 0
+    }
     
+    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        
+        if section == kShuttleTableSectionIndex {
+            return NSLocalizedString("Shuttles", comment:"")
+        }
+        return nil
+    }
     
-    /*
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("reuseIdentifier", forIndexPath: indexPath) as UITableViewCell
+        
+        // The cell we return will vary based on what's section it's in.
+        var cell : UITableViewCell?
+        
+        if indexPath.section == kShuttleTableSectionIndex {
+            cell = tableView.dequeueReusableCellWithIdentifier(kTableViewShuttleCellReuseIdentifier) as? UITableViewCell
+            if cell == nil {
+                cell = UITableViewCell(style: .Subtitle, reuseIdentifier: kTableViewShuttleCellReuseIdentifier)
+            }
+            
+            let thisShuttle = self.visibleShuttleArray[indexPath.row]
+            cell?.textLabel?.text = thisShuttle.title
+            cell?.detailTextLabel?.text = thisShuttle.subtitle
+            cell?.imageView?.image = UIImage(named: thisShuttle.getBlipImageName())
+        }
 
-        // Configure the cell...
-
-        return cell
+        return cell!
     }
-    */
 
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return NO if you do not want the specified item to be editable.
-        return true
+    // MARK: - Table view delegate
+    
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        
+        // What action we'll take depends on what section the selected row is in.
+        if indexPath.section == kShuttleTableSectionIndex {
+            
+            // The user tapped a shuttle's table cell.
+            let thisShuttle = self.visibleShuttleArray[indexPath.row]
+            
+            // Post notification that the shuttle was selected.
+            NSNotificationCenter.defaultCenter().postNotificationName(
+                kShuttleSelectedNotification,
+                object: nil,
+                userInfo: [
+                    "shuttle" : thisShuttle
+                ]
+            )
+            
+            // If the split view controller is showing a collapsed view, we'll want to make sure the map view controller is being shown.
+            if self.splitViewController!.collapsed {
+                self.splitViewController?.showDetailViewController(self.detailViewController, sender: self)
+            }
+            
+            // De-select this cell.
+            tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        }
+        else {
+            // This is a section that doesn't support selection. Just de-select immediately.
+            tableView.deselectRowAtIndexPath(indexPath, animated: false)
+        }
     }
-    */
 
-    /*
-    // Override to support editing the table view.
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if editingStyle == .Delete {
-            // Delete the row from the data source
-            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-        } else if editingStyle == .Insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
+    // MARK: - Direct notification handling
+    
+    func visibleShuttlesUpdated(notification: NSNotification) {
+        
+        // Update cached shuttle array.
+        let newShuttleArray = notification.userInfo!["shuttles"] as [STShuttle]
+        self.visibleShuttleArray.removeAll(keepCapacity: false)
+        self.visibleShuttleArray += newShuttleArray
+        
+        // Tell table view to reload the table section that shows shuttles.
+        self.tableView.reloadSections(NSIndexSet(index: kShuttleTableSectionIndex), withRowAnimation: .None)
     }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return NO if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using [segue destinationViewController].
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }

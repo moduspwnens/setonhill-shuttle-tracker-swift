@@ -82,6 +82,14 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
             object: nil
         )
         
+        // Set up listener for if a shuttle was selected by the user.
+        NSNotificationCenter.defaultCenter().addObserver(
+            self,
+            selector: "shuttleSelected:",
+            name: kShuttleSelectedNotification,
+            object: nil
+        )
+        
         // Check now, in case the app loaded with no Internet connection.
         self.evaluateConnectionErrorViewVisibility()
     }
@@ -394,6 +402,16 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
         if timeSinceLastSuccessfulUpdate > maxTimeIntervalAllowable {
             println("Assuming shuttle locations are out-of-date. Clearing.")
             self.removeAllShuttles()
+        }
+    }
+    
+    func shuttleSelected(notification: NSNotification) {
+        
+        var selectedShuttle = notification.userInfo!["shuttle"] as STShuttle
+        
+        // Just to be safe, let's load the specific annotation instance from the mapView.
+        if let annotationFromShuttle = self.getShuttleAnnotationWithIdentifier(selectedShuttle.identifier!) {
+            self.mapView?.selectAnnotation(annotationFromShuttle, animated: true)
         }
     }
     
