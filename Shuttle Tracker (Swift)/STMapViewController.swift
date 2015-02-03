@@ -481,18 +481,9 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
     func mapView(mapView: MKMapView!, regionDidChangeAnimated animated: Bool) {
         self.updateVisibleDeviceCount()
     }
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
     
     // MARK: - Convenience methods
+    
     func getShuttleAnnotationWithIdentifier(identifier : NSString) -> STShuttle? {
         // TODO: Keep separate NSDictionary for quick lookup of shuttle annotations based on identifier?
         
