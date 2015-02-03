@@ -73,7 +73,7 @@ class STMasterTableViewController: UITableViewController, UISplitViewControllerD
         NSNotificationCenter.defaultCenter().removeObserver(self)
     }
     
-    // MARK: - UISplitViewControllerDelegate methods
+    // MARK: - Split view controller delegate
     
     func splitViewController(splitViewController: UISplitViewController, collapseSecondaryViewController secondaryViewController: UIViewController!, ontoPrimaryViewController primaryViewController: UIViewController!) -> Bool {
         // This makes sure that on devices that show a collapsed split view controller (iPhones other than 6+ in landscape), the map view controller is shown by default.
