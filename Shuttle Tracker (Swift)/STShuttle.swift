@@ -63,4 +63,16 @@ class STShuttle: NSObject, MKAnnotation, Hashable {
             return CLLocationCoordinate2DMake(self.latitude, self.longitude)
         }
     }
+    
+    // Function for retrieving image names (found in Images.xcassets) based on shuttle type ID (integer received from server).
+    func getBlipImageName() -> String {
+        switch self.shuttleType {
+        case .Red:
+            return "RedBlip"
+        case .Yellow:
+            return "YellowBlip"
+        case .Green:
+            return "GreenBlip"
+        }
+    }
 }

@@ -32,7 +32,7 @@ class STShuttleAnnotationView: MKAnnotationView {
         self.canShowCallout = true
         
         // Set up the main shuttle blip imageview.
-        let blipImage = UIImage(named: self.getBlipImageName())
+        let blipImage = UIImage(named: self.shuttle!.getBlipImageName())
         self.frame = CGRectMake(0, 0, blipImage!.size.width, blipImage!.size.height)
         let newShuttleBlipImageView = UIImageView(image: blipImage)
         newShuttleBlipImageView.center = self.center
@@ -56,7 +56,7 @@ class STShuttleAnnotationView: MKAnnotationView {
         
         // Check if the shuttle type is different from when it was last set up. That'll call for a different image.
         if self.lastSetShuttleType != self.shuttle!.shuttleType {
-            self.shuttleBlipImageView?.image = UIImage(named: self.getBlipImageName())
+            self.shuttleBlipImageView?.image = UIImage(named: self.shuttle!.getBlipImageName())
         }
         
         self.updateShuttleImageViewAngle()
@@ -70,17 +70,6 @@ class STShuttleAnnotationView: MKAnnotationView {
         // Now apply the transformation.
         self.shuttleBlipImageView?.transform = CGAffineTransformMakeRotation(angleInRadians)
         self.shuttleHeadingImageView?.transform = CGAffineTransformMakeRotation(angleInRadians)
-    }
-    
-    func getBlipImageName() -> String {
-        switch shuttle!.shuttleType {
-        case .Red:
-            return "RedBlip"
-        case .Yellow:
-            return "YellowBlip"
-        case .Green:
-            return "GreenBlip"
-        }
     }
     
     var shuttle:STShuttle? {
