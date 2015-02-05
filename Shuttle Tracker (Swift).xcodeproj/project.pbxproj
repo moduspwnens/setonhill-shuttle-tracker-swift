@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		332E8ACD1A830B150006FC21 /* STWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 332E8ACC1A830B150006FC21 /* STWebViewController.swift */; };
+		332E8ACF1A830E490006FC21 /* STWebViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 332E8ACE1A830E490006FC21 /* STWebViewController.xib */; };
 		333D82C61A7733130077C607 /* STShuttleAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 333D82C51A7733130077C607 /* STShuttleAnnotationView.swift */; };
 		334338621A6D4E3C005AE689 /* STMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 334338611A6D4E3C005AE689 /* STMapViewController.swift */; };
 		334338641A6D50AD005AE689 /* STMasterTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 334338631A6D50AD005AE689 /* STMasterTableViewController.swift */; };
@@ -36,6 +38,8 @@
 
 /* Begin PBXFileReference section */
 		23D462BEAC3BE6FEC16840B5 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		332E8ACC1A830B150006FC21 /* STWebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = STWebViewController.swift; sourceTree = "<group>"; };
+		332E8ACE1A830E490006FC21 /* STWebViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = STWebViewController.xib; sourceTree = "<group>"; };
 		333D82C51A7733130077C607 /* STShuttleAnnotationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = STShuttleAnnotationView.swift; sourceTree = "<group>"; };
 		3343385E1A6CC9FA005AE689 /* ST-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ST-Bridging-Header.h"; sourceTree = "<group>"; };
 		334338611A6D4E3C005AE689 /* STMapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = STMapViewController.swift; sourceTree = "<group>"; };
@@ -110,6 +114,8 @@
 				33FC58C31A74941F002505D5 /* STShuttle.swift */,
 				333D82C51A7733130077C607 /* STShuttleAnnotationView.swift */,
 				33FC58C11A748735002505D5 /* STShuttleDataManager.swift */,
+				332E8ACC1A830B150006FC21 /* STWebViewController.swift */,
+				332E8ACE1A830E490006FC21 /* STWebViewController.xib */,
 				338B84A11A6CB6D500B20258 /* Main.storyboard */,
 				338B84A41A6CB6D500B20258 /* Images.xcassets */,
 				338B84A61A6CB6D500B20258 /* LaunchScreen.xib */,
@@ -250,6 +256,7 @@
 				338B84A31A6CB6D500B20258 /* Main.storyboard in Resources */,
 				33FC588E1A73FBCA002505D5 /* BaseDefaults.plist in Resources */,
 				338B84A81A6CB6D500B20258 /* LaunchScreen.xib in Resources */,
+				332E8ACF1A830E490006FC21 /* STWebViewController.xib in Resources */,
 				338B84A51A6CB6D500B20258 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -322,6 +329,7 @@
 				33FC58C21A748735002505D5 /* STShuttleDataManager.swift in Sources */,
 				338B849E1A6CB6D500B20258 /* STAppDelegate.swift in Sources */,
 				334338621A6D4E3C005AE689 /* STMapViewController.swift in Sources */,
+				332E8ACD1A830B150006FC21 /* STWebViewController.swift in Sources */,
 				333D82C61A7733130077C607 /* STShuttleAnnotationView.swift in Sources */,
 				33FC588C1A73EBFE002505D5 /* STRemoteConfigurationManager.swift in Sources */,
 			);

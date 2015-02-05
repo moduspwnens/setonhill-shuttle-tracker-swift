@@ -49,7 +49,6 @@ class STMasterTableViewController: UITableViewController, UISplitViewControllerD
             name: "ShuttleScheduleLinks",
             object: nil
         )
-        
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -183,9 +182,18 @@ class STMasterTableViewController: UITableViewController, UISplitViewControllerD
             // The user tapped the name of a shuttle schedule.
             
             let thisScheduleLink = self.getShuttleScheduleLinks()[indexPath.row] as [String:String]
-            let scheduleName = thisScheduleLink["title"]
+            let scheduleName = thisScheduleLink["title"]!
+            let scheduleURL = NSURL(string: thisScheduleLink["url"]!)!
             
-            println("Schedule selected: \(scheduleName)")
+            // Push a web view controller showing this schedule on top of the detail nav controller's stack.
+            let newWebViewController = STWebViewController(url: scheduleURL, title: scheduleName)
+            let detailNavViewController = self.detailViewController as UINavigationController
+            detailNavViewController.pushViewController(newWebViewController, animated: true)
+            
+            if self.splitViewController!.collapsed {
+                // If the split view controller is collapsed, we need to explicitly show the detail view controller (because it's currently hidden).
+                self.splitViewController?.showDetailViewController(self.detailViewController, sender: self)
+            }
             
             // De-select this cell.
             tableView.deselectRowAtIndexPath(indexPath, animated: true)
