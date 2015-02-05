@@ -11,6 +11,7 @@ import MapKit
 import Reachability
 
 let kVisibleShuttlesUpdatedNotification = "kVisibleShuttlesUpdated"
+let kUserSelectedShowMapNotification = "kUserSelectedShowMapNotification"
 
 class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewControllerDelegate, UIAlertViewDelegate {
     
@@ -87,6 +88,14 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
             self,
             selector: "shuttleSelected:",
             name: kShuttleSelectedNotification,
+            object: nil
+        )
+        
+        // Set up listener for if a shuttle was selected by the user.
+        NSNotificationCenter.defaultCenter().addObserver(
+            self,
+            selector: "userSelectedShowMap:",
+            name: kUserSelectedShowMapNotification,
             object: nil
         )
         
@@ -391,6 +400,10 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
     
     func defaultMapLayoutChanged(notification: NSNotification) {
         println("Default map layout changed. Re-centering map.")
+        self.centerAndZoomMap(true)
+    }
+    
+    func userSelectedShowMap(notification: NSNotification) {
         self.centerAndZoomMap(true)
     }
     

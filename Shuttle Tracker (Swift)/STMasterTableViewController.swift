@@ -8,9 +8,11 @@
 
 import UIKit
 
-let kShuttleTableSectionIndex = 0
-let kSchedulesTableSectionIndex = 1
+let kShowMapTableSectionIndex = 0
+let kShuttleTableSectionIndex = 1
+let kSchedulesTableSectionIndex = 2
 
+let kTableViewShowMapCellReuseIdentifier = "kTableViewShowMapCellReuseIdentifier"
 let kTableViewShuttleCellReuseIdentifier = "kTableViewShuttleCellReuseIdentifier"
 let kTableViewScheduleCellReuseIdentifier = "kTableViewScheduleCellReuseIdentifier"
 
@@ -94,12 +96,15 @@ class STMasterTableViewController: UITableViewController, UISplitViewControllerD
 
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         // Return the number of sections.
-        return 2
+        return 3
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // Return the number of rows in the section.
-        if section == kShuttleTableSectionIndex {
+        if section == kShowMapTableSectionIndex {
+            return 1
+        }
+        else if section == kShuttleTableSectionIndex {
             return self.visibleShuttleArray.count
         }
         else if section == kSchedulesTableSectionIndex {
@@ -111,7 +116,10 @@ class STMasterTableViewController: UITableViewController, UISplitViewControllerD
     
     override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         
-        if section == kShuttleTableSectionIndex {
+        if section == kShowMapTableSectionIndex {
+            return NSLocalizedString("Show", comment:"Make appear on the screen")
+        }
+        else if section == kShuttleTableSectionIndex {
             return NSLocalizedString("Shuttles", comment:"")
         }
         else if section == kSchedulesTableSectionIndex {
@@ -125,7 +133,18 @@ class STMasterTableViewController: UITableViewController, UISplitViewControllerD
         // The cell we return will vary based on what's section it's in.
         var cell : UITableViewCell?
         
-        if indexPath.section == kShuttleTableSectionIndex {
+        if indexPath.section == kShowMapTableSectionIndex {
+            
+            
+            cell = tableView.dequeueReusableCellWithIdentifier(kTableViewShowMapCellReuseIdentifier) as? UITableViewCell
+            if cell == nil {
+                cell = UITableViewCell(style: .Subtitle, reuseIdentifier: kTableViewShowMapCellReuseIdentifier)
+            }
+            
+            cell?.textLabel?.text = NSLocalizedString("Main Campus", comment:"")
+            cell?.accessoryType = .DisclosureIndicator
+        }
+        else if indexPath.section == kShuttleTableSectionIndex {
             // This is a table view cell for a specific shuttle.
             
             cell = tableView.dequeueReusableCellWithIdentifier(kTableViewShuttleCellReuseIdentifier) as? UITableViewCell
@@ -159,7 +178,20 @@ class STMasterTableViewController: UITableViewController, UISplitViewControllerD
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         
         // What action we'll take depends on what section the selected row is in.
-        if indexPath.section == kShuttleTableSectionIndex {
+        if indexPath.section == kShowMapTableSectionIndex {
+            // The user tapped the cell for showing the main campus.
+            
+            // Re-center the map on main campus.
+            NSNotificationCenter.defaultCenter().postNotificationName(
+                kUserSelectedShowMapNotification,
+                object: nil,
+                userInfo: nil
+            )
+            
+            // De-select this cell.
+            tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        }
+        else if indexPath.section == kShuttleTableSectionIndex {
             // The user tapped a shuttle's table cell.
             
             let thisShuttle = self.visibleShuttleArray[indexPath.row]
