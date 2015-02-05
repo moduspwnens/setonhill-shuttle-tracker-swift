@@ -49,6 +49,9 @@ class STMasterTableViewController: UITableViewController, UISplitViewControllerD
             name: "ShuttleScheduleLinks",
             object: nil
         )
+        
+        // Fix for the quick "jump" it otherwise makes to scoot itself under the navigation bar when it's first shown.
+        self.edgesForExtendedLayout = .None
     }
     
     override func viewWillAppear(animated: Bool) {
