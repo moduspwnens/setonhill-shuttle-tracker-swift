@@ -49,7 +49,7 @@ class STShuttle: NSObject, MKAnnotation, Hashable {
     // Implementing to make sure class implements Hashable, which allows it to implement Equatable. This will allow us to directly compare STShuttles with the == operator.
     override var hashValue : Int {
         get {
-            return "\(self.identifier)-\(self.title)-\(self.subtitle)-\(self.statusMessage)-\(self.heading)-\(self.speed)-\(self.latitude)-\(self.longitude)-\(self.shuttleType)".hashValue
+            return "\(self.identifier)-\(self.title)-\(self.subtitle)-\(self.statusMessage)-\(self.heading)-\(self.speed)-\(self.latitude)-\(self.longitude)-\(self.shuttleType.rawValue)".hashValue
         }
     }
     

@@ -211,6 +211,7 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
             existingShuttle.subtitle = newShuttle.subtitle
             
             existingShuttle.heading = newShuttle.heading
+            existingShuttle.shuttleType = newShuttle.shuttleType
             let annotationView = self.mapView?.viewForAnnotation(existingShuttle)
             annotationView?.setNeedsLayout()
             annotationView?.layoutIfNeeded()

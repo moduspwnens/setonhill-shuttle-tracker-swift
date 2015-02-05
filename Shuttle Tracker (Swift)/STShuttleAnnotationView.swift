@@ -57,6 +57,7 @@ class STShuttleAnnotationView: MKAnnotationView {
         // Check if the shuttle type is different from when it was last set up. That'll call for a different image.
         if self.lastSetShuttleType != self.shuttle!.shuttleType {
             self.shuttleBlipImageView?.image = UIImage(named: self.shuttle!.getBlipImageName())
+            self.lastSetShuttleType = self.shuttle!.shuttleType
         }
         
         self.updateShuttleImageViewAngle()
