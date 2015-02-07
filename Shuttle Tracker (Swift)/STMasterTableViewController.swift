@@ -21,7 +21,8 @@ let kShuttleSelectedNotification = "kShuttleSelected"
 class STMasterTableViewController: UITableViewController, UISplitViewControllerDelegate {
     
     @IBOutlet var doneBarButtonItem: UIBarButtonItem?
-    private var detailViewController : UIViewController?
+    private var detailNavController : UINavigationController?
+    private var mapViewController : STMapViewController?
     private var visibleShuttleArray = [STShuttle]()
     
     override func viewDidLoad() {
@@ -33,8 +34,11 @@ class STMasterTableViewController: UITableViewController, UISplitViewControllerD
         // Back button should be blank (icon with no text)
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .Plain, target: nil, action: nil)
         
-        // Keep a reference to our detail view controller so it doesn't need to be reloaded if the split view controller collapses.
-        self.detailViewController = self.splitViewController?.viewControllers[1] as UIViewController!
+        // Keep a reference to our detail nav controller so we can manipulate its view controllers.
+        self.detailNavController = self.splitViewController?.viewControllers[1] as UINavigationController!
+        
+        // Keep a reference to our map view controller so it doesn't need to be reloaded if we replace it in our nav controller.
+        self.mapViewController = self.detailNavController?.viewControllers.first as STMapViewController!
         
         // Set up listener for when the array of visible shuttles changes. This'll happen if shuttles go off-screen, disappear completely, or the user pans the map away from them.
         NSNotificationCenter.defaultCenter().addObserver(
@@ -66,11 +70,6 @@ class STMasterTableViewController: UITableViewController, UISplitViewControllerD
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
-    }
-    
-    @IBAction func doneButtonPressed(sender: AnyObject?) {
-        // Show the detail view controller again.
-        self.splitViewController?.showDetailViewController(self.detailViewController, sender: self)
     }
     
     deinit {
@@ -181,6 +180,12 @@ class STMasterTableViewController: UITableViewController, UISplitViewControllerD
         if indexPath.section == kShowMapTableSectionIndex {
             // The user tapped the cell for showing the main campus.
             
+            // Set map view controller as main view controller of detail nav controller.
+            self.detailNavController?.setViewControllers([self.mapViewController!], animated: false)
+            
+            // Send focus to detail view controller.
+            self.splitViewController?.showDetailViewController(self.detailNavController!, sender: self)
+            
             // Re-center the map on main campus.
             NSNotificationCenter.defaultCenter().postNotificationName(
                 kUserSelectedShowMapNotification,
@@ -196,6 +201,12 @@ class STMasterTableViewController: UITableViewController, UISplitViewControllerD
             
             let thisShuttle = self.visibleShuttleArray[indexPath.row]
             
+            // Set map view controller as main view controller of detail nav controller.
+            self.detailNavController?.setViewControllers([self.mapViewController!], animated: false)
+            
+            // Send focus to detail view controller.
+            self.splitViewController?.showDetailViewController(self.detailNavController!, sender: self)
+            
             // Post notification that the shuttle was selected.
             NSNotificationCenter.defaultCenter().postNotificationName(
                 kShuttleSelectedNotification,
@@ -204,11 +215,6 @@ class STMasterTableViewController: UITableViewController, UISplitViewControllerD
                     "shuttle" : thisShuttle
                 ]
             )
-            
-            // If the split view controller is showing a collapsed view, we'll want to make sure the map view controller is being shown.
-            if self.splitViewController!.collapsed {
-                self.splitViewController?.showDetailViewController(self.detailViewController, sender: self)
-            }
             
             // De-select this cell.
             tableView.deselectRowAtIndexPath(indexPath, animated: true)
@@ -220,15 +226,13 @@ class STMasterTableViewController: UITableViewController, UISplitViewControllerD
             let scheduleName = thisScheduleLink["title"]!
             let scheduleURL = NSURL(string: thisScheduleLink["url"]!)!
             
-            // Push a web view controller showing this schedule on top of the detail nav controller's stack.
             let newWebViewController = STWebViewController(url: scheduleURL, title: scheduleName)
-            let detailNavViewController = self.detailViewController as UINavigationController
-            detailNavViewController.pushViewController(newWebViewController, animated: true)
             
-            if self.splitViewController!.collapsed {
-                // If the split view controller is collapsed, we need to explicitly show the detail view controller (because it's currently hidden).
-                self.splitViewController?.showDetailViewController(self.detailViewController, sender: self)
-            }
+            // Set this web view controller as main view controller of detail nav controller.
+            self.detailNavController?.setViewControllers([newWebViewController], animated: false)
+            
+            // Send focus to detail view controller.
+            self.splitViewController?.showDetailViewController(self.detailNavController!, sender: self)
             
             // De-select this cell.
             tableView.deselectRowAtIndexPath(indexPath, animated: true)

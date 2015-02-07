@@ -43,6 +43,11 @@ class STWebViewController: UIViewController, UIWebViewDelegate, UIAlertViewDeleg
         // Set title.
         self.navigationItem.title = self.linkTitle
         
+        // Should show the split view controller's display mode bar button item.
+        if !self.splitViewController!.collapsed {
+            self.navigationItem.leftBarButtonItem = self.splitViewController?.displayModeButtonItem()
+        }
+        
         // Start loading specified URL in web view.
         let newRequest = NSURLRequest(
             URL: self.url,
