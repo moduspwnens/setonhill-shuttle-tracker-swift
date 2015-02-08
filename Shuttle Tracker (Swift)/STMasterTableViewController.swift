@@ -347,7 +347,16 @@ class STMasterTableViewController: UITableViewController, UISplitViewControllerD
         }
         
         // Reload the map type selection table view section.
-        self.tableView.reloadData()
+        self.tableView.beginUpdates()
+        
+        if self.shouldShowMapTypeSelector {
+            self.tableView.insertSections(NSIndexSet(index: kMapTypeSelectSectionIndex), withRowAnimation: .Automatic)
+        }
+        else {
+            self.tableView.deleteSections(NSIndexSet(index: kMapTypeSelectSectionIndex), withRowAnimation: .Automatic)
+        }
+        
+        self.tableView.endUpdates()
     }
     
     func shuttleScheduleLinksChanged(notification: NSNotification) {
