@@ -185,6 +185,7 @@ class STMasterTableViewController: UITableViewController, UISplitViewControllerD
             cell?.textLabel?.text = thisShuttle.title
             cell?.detailTextLabel?.text = thisShuttle.subtitle
             cell?.imageView?.image = UIImage(named: thisShuttle.getBlipImageName())
+            cell?.accessoryType = .DisclosureIndicator
         }
         else if indexPath.section == kSchedulesTableSectionIndex {
             // This is a table view cell for a shuttle schedule link.
