@@ -7,6 +7,7 @@
 //
 
 import WebKit
+import MBProgressHUD
 
 let kDefaultTimeoutTimeInterval : NSTimeInterval = 10
 
@@ -61,30 +62,41 @@ class STWebViewController: UIViewController, UIWebViewDelegate, UIAlertViewDeleg
         self.navigationItem.leftBarButtonItem = nil
     }
     
+    // Shared functionality that happens when it's finished, whether it did so successfully or error'd out.
+    func webViewDidFinishOrFailLoad(webView: UIWebView) {
+        STAppDelegate.didStopNetworking()
+        
+        NSOperationQueue.mainQueue().addOperationWithBlock({
+            MBProgressHUD.hideHUDForView(self.view, animated: true)
+            return
+        })
+    }
+    
     // MARK: - Web view delegate
     
     func webViewDidStartLoad(webView: UIWebView) {
         STAppDelegate.didStartNetworking()
+        
+        // Show progress indicator.
+        MBProgressHUD.showHUDAddedTo(self.view, animated: true)
     }
     
     func webViewDidFinishLoad(webView: UIWebView) {
-        STAppDelegate.didStopNetworking()
+        
+        // Perform shared finished/failed functionality.
+        self.webViewDidFinishOrFailLoad(webView)
     }
     
     func webView(webView: UIWebView, didFailLoadWithError error: NSError) {
-        STAppDelegate.didStopNetworking()
         
+        // Perform shared finished/failed functionality.
+        self.webViewDidFinishOrFailLoad(webView)
+        
+        // Create alert view to give notice to the user that the request failed.
         let newAlertView = UIAlertView()
         newAlertView.title = NSLocalizedString("Oops!", comment:"In the context of an error having occurrred.")
         newAlertView.message = NSLocalizedString("Unable to load schedule. Please try again later.", comment:"")
-        newAlertView.delegate = self
         newAlertView.addButtonWithTitle(NSLocalizedString("OK", comment:""))
         newAlertView.show()
-    }
-    
-    // MARK: - Alert view delegate
-    
-    func alertView(alertView: UIAlertView, didDismissWithButtonIndex buttonIndex: Int) {
-        self.navigationController?.popViewControllerAnimated(true)
     }
 }

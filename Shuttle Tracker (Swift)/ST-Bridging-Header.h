@@ -10,5 +10,6 @@
 #define Shuttle_Tracker__Swift__Pods_Bridging_Header_h
 
 #import <Reachability/Reachability.h>
+#import <MBProgressHUD/MBProgressHUD.h>
 
 #endif
