@@ -2,6 +2,8 @@
 
 A universal iPhone / iPad shuttle tracker app written in Swift.
 
+![Shuttle Tracker Screenshot](iPhone 6+ Screenshot.png)
+
 ### Features ###
 * Shows shuttle locations on a map, along with the directions they're facing.
 * Shows names and subtitles in a table view, allowing selection on map.
