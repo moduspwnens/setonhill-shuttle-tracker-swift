@@ -57,6 +57,9 @@ class STAppDelegate: UIResponder, UIApplicationDelegate {
         // Start loading shuttle locations/statuses.
         self.beginShuttleStatusUpdates(true)
         
+        // Disable idle timer. We can expect some users to watch this for a while without touching.
+        UIApplication.sharedApplication().idleTimerDisabled = true
+        
         return true
     }
 
