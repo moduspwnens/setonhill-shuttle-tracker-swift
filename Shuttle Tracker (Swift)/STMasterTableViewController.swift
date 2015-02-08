@@ -7,14 +7,19 @@
 //
 
 import UIKit
+import MapKit
 
 let kShowMapTableSectionIndex = 0
 let kShuttleTableSectionIndex = 1
 let kSchedulesTableSectionIndex = 2
+let kMapTypeSelectSectionIndex = 3
 
 let kTableViewShowMapCellReuseIdentifier = "kTableViewShowMapCellReuseIdentifier"
 let kTableViewShuttleCellReuseIdentifier = "kTableViewShuttleCellReuseIdentifier"
 let kTableViewScheduleCellReuseIdentifier = "kTableViewScheduleCellReuseIdentifier"
+let kTableViewMapTypeCellReuseIdentifier = "kTableViewMapTypeCellReuseIdentifier"
+
+let kSegmentedControlViewTag = 14
 
 let kShuttleSelectedNotification = "kShuttleSelected"
 
@@ -56,6 +61,14 @@ class STMasterTableViewController: UITableViewController, UISplitViewControllerD
             object: nil
         )
         
+        // Listen for notification and act appropriately if the remotely-specified ShowMapTypeSelector variable changes.
+        NSNotificationCenter.defaultCenter().addObserverForRemoteConfigurationUpdate(
+            self,
+            selector: "shouldShowMapTypeSelectorChanged:",
+            name: "ShowMapTypeSelector",
+            object: nil
+        )
+        
         // Fix for the quick "jump" it otherwise makes to scoot itself under the navigation bar when it's first shown.
         self.edgesForExtendedLayout = .None
     }
@@ -70,6 +83,11 @@ class STMasterTableViewController: UITableViewController, UISplitViewControllerD
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func mapTypeControlValueChanged(sender: UISegmentedControl) {
+        // Assign new map type.
+        self.mapViewController?.mapType = MKMapType(rawValue: UInt(sender.selectedSegmentIndex))!
     }
     
     deinit {
@@ -95,7 +113,13 @@ class STMasterTableViewController: UITableViewController, UISplitViewControllerD
 
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         // Return the number of sections.
-        return 3
+        var numberOfSections = 3
+        
+        if self.shouldShowMapTypeSelector {
+            numberOfSections++
+        }
+        
+        return numberOfSections
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -108,6 +132,9 @@ class STMasterTableViewController: UITableViewController, UISplitViewControllerD
         }
         else if section == kSchedulesTableSectionIndex {
             return self.getShuttleScheduleLinks().count
+        }
+        else if section == kMapTypeSelectSectionIndex {
+            return 1
         }
         
         return 0
@@ -123,6 +150,9 @@ class STMasterTableViewController: UITableViewController, UISplitViewControllerD
         }
         else if section == kSchedulesTableSectionIndex {
             return NSLocalizedString("Schedules", comment:"")
+        }
+        else if section == kMapTypeSelectSectionIndex {
+            return NSLocalizedString("Map Type", comment:"")
         }
         return nil
     }
@@ -167,6 +197,52 @@ class STMasterTableViewController: UITableViewController, UISplitViewControllerD
             let thisScheduleLink = self.getShuttleScheduleLinks()[indexPath.row] as [String:String]
             cell?.textLabel?.text = thisScheduleLink["title"]!
             cell?.accessoryType = .DisclosureIndicator
+        }
+        else if indexPath.section == kMapTypeSelectSectionIndex {
+            // This is a table view cell for the map type selector.
+            
+            cell = tableView.dequeueReusableCellWithIdentifier(kTableViewMapTypeCellReuseIdentifier) as? UITableViewCell
+            if cell == nil {
+                cell = UITableViewCell(style: .Default, reuseIdentifier: kTableViewMapTypeCellReuseIdentifier)
+                
+                // This cell will not be tapped directly. It'll have a control inside that does things.
+                cell?.selectionStyle = .None
+                
+                // Define what the segmented control buttons will say.
+                // Note that, for simplicity's sake, these strings' indexes match the MKMapViewType enum order.
+                let segmentedControlItems = [
+                    NSLocalizedString("Standard", comment:"Referring to the default map type."),
+                    NSLocalizedString("Satellite", comment:"Referring to the map type that just shows satellite imagery."),
+                    NSLocalizedString("Hybrid", comment:"Referring to the map type that shows satellite imagery with road and POI overlays.")
+                ]
+                
+                // Create the new segmented control.
+                let newSegmentedControl = UISegmentedControl(items: segmentedControlItems)
+                let defaultPadding : CGFloat = 20
+                newSegmentedControl.frame = CGRectMake(
+                    0,
+                    0,
+                    cell!.frame.size.width - defaultPadding,
+                    cell!.frame.size.height - defaultPadding
+                )
+                newSegmentedControl.center = cell!.center
+                newSegmentedControl.autoresizingMask = .FlexibleHeight | .FlexibleWidth
+                
+                // Assign tag (so we can access this control quickly later).
+                newSegmentedControl.tag = kSegmentedControlViewTag
+                
+                // Add callback.
+                newSegmentedControl.addTarget(self, action: "mapTypeControlValueChanged:", forControlEvents: .ValueChanged)
+                
+                // Add segmented control to cell.
+                cell?.addSubview(newSegmentedControl)
+            }
+            
+            // This cell may or may not have been created before. Get its segmented control button to make sure its state is accurate.
+            let thisSegmentedControl = cell?.viewWithTag(kSegmentedControlViewTag) as UISegmentedControl
+            
+            // Assign existing value as currently selected.
+            thisSegmentedControl.selectedSegmentIndex = Int(self.mapViewController!.mapType.rawValue)
         }
 
         return cell!
@@ -237,6 +313,12 @@ class STMasterTableViewController: UITableViewController, UISplitViewControllerD
             // De-select this cell.
             tableView.deselectRowAtIndexPath(indexPath, animated: true)
         }
+        else if indexPath.section == kMapTypeSelectSectionIndex {
+            // Do nothing. This cell has a control inside of it and tapping the cell itself should do nothing.
+            
+            // De-select this cell.
+            tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        }
         else {
             // This is a section that doesn't support selection. Just de-select immediately.
             tableView.deselectRowAtIndexPath(indexPath, animated: false)
@@ -256,6 +338,17 @@ class STMasterTableViewController: UITableViewController, UISplitViewControllerD
         self.tableView.reloadSections(NSIndexSet(index: kShuttleTableSectionIndex), withRowAnimation: .None)
     }
     
+    func shouldShowMapTypeSelectorChanged(notification: NSNotification) {
+        
+        if !self.shouldShowMapTypeSelector {
+            // If we're about to hide the map type selector, reset it to the default map type.
+            self.mapViewController?.mapType = .Standard
+        }
+        
+        // Reload the map type selection table view section.
+        self.tableView.reloadData()
+    }
+    
     func shuttleScheduleLinksChanged(notification: NSNotification) {
         // Tell table view to reload the table section that shows shuttle schedules.
         self.tableView.reloadSections(NSIndexSet(index: kSchedulesTableSectionIndex), withRowAnimation: .None)
@@ -265,6 +358,12 @@ class STMasterTableViewController: UITableViewController, UISplitViewControllerD
     
     func getShuttleScheduleLinks() -> [AnyObject] {
         return NSUserDefaults.standardUserDefaults().arrayForKey("ShuttleScheduleLinks")!
+    }
+    
+    dynamic var shouldShowMapTypeSelector:Bool {
+    get {
+        return NSUserDefaults.standardUserDefaults().boolForKey("ShowMapTypeSelector")
+    }
     }
 
 }

@@ -13,6 +13,8 @@ import Reachability
 let kVisibleShuttlesUpdatedNotification = "kVisibleShuttlesUpdated"
 let kUserSelectedShowMapNotification = "kUserSelectedShowMapNotification"
 
+let kLastSelectedMapTypeKey = "LastSelectedMapType"
+
 class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewControllerDelegate, UIAlertViewDelegate {
     
     @IBOutlet weak var mapView: MKMapView?
@@ -42,6 +44,10 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
         
         // Center and zoom the map to the right spot.
         self.centerAndZoomMap(false)
+        
+        // Set map type to whatever it was last set to.
+        // Note that if it wasn't previously set to anything, integerForKey: will return 0, which is equal to MKMapType.Standard.
+        self.mapView?.mapType = MKMapType(rawValue: UInt(NSUserDefaults.standardUserDefaults().integerForKey(kLastSelectedMapTypeKey)))!
         
         // Listen for notification and act appropriately if the remotely-specified MapLayout variable changes.
         NSNotificationCenter.defaultCenter().addObserverForRemoteConfigurationUpdate(
@@ -498,6 +504,18 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
     
     func mapView(mapView: MKMapView!, regionDidChangeAnimated animated: Bool) {
         self.updateVisibleDeviceCount()
+    }
+    
+    // MARK: - Custom setters and getters
+    
+    dynamic var mapType:MKMapType {
+        get {
+            return self.mapView!.mapType
+        }
+        set {
+            self.mapView?.mapType = newValue
+            NSUserDefaults.standardUserDefaults().setInteger(Int(newValue.rawValue), forKey: kLastSelectedMapTypeKey)
+        }
     }
     
     // MARK: - Convenience methods
