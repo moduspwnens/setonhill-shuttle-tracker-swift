@@ -39,11 +39,11 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
         self.navigationItem.leftBarButtonItem = self.splitViewController?.displayModeButtonItem()
         self.navigationItem.leftItemsSupplementBackButton = true
         
-        // Setup the toolbar items that couldn't quite be laid out in Interface Builder right.
-        self.loadToolbarItems()
-        
         // Center and zoom the map to the right spot.
         self.centerAndZoomMap(false)
+        
+        // Setup the toolbar items that couldn't quite be laid out in Interface Builder right.
+        self.loadToolbarItems()
         
         // Set map type to whatever it was last set to.
         // Note that if it wasn't previously set to anything, integerForKey: will return 0, which is equal to MKMapType.Standard.
@@ -139,24 +139,15 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
         // We'll want to keep a reference to this so it can be updated easily later.
         self.shuttleStatusLabel = toolbarLabel
         
-        // We'll make this tappable, so we can have it be the "secret" way of re-centering the map.
-        toolbarLabel.userInteractionEnabled = true
-        let tapGesture = UITapGestureRecognizer(target: self, action: "shuttleStatusLabelPressed:")
-        toolbarLabel.addGestureRecognizer(tapGesture)
-        
         // We can't just add a label as a bar button item, so we'll need to create a bar button item as a container for it.
         let labelBarButtonItem = UIBarButtonItem(customView: toolbarLabel)
         toolbarItems.append(labelBarButtonItem)
         
-        // And another flexible item for space between the label and info button.
+        // And another flexible item for space between the label and final button.
         toolbarItems.append(UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: nil, action: nil))
         
-        // The final item will be an "info" style button on the right side of the toolbar.
-        let infoButton = UIButton.buttonWithType(.InfoDark) as UIButton
-        infoButton.hidden = true
-        infoButton.addTarget(self, action: "infoButtonPressed:", forControlEvents: .TouchUpInside)
-        let infoBarButtonItem = UIBarButtonItem(customView: infoButton)
-        toolbarItems.append(infoBarButtonItem)
+        // We don't actually have a use for the final button, so let's just use a fixed space for now.
+        toolbarItems.append(UIBarButtonItem(barButtonSystemItem: .FixedSpace, target: nil, action: nil))
         
         // Now set the toolbar's items to the array we've created.
         self.toolbar?.setItems(toolbarItems, animated: false)
@@ -173,15 +164,6 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
         
         // Need to unset our display mode button item to avoid a crash if the split view controller tries to access this view controller and it's gone.
         self.navigationItem.leftBarButtonItem = nil
-    }
-    
-    func infoButtonPressed(sender: UIButton) {
-        println("Info button pressed.")
-    }
-    
-    func shuttleStatusLabelPressed(sender: UILabel) {
-        // I'm not sure if tapping the label is intuitive or not. Regardless, it needs to be somewhere, so it's here for now.
-        self.centerAndZoomMap(true)
     }
     
     func centerAndZoomMap(animated: Bool) {
@@ -202,6 +184,27 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
         
         // Now set the mapview to use it.
         self.mapView?.setRegion(defaultRegion, animated: animated)
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        // Necessary to get it to center and zoom properly when first shown.
+        self.centerAndZoomMap(false)
+    }
+    
+    override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
+        
+        coordinator.animateAlongsideTransition(
+            nil,
+            completion: {
+                _ in
+                // UI operations should always be done on the main thread.
+                NSOperationQueue.mainQueue().addOperationWithBlock({
+                    // Re-center the map after the rotation is complete.
+                    self.centerAndZoomMap(true)
+                })
+        })
     }
     
     
