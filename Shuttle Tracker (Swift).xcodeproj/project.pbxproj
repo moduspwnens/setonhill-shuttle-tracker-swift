@@ -54,6 +54,7 @@
 		338B84AD1A6CB6D500B20258 /* Shuttle Tracker (Swift)Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Shuttle Tracker (Swift)Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		338B84B21A6CB6D500B20258 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		338B84B31A6CB6D500B20258 /* Shuttle_Tracker__Swift_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shuttle_Tracker__Swift_Tests.swift; sourceTree = "<group>"; };
+		33C46B981A8711E500A51E93 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
 		33FC588B1A73EBFE002505D5 /* STRemoteConfigurationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = STRemoteConfigurationManager.swift; sourceTree = "<group>"; };
 		33FC588D1A73FBCA002505D5 /* BaseDefaults.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = BaseDefaults.plist; sourceTree = "<group>"; };
 		33FC588F1A743332002505D5 /* NSNotificationCenter+RemoteConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSNotificationCenter+RemoteConfiguration.swift"; sourceTree = "<group>"; };
@@ -129,6 +130,7 @@
 			children = (
 				33FC588D1A73FBCA002505D5 /* BaseDefaults.plist */,
 				338B849C1A6CB6D500B20258 /* Info.plist */,
+				33C46B981A8711E500A51E93 /* README.md */,
 				3343385E1A6CC9FA005AE689 /* ST-Bridging-Header.h */,
 			);
 			name = "Supporting Files";
