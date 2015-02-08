@@ -162,7 +162,11 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
     }
     
     deinit {
+        // Stop listening for notifications.
         NSNotificationCenter.defaultCenter().removeObserver(self)
+        
+        // Need to unset our display mode button item to avoid a crash if the split view controller tries to access this view controller and it's gone.
+        self.navigationItem.leftBarButtonItem = nil
     }
     
     func infoButtonPressed(sender: UIButton) {

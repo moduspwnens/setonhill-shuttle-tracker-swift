@@ -44,9 +44,8 @@ class STWebViewController: UIViewController, UIWebViewDelegate, UIAlertViewDeleg
         self.navigationItem.title = self.linkTitle
         
         // Should show the split view controller's display mode bar button item.
-        if !self.splitViewController!.collapsed {
-            self.navigationItem.leftBarButtonItem = self.splitViewController?.displayModeButtonItem()
-        }
+        self.navigationItem.leftBarButtonItem = self.splitViewController?.displayModeButtonItem()
+        self.navigationItem.leftItemsSupplementBackButton = true
         
         // Start loading specified URL in web view.
         let newRequest = NSURLRequest(
@@ -55,6 +54,11 @@ class STWebViewController: UIViewController, UIWebViewDelegate, UIAlertViewDeleg
             timeoutInterval: kDefaultTimeoutTimeInterval
         )
         self.webView?.loadRequest(newRequest)
+    }
+    
+    deinit {
+        // Need to unset our display mode button item to avoid a crash if the split view controller tries to access this view controller and it's gone.
+        self.navigationItem.leftBarButtonItem = nil
     }
     
     // MARK: - Web view delegate
