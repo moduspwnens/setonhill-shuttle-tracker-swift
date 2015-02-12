@@ -29,8 +29,7 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
     private var locationManager = CLLocationManager()
     private var lastSuccessfulStatusUpdate = NSDate(timeIntervalSince1970: 0)
     private var loadedStaticOverlays = false
-    private var roadOverlayCoordinateDictionary = [String:[String]]()
-    private var roadOverlayObjectDictionary = [String:MKOverlay]()
+    private var roadOverlays = [MKOverlay]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -164,8 +163,18 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
         self.toolbar?.setItems(toolbarItems, animated: false)
     }
     
-    func loadStaticOverlays() {
+    func loadRoadOverlays() {
         
+        // Remove any existing overlays.
+        for eachOverlay in self.roadOverlays {
+            self.mapView?.removeOverlay(eachOverlay)
+        }
+        
+        // Remove them from our separate array.
+        self.roadOverlays.removeAll(keepCapacity: false)
+        
+        
+        // Now let's add the overlays that now exist.
         let roadOverlaySpecs = NSUserDefaults.standardUserDefaults().arrayForKey("RoadOverlays")
         
         for eachSpec in roadOverlaySpecs as [NSDictionary] {
@@ -185,34 +194,21 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
                         )
                     }
                     
-                    var addOverlay = true
+                    // Add the overlay to the map.
+                    let newOverlay = MKPolyline(coordinates: &locationCoordinateArray, count: locationCoordinateArray.count)
+                    self.mapView?.addOverlay(newOverlay)
                     
-                    if let existingRoadCoordinateStrings = self.roadOverlayCoordinateDictionary[roadId] {
-                        if existingRoadCoordinateStrings != coordinateStringArray {
-                            // There's an existing overlay for this object, and it's different.
-                            // Remove the old overlay from the map view.
-                            self.mapView?.removeOverlay(self.roadOverlayObjectDictionary[roadId])
-                        }
-                        else {
-                            // There was no change. Do not add this as a new overlay.
-                            addOverlay = false
-                        }
-                    }
-                    
-                    if addOverlay {
-                        // Add the overlay to the map.
-                        let newOverlay = MKPolyline(coordinates: &locationCoordinateArray, count: locationCoordinateArray.count)
-                        self.mapView?.addOverlay(newOverlay)
-                        
-                        // Add to our road overlay coordinate dictionary, so we can easily check for changes in those coordinates in the future (if necessary).
-                        self.roadOverlayCoordinateDictionary[roadId] = coordinateStringArray
-                        
-                        // Add to our road overlay object dictionary, so we can quickly get the overlay itself.
-                        self.roadOverlayObjectDictionary[roadId] = newOverlay
-                    }
+                    // Add to our separate array for keeping track of road overlays in particular.
+                    self.roadOverlays.append(newOverlay)
                 }
             }
         }
+        
+    }
+    
+    func loadStaticOverlays() {
+        
+        self.loadRoadOverlays()
         
         // This is the employee lot.
         var pointsToDraw : [CLLocationCoordinate2D] = []
@@ -499,8 +495,10 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
     }
     
     func roadOverlaysChanged(notification: NSNotification) {
-        let roadOverlays = NSUserDefaults.standardUserDefaults().arrayForKey("RoadOverlays")
-        self.loadStaticOverlays()
+        // Only load overlays immediately if they've been loaded before and have now changed.
+        if self.loadedStaticOverlays {
+            self.loadRoadOverlays()
+        }
     }
     
     func userSelectedShowMap(notification: NSNotification) {
