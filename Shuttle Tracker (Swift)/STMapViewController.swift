@@ -168,6 +168,24 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
         let newPolyLine = MKPolyline(coordinates: &pointsToDraw, count: pointsToDraw.count)
         self.mapView?.addOverlay(newPolyLine)
         
+        // This is the employee lot.
+        pointsToDraw = []
+        pointsToDraw.append(CLLocationCoordinate2DMake(40.308469, -79.554286))
+        pointsToDraw.append(CLLocationCoordinate2DMake(40.308976, -79.554619))
+        pointsToDraw.append(CLLocationCoordinate2DMake(40.309938, -79.555086))
+        pointsToDraw.append(CLLocationCoordinate2DMake(40.310101, -79.555231))
+        pointsToDraw.append(CLLocationCoordinate2DMake(40.310299, -79.555469))
+        pointsToDraw.append(CLLocationCoordinate2DMake(40.310618, -79.556026))
+        pointsToDraw.append(CLLocationCoordinate2DMake(40.310832, -79.555756))
+        pointsToDraw.append(CLLocationCoordinate2DMake(40.310592, -79.555268))
+        pointsToDraw.append(CLLocationCoordinate2DMake(40.310454, -79.555077))
+        pointsToDraw.append(CLLocationCoordinate2DMake(40.310168, -79.554803))
+        pointsToDraw.append(CLLocationCoordinate2DMake(40.309982, -79.554676))
+        pointsToDraw.append(CLLocationCoordinate2DMake(40.308947, -79.554170))
+        pointsToDraw.append(CLLocationCoordinate2DMake(40.308626, -79.553926))
+        
+        let newPolygon = MKPolygon(coordinates: &pointsToDraw, count: pointsToDraw.count)
+        self.mapView?.addOverlay(newPolygon)
     }
 
     override func didReceiveMemoryWarning() {
@@ -548,6 +566,13 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
         if overlay is MKPolyline {
             let lineRenderer = STRoadPolylineRenderer(polyline: overlay as MKPolyline)
             return lineRenderer
+        }
+        else if overlay is MKPolygon {
+            let polygonRenderer = STParkingLotRenderer(polygon: overlay as MKPolygon)
+            polygonRenderer.fillColor = UIColor.grayColor()
+            polygonRenderer.strokeColor = UIColor.whiteColor()
+            polygonRenderer.lineWidth = 1
+            return polygonRenderer
         }
         
         return nil
