@@ -29,6 +29,8 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
     private var locationManager = CLLocationManager()
     private var lastSuccessfulStatusUpdate = NSDate(timeIntervalSince1970: 0)
     private var loadedStaticOverlays = false
+    private var roadOverlayCoordinateDictionary = [String:[String]]()
+    private var roadOverlayObjectDictionary = [String:MKOverlay]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -55,6 +57,14 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
             self,
             selector: "defaultMapLayoutChanged:",
             name: "MapLayout",
+            object: nil
+        )
+        
+        // Listen for notification of when road overlays are updated.
+        NSNotificationCenter.defaultCenter().addObserverForRemoteConfigurationUpdate(
+            self,
+            selector: "roadOverlaysChanged:",
+            name: "RoadOverlays",
             object: nil
         )
         
@@ -154,22 +164,58 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
         self.toolbar?.setItems(toolbarItems, animated: false)
     }
     
-    func loadRoadOverlays() {
+    func loadStaticOverlays() {
         
-        // This is the road going down to the employee lot.
-        var pointsToDraw : [CLLocationCoordinate2D] = []
-        pointsToDraw.append(CLLocationCoordinate2DMake(40.308099, -79.554513))
-        pointsToDraw.append(CLLocationCoordinate2DMake(40.308065, -79.554295))
-        pointsToDraw.append(CLLocationCoordinate2DMake(40.308104, -79.554168))
-        pointsToDraw.append(CLLocationCoordinate2DMake(40.308174, -79.554081))
-        pointsToDraw.append(CLLocationCoordinate2DMake(40.308275, -79.554048))
-        pointsToDraw.append(CLLocationCoordinate2DMake(40.308509, -79.554210))
+        let roadOverlaySpecs = NSUserDefaults.standardUserDefaults().arrayForKey("RoadOverlays")
         
-        let newPolyLine = MKPolyline(coordinates: &pointsToDraw, count: pointsToDraw.count)
-        self.mapView?.addOverlay(newPolyLine)
+        for eachSpec in roadOverlaySpecs as [NSDictionary] {
+            if let roadId = eachSpec.valueForKey("id") as? String {
+                if let coordinateStringArray = eachSpec.valueForKey("coordinates") as? [String] {
+                    
+                    // Take the array of coordinates as strings, and convert it to an array of actual coordinates.
+                    var locationCoordinateArray = [CLLocationCoordinate2D]()
+                    
+                    for eachCoordinateString in coordinateStringArray {
+                        let thisPoint = CGPointFromString(eachCoordinateString)
+                        locationCoordinateArray.append(
+                            CLLocationCoordinate2DMake(
+                                CLLocationDegrees(thisPoint.x),
+                                CLLocationDegrees(thisPoint.y)
+                            )
+                        )
+                    }
+                    
+                    var addOverlay = true
+                    
+                    if let existingRoadCoordinateStrings = self.roadOverlayCoordinateDictionary[roadId] {
+                        if existingRoadCoordinateStrings != coordinateStringArray {
+                            // There's an existing overlay for this object, and it's different.
+                            // Remove the old overlay from the map view.
+                            self.mapView?.removeOverlay(self.roadOverlayObjectDictionary[roadId])
+                        }
+                        else {
+                            // There was no change. Do not add this as a new overlay.
+                            addOverlay = false
+                        }
+                    }
+                    
+                    if addOverlay {
+                        // Add the overlay to the map.
+                        let newOverlay = MKPolyline(coordinates: &locationCoordinateArray, count: locationCoordinateArray.count)
+                        self.mapView?.addOverlay(newOverlay)
+                        
+                        // Add to our road overlay coordinate dictionary, so we can easily check for changes in those coordinates in the future (if necessary).
+                        self.roadOverlayCoordinateDictionary[roadId] = coordinateStringArray
+                        
+                        // Add to our road overlay object dictionary, so we can quickly get the overlay itself.
+                        self.roadOverlayObjectDictionary[roadId] = newOverlay
+                    }
+                }
+            }
+        }
         
         // This is the employee lot.
-        pointsToDraw = []
+        var pointsToDraw : [CLLocationCoordinate2D] = []
         pointsToDraw.append(CLLocationCoordinate2DMake(40.308469, -79.554286))
         pointsToDraw.append(CLLocationCoordinate2DMake(40.308976, -79.554619))
         pointsToDraw.append(CLLocationCoordinate2DMake(40.309938, -79.555086))
@@ -184,7 +230,8 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
         pointsToDraw.append(CLLocationCoordinate2DMake(40.308947, -79.554170))
         pointsToDraw.append(CLLocationCoordinate2DMake(40.308626, -79.553926))
         
-        let newPolygon = MKPolygon(coordinates: &pointsToDraw, count: pointsToDraw.count)
+        let newPolygon = STPolygon(coordinates: &pointsToDraw, count: pointsToDraw.count)
+        newPolygon.overlayType = .ParkingLot
         self.mapView?.addOverlay(newPolygon)
     }
 
@@ -451,6 +498,11 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
         self.centerAndZoomMap(true)
     }
     
+    func roadOverlaysChanged(notification: NSNotification) {
+        let roadOverlays = NSUserDefaults.standardUserDefaults().arrayForKey("RoadOverlays")
+        self.loadStaticOverlays()
+    }
+    
     func userSelectedShowMap(notification: NSNotification) {
         self.centerAndZoomMap(true)
     }
@@ -498,7 +550,7 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
             if !self.loadedStaticOverlays {
                 
                 // Add the additional road overlays.
-                self.loadRoadOverlays()
+                self.loadStaticOverlays()
                 
                 // Evaluate their visibility (based on map type).
                 self.evaluateOverlayVisibility()
@@ -567,7 +619,7 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
             let lineRenderer = STRoadPolylineRenderer(polyline: overlay as MKPolyline)
             return lineRenderer
         }
-        else if overlay is MKPolygon {
+        else if overlay is STPolygon {
             let polygonRenderer = STParkingLotRenderer(polygon: overlay as MKPolygon)
             return polygonRenderer
         }
