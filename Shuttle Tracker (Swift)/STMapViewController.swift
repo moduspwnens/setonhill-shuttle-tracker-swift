@@ -28,6 +28,7 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
     private var shuttleStatusDataLoadedAtLeastOnce = false
     private var locationManager = CLLocationManager()
     private var lastSuccessfulStatusUpdate = NSDate(timeIntervalSince1970: 0)
+    private var loadedStaticOverlays = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -151,6 +152,22 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
         
         // Now set the toolbar's items to the array we've created.
         self.toolbar?.setItems(toolbarItems, animated: false)
+    }
+    
+    func loadRoadOverlays() {
+        
+        // This is the road going down to the employee lot.
+        var pointsToDraw : [CLLocationCoordinate2D] = []
+        pointsToDraw.append(CLLocationCoordinate2DMake(40.308099, -79.554513))
+        pointsToDraw.append(CLLocationCoordinate2DMake(40.308065, -79.554295))
+        pointsToDraw.append(CLLocationCoordinate2DMake(40.308104, -79.554168))
+        pointsToDraw.append(CLLocationCoordinate2DMake(40.308174, -79.554081))
+        pointsToDraw.append(CLLocationCoordinate2DMake(40.308275, -79.554048))
+        pointsToDraw.append(CLLocationCoordinate2DMake(40.308509, -79.554210))
+        
+        let newPolyLine = MKPolyline(coordinates: &pointsToDraw, count: pointsToDraw.count)
+        self.mapView?.addOverlay(newPolyLine)
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -456,6 +473,24 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
         STAppDelegate.didStopNetworking()
     }
     
+    func mapViewDidFinishRenderingMap(mapView: MKMapView!, fullyRendered: Bool) {
+        
+        // Only add overlays if the map rendered. Otherwise, we'll be drawing additional roads that won't make sense without the map tiles.
+        if fullyRendered {
+            if !self.loadedStaticOverlays {
+                
+                // Add the additional road overlays.
+                self.loadRoadOverlays()
+                
+                // Evaluate their visibility (based on map type).
+                self.evaluateOverlayVisibility()
+                
+                // Set flag so we don't add them again.
+                self.loadedStaticOverlays = true
+            }
+        }
+    }
+    
     func mapView(mapView: MKMapView!, viewForAnnotation annotation: MKAnnotation!) -> MKAnnotationView! {
         
         // Only provide annotations for shuttle annotations.
@@ -509,6 +544,15 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
         self.updateVisibleDeviceCount()
     }
     
+    func mapView(mapView: MKMapView!, rendererForOverlay overlay: MKOverlay!) -> MKOverlayRenderer! {
+        if overlay is MKPolyline {
+            let lineRenderer = STRoadPolylineRenderer(polyline: overlay as MKPolyline)
+            return lineRenderer
+        }
+        
+        return nil
+    }
+    
     // MARK: - Custom setters and getters
     
     dynamic var mapType:MKMapType {
@@ -517,6 +561,9 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
         }
         set {
             self.mapView?.mapType = newValue
+            
+            self.evaluateOverlayVisibility()
+            
             NSUserDefaults.standardUserDefaults().setInteger(Int(newValue.rawValue), forKey: kLastSelectedMapTypeKey)
         }
     }
@@ -550,6 +597,33 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
         
         // Reset "loaded data at least once" flag.
         self.shuttleStatusDataLoadedAtLeastOnce = false
+    }
+    
+    func evaluateOverlayVisibility() {
+        
+        for eachOverlay in self.mapView?.overlays as [MKOverlay] {
+            var newAlpha : CGFloat = 1
+            
+            if let thisMapView = self.mapView {
+                switch thisMapView.mapType {
+                case .Standard:
+                    // This is the standard view, where roads are clearly highlighted.
+                    newAlpha = 1
+                case .Satellite:
+                    // This is the satellite view, where roads are only visible from satellite imagery.
+                    newAlpha = 0
+                case .Hybrid:
+                    // This is the hybrid view, where road labels are kinda translucent.
+                    newAlpha = 0.5
+                default:
+                    // Shouldn't be reached, unless a new map type is added in a future SDK.
+                    newAlpha = 1
+                }
+            }
+            
+            self.mapView?.rendererForOverlay(eachOverlay).alpha = newAlpha
+        }
+        
     }
 
 }
