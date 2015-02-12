@@ -569,9 +569,6 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
         }
         else if overlay is MKPolygon {
             let polygonRenderer = STParkingLotRenderer(polygon: overlay as MKPolygon)
-            polygonRenderer.fillColor = UIColor.grayColor()
-            polygonRenderer.strokeColor = UIColor.whiteColor()
-            polygonRenderer.lineWidth = 1
             return polygonRenderer
         }
         
