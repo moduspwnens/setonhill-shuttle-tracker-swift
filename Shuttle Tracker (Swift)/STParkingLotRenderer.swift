@@ -28,7 +28,7 @@ class STParkingLotRenderer: MKPolygonRenderer {
     override func applyStrokePropertiesToContext(context: CGContext!, atZoomScale zoomScale: MKZoomScale) {
         super.applyStrokePropertiesToContext(context, atZoomScale: zoomScale)
         
-        // These will be smaller roads, so let's make the lines a fraction of the road width at this scale.
+        // The parking lot should have some border. Let's make it scale with the size of roads.
         let lineWidth = MKRoadWidthAtZoomScale(zoomScale) * 0.6
         CGContextSetLineWidth(context, lineWidth)
     }
