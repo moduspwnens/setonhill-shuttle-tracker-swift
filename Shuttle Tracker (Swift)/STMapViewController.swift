@@ -452,6 +452,8 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
         // Only load overlays immediately if they've been loaded before and have now changed.
         if self.loadedStaticOverlays {
             self.loadStaticOverlays()
+            
+            self.evaluateOverlayVisibility()
         }
     }
     
