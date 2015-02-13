@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3328FD4E1A8C32AF00AAE017 /* STRoadPolylineRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3328FD4D1A8C32AF00AAE017 /* STRoadPolylineRenderer.swift */; };
-		3328FD501A8C45B100AAE017 /* STParkingLotRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3328FD4F1A8C45B100AAE017 /* STParkingLotRenderer.swift */; };
+		3328FD4E1A8C32AF00AAE017 /* STPolylineRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3328FD4D1A8C32AF00AAE017 /* STPolylineRenderer.swift */; };
+		3328FD501A8C45B100AAE017 /* STPolygonRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3328FD4F1A8C45B100AAE017 /* STPolygonRenderer.swift */; };
 		3328FD541A8C4E9500AAE017 /* STPolygon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3328FD531A8C4E9500AAE017 /* STPolygon.swift */; };
 		332E8ACD1A830B150006FC21 /* STWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 332E8ACC1A830B150006FC21 /* STWebViewController.swift */; };
 		332E8ACF1A830E490006FC21 /* STWebViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 332E8ACE1A830E490006FC21 /* STWebViewController.xib */; };
@@ -21,6 +21,7 @@
 		338B84A51A6CB6D500B20258 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 338B84A41A6CB6D500B20258 /* Images.xcassets */; };
 		338B84A81A6CB6D500B20258 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 338B84A61A6CB6D500B20258 /* LaunchScreen.xib */; };
 		338B84B41A6CB6D500B20258 /* Shuttle_Tracker__Swift_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 338B84B31A6CB6D500B20258 /* Shuttle_Tracker__Swift_Tests.swift */; };
+		33E28CBF1A8D8E1F001778CE /* STPolyline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33E28CBE1A8D8E1F001778CE /* STPolyline.swift */; };
 		33FC588C1A73EBFE002505D5 /* STRemoteConfigurationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33FC588B1A73EBFE002505D5 /* STRemoteConfigurationManager.swift */; };
 		33FC588E1A73FBCA002505D5 /* BaseDefaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = 33FC588D1A73FBCA002505D5 /* BaseDefaults.plist */; };
 		33FC58901A743332002505D5 /* NSNotificationCenter+RemoteConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33FC588F1A743332002505D5 /* NSNotificationCenter+RemoteConfiguration.swift */; };
@@ -41,8 +42,8 @@
 
 /* Begin PBXFileReference section */
 		23D462BEAC3BE6FEC16840B5 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		3328FD4D1A8C32AF00AAE017 /* STRoadPolylineRenderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = STRoadPolylineRenderer.swift; sourceTree = "<group>"; };
-		3328FD4F1A8C45B100AAE017 /* STParkingLotRenderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = STParkingLotRenderer.swift; sourceTree = "<group>"; };
+		3328FD4D1A8C32AF00AAE017 /* STPolylineRenderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = STPolylineRenderer.swift; sourceTree = "<group>"; };
+		3328FD4F1A8C45B100AAE017 /* STPolygonRenderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = STPolygonRenderer.swift; sourceTree = "<group>"; };
 		3328FD531A8C4E9500AAE017 /* STPolygon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = STPolygon.swift; sourceTree = "<group>"; };
 		332E8ACC1A830B150006FC21 /* STWebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = STWebViewController.swift; sourceTree = "<group>"; };
 		332E8ACE1A830E490006FC21 /* STWebViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = STWebViewController.xib; sourceTree = "<group>"; };
@@ -61,6 +62,7 @@
 		338B84B21A6CB6D500B20258 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		338B84B31A6CB6D500B20258 /* Shuttle_Tracker__Swift_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shuttle_Tracker__Swift_Tests.swift; sourceTree = "<group>"; };
 		33C46B981A8711E500A51E93 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
+		33E28CBE1A8D8E1F001778CE /* STPolyline.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = STPolyline.swift; sourceTree = "<group>"; };
 		33FC588B1A73EBFE002505D5 /* STRemoteConfigurationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = STRemoteConfigurationManager.swift; sourceTree = "<group>"; };
 		33FC588D1A73FBCA002505D5 /* BaseDefaults.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = BaseDefaults.plist; sourceTree = "<group>"; };
 		33FC588F1A743332002505D5 /* NSNotificationCenter+RemoteConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSNotificationCenter+RemoteConfiguration.swift"; sourceTree = "<group>"; };
@@ -117,10 +119,11 @@
 				338B849D1A6CB6D500B20258 /* STAppDelegate.swift */,
 				334338611A6D4E3C005AE689 /* STMapViewController.swift */,
 				334338631A6D50AD005AE689 /* STMasterTableViewController.swift */,
-				3328FD4F1A8C45B100AAE017 /* STParkingLotRenderer.swift */,
 				3328FD531A8C4E9500AAE017 /* STPolygon.swift */,
+				3328FD4F1A8C45B100AAE017 /* STPolygonRenderer.swift */,
+				33E28CBE1A8D8E1F001778CE /* STPolyline.swift */,
+				3328FD4D1A8C32AF00AAE017 /* STPolylineRenderer.swift */,
 				33FC588B1A73EBFE002505D5 /* STRemoteConfigurationManager.swift */,
-				3328FD4D1A8C32AF00AAE017 /* STRoadPolylineRenderer.swift */,
 				33FC58C31A74941F002505D5 /* STShuttle.swift */,
 				333D82C51A7733130077C607 /* STShuttleAnnotationView.swift */,
 				33FC58C11A748735002505D5 /* STShuttleDataManager.swift */,
@@ -335,10 +338,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				33FC58C41A74941F002505D5 /* STShuttle.swift in Sources */,
+				33E28CBF1A8D8E1F001778CE /* STPolyline.swift in Sources */,
 				334338641A6D50AD005AE689 /* STMasterTableViewController.swift in Sources */,
 				33FC58901A743332002505D5 /* NSNotificationCenter+RemoteConfiguration.swift in Sources */,
-				3328FD4E1A8C32AF00AAE017 /* STRoadPolylineRenderer.swift in Sources */,
-				3328FD501A8C45B100AAE017 /* STParkingLotRenderer.swift in Sources */,
+				3328FD4E1A8C32AF00AAE017 /* STPolylineRenderer.swift in Sources */,
+				3328FD501A8C45B100AAE017 /* STPolygonRenderer.swift in Sources */,
 				3328FD541A8C4E9500AAE017 /* STPolygon.swift in Sources */,
 				33FC58C21A748735002505D5 /* STShuttleDataManager.swift in Sources */,
 				338B849E1A6CB6D500B20258 /* STAppDelegate.swift in Sources */,

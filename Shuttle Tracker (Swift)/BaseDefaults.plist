@@ -15,7 +15,7 @@
 		<key>MapDefaultZoomLongitudeDelta</key>
 		<real>0.0274</real>
 	</dict>
-	<key>RoadOverlays</key>
+	<key>StaticOverlays</key>
 	<array/>
 	<key>ShowMapTypeSelector</key>
 	<false/>

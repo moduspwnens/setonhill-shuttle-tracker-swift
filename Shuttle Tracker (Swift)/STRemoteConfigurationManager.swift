@@ -8,6 +8,13 @@
 
 import UIKit
 import Alamofire
+import MapKit
+
+enum OverlaySpecificationType: NSInteger {
+    case ParkingLot = 0
+    case Building = 1
+    case Road = 2
+}
 
 class STRemoteConfigurationManager: NSObject {
     
@@ -128,4 +135,65 @@ class STRemoteConfigurationManager: NSObject {
         }
     }
     
+    // MARK: - Helper methods
+    
+    class func getOverlaysFromOverlaySpecifications(specifications: [NSDictionary]) -> [MKOverlay] {
+        // This function converts an array of dictionaries (in the format received from the server) into an array of the resulting MKOverlay objects ready for placing in a map view.
+        
+        var overlayArray : [MKOverlay] = []
+        
+        if let staticOverlaySpecs = NSUserDefaults.standardUserDefaults().arrayForKey("StaticOverlays") {
+            for eachSpec in staticOverlaySpecs as [NSDictionary] {
+                if let overlayId = eachSpec.valueForKey("id") as? String {
+                    if let overlayTypeNumber = eachSpec.valueForKey("type") as? NSNumber {
+                        if let overlayType = OverlaySpecificationType(rawValue: overlayTypeNumber.integerValue) {
+                            if let coordinateStringArray = eachSpec.valueForKey("coordinates") as? [String] {
+                                
+                                // Take the array of coordinates as strings, and convert it to an array of actual coordinates.
+                                var locationCoordinateArray = [CLLocationCoordinate2D]()
+                                
+                                // Keep count of the number of coordinates, as we'll need it below.
+                                var coordinateCount = 0
+                                
+                                for eachCoordinateString in coordinateStringArray {
+                                    let thisPoint = CGPointFromString(eachCoordinateString)
+                                    if thisPoint != CGPointZero {
+                                        // This string represents a valid coordinate.
+                                        locationCoordinateArray.append(
+                                            CLLocationCoordinate2DMake(
+                                                CLLocationDegrees(thisPoint.x),
+                                                CLLocationDegrees(thisPoint.y)
+                                            )
+                                        )
+                                        
+                                        // Increment count.
+                                        coordinateCount++
+                                    }
+                                }
+                                
+                                var newOverlay : MKOverlay
+                                if overlayType == .Road {
+                                    // Roads are lines. Create new polyline overlay.
+                                    let newPolylineOverlay = STPolyline(coordinates: &locationCoordinateArray, count: coordinateCount)
+                                    newPolylineOverlay.overlaySpecType = overlayType
+                                    newOverlay = newPolylineOverlay
+                                }
+                                else {
+                                    // The other overlay types are polygons. Create the new polygon overlay.
+                                    let newPolygonOverlay = STPolygon(coordinates: &locationCoordinateArray, count: coordinateCount)
+                                    newPolygonOverlay.overlaySpecType = overlayType
+                                    newOverlay = newPolygonOverlay
+                                }
+                                
+                                // Add to array of overlays.
+                                overlayArray.append(newOverlay)
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
+        return overlayArray
+    }
 }

@@ -8,11 +8,6 @@
 
 import MapKit
 
-enum PolygonOverlayType: NSInteger {
-    case ParkingLot = 0
-    case Building = 1
-}
-
 class STPolygon: MKPolygon {
-    var overlayType : PolygonOverlayType = .ParkingLot
+    var overlaySpecType : OverlaySpecificationType = .ParkingLot
 }
