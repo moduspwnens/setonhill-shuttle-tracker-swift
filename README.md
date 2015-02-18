@@ -25,6 +25,7 @@ Every five seconds, the app performs an HTTP request from a remote server for JS
 * [MBProgressHUD](https://github.com/jdg/MBProgressHUD)
 * [Reachability](https://github.com/tonymillion/Reachability)
 * [Alamofire](https://github.com/Alamofire/Alamofire)
+* [UIColor-Hex-Swift](https://github.com/yeahdongcn/UIColor-Hex-Swift)
 
 ### License ###
 
