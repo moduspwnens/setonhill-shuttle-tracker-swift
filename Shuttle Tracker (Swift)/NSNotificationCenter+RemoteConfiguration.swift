@@ -9,6 +9,7 @@
 //
 
 let remoteConfigurationNotificationPrefix = "RemoteConfigUpdated-"
+let kRemoteConfigurationCompleteNotification = "RemoteConfigUpdateComplete"
 
 extension NSNotificationCenter {
     
@@ -42,5 +43,19 @@ extension NSNotificationCenter {
             self.addObserver(notificationObserver, selector: notificationSelector, name: "\(remoteConfigurationNotificationPrefix)\(eachVariableName)", object: notificationSender)
         }
             
+    }
+    
+    func addObserverForRemoteConfigurationComplete(
+        notificationObserver: AnyObject,
+        selector notificationSelector: Selector,
+        object notificationSender: AnyObject?) {
+        
+            return self.addObserver(notificationObserver, selector: notificationSelector, name: kRemoteConfigurationCompleteNotification, object: notificationSender)
+    }
+    
+    func postRemoteConfigurationCompleteNotification(
+        object notificationSender: AnyObject?,
+        userInfo: [NSObject : AnyObject]?) {
+            self.postNotificationName(kRemoteConfigurationCompleteNotification, object: notificationSender, userInfo: userInfo)
     }
 }

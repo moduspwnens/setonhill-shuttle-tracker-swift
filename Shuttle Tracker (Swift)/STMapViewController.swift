@@ -30,6 +30,7 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
     private var lastSuccessfulStatusUpdate = NSDate(timeIntervalSince1970: 0)
     private var loadedStaticOverlays = false
     private var staticOverlayObjects = [MKOverlay]()
+    private var staticOverlayReloadQueued = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -72,6 +73,13 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
             self,
             selector: "staticOverlayColorChanged:",
             names: ["RoadOverlayOutlineColor", "RoadOverlayMainColor", "BuildingOverlayMainColor", "ParkingLotOverlayMainColor"],
+            object: nil
+        )
+        
+        // Listen for when remote config variable update processing is complete.
+        NSNotificationCenter.defaultCenter().addObserverForRemoteConfigurationComplete(
+            self,
+            selector: "remoteConfigProcessingComplete:",
             object: nil
         )
         
@@ -457,22 +465,32 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
     }
     
     func staticOverlaysChanged(notification: NSNotification) {
-        // Only load overlays immediately if they've been loaded before and have now changed.
-        if self.loadedStaticOverlays {
-            self.loadStaticOverlays()
-            
-            self.evaluateOverlayVisibility()
-        }
+        
+        // Queue static overlays for a reload after all remote config variable changes have been processed.
+        self.staticOverlayReloadQueued = true
     }
     
     func staticOverlayColorChanged(notification: NSNotification) {
-        println("Static overlay color changed.")
         
-        // Reload the static overlays if they've been loaded before.
-        if self.loadedStaticOverlays {
-            self.loadStaticOverlays()
+        // Queue static overlays for a reload after all remote config variable changes have been processed.
+        self.staticOverlayReloadQueued = true
+    }
+    
+    func remoteConfigProcessingComplete(notification: NSNotification) {
+        
+        // Handle any actions that have been queued for when remote config variable processing has completed.
+        
+        
+        if self.staticOverlayReloadQueued {
             
-            self.evaluateOverlayVisibility()
+            // Reload the static overlays if they've been loaded before.
+            if self.loadedStaticOverlays {
+                self.loadStaticOverlays()
+                
+                self.evaluateOverlayVisibility()
+            }
+            
+            self.staticOverlayReloadQueued = false
         }
     }
     

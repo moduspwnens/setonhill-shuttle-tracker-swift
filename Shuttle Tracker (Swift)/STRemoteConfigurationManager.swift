@@ -130,7 +130,11 @@ class STRemoteConfigurationManager: NSObject {
                         }
                     }
                     
-                    //println("Remote defaults updated (\(defaultsUpdated) changed).")
+                    // Send notification that remote config variable processing has completed.
+                    NSNotificationCenter.defaultCenter().postRemoteConfigurationCompleteNotification(
+                        object: self,
+                        userInfo: nil
+                    )
                 }
         }
     }
