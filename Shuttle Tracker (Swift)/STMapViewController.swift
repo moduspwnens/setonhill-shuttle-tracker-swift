@@ -649,7 +649,9 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
                 }
             }
             
-            self.mapView?.rendererForOverlay(eachOverlay).alpha = newAlpha
+            if let thisRenderer = self.mapView?.rendererForOverlay(eachOverlay) {
+                thisRenderer.alpha = newAlpha
+            }
         }
         
     }
