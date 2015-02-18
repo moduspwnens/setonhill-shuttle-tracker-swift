@@ -31,4 +31,16 @@ extension NSNotificationCenter {
                                                 object notificationSender: AnyObject?) {
         return self.addObserver(notificationObserver, selector: notificationSelector, name: "\(remoteConfigurationNotificationPrefix)\(configurationVariableName!)", object: notificationSender)
     }
+    
+    func addObserverForRemoteConfigurationUpdate(
+        notificationObserver: AnyObject,
+        selector notificationSelector: Selector,
+        names configurationVariableNames: [String],
+        object notificationSender: AnyObject?) {
+        
+        for eachVariableName in configurationVariableNames {
+            self.addObserver(notificationObserver, selector: notificationSelector, name: "\(remoteConfigurationNotificationPrefix)\(eachVariableName)", object: notificationSender)
+        }
+            
+    }
 }
