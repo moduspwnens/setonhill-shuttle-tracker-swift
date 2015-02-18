@@ -574,7 +574,7 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
             return lineRenderer
         }
         else if overlay is STPolygon {
-            let polygonRenderer = STPolygonRenderer(polygon: overlay as MKPolygon)
+            let polygonRenderer = STPolygonRenderer(customPolygon: overlay as STPolygon)
             return polygonRenderer
         }
         

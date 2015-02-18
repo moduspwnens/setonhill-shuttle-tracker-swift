@@ -8,6 +8,9 @@
 
 import MapKit
 
+let parkingLotColor = UIColor(white: 200/255.0, alpha: 1)
+let buildingColor = UIColor(red: 197/255.0, green: 30/255.0, blue: 58/255.0, alpha: 1)
+
 class STPolygonRenderer: MKPolygonRenderer {
     
     var overlaySpecType : OverlaySpecificationType = .ParkingLot
@@ -33,10 +36,15 @@ class STPolygonRenderer: MKPolygonRenderer {
     
     func performDefaultInitialization() {
         
+        // Buildings and parking lots won't have outlines.
+        self.strokeColor = UIColor.clearColor()
+        self.lineWidth = 0
+        
         if self.overlaySpecType == .ParkingLot {
-            self.fillColor = UIColor.grayColor()
-            self.strokeColor = UIColor.whiteColor()
-            self.lineWidth = 2
+            self.fillColor = parkingLotColor
+        }
+        else if self.overlaySpecType == .Building {
+            self.fillColor = buildingColor
         }
     }
     
