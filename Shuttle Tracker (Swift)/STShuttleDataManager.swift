@@ -66,7 +66,13 @@ class STShuttleDataManager: NSObject {
             "uuid" : UIDevice.currentDevice().identifierForVendor.UUIDString,
             
             // Include the app's selected localization, in case we want to make any changes to the configuration remotely because of it.
-            "locale" : NSBundle.mainBundle().preferredLocalizations[0] as String
+            "locale" : NSBundle.mainBundle().preferredLocalizations[0] as String,
+            
+            // Include the iOS version.
+            "ios_version" : UIDevice.currentDevice().systemVersion,
+            
+            // Include device model.
+            "model" : UIDevice.currentDevice().model
         ]
         
         STAppDelegate.didStartNetworking()
