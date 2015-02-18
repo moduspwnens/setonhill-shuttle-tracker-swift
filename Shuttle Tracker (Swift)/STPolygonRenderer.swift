@@ -8,8 +8,8 @@
 
 import MapKit
 
-let parkingLotColor = UIColor(white: 200/255.0, alpha: 1)
-let buildingColor = UIColor(red: 197/255.0, green: 30/255.0, blue: 58/255.0, alpha: 1)
+let parkingLotColor = UIColor(rgba: "#C8C8C8")
+let buildingColor = UIColor(rgba: "#C51E3A")
 
 class STPolygonRenderer: MKPolygonRenderer {
     

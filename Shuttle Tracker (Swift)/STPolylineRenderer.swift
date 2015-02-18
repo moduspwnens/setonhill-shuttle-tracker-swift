@@ -9,7 +9,8 @@
 import MapKit
 
 // This is a light brown that matches the road outlines in MapKit.
-let roadOutlineColor = UIColor(red: 200/255.0, green: 186/255.0, blue: 165/255.0, alpha: 1)
+let roadOutlineColor = UIColor(rgba: "#C8BAB5")
+let roadStrokeColor = UIColor.whiteColor()
 
 class STPolylineRenderer: MKPolylineRenderer {
     
@@ -37,7 +38,7 @@ class STPolylineRenderer: MKPolylineRenderer {
     func performDefaultInitialization() {
         switch self.overlaySpecType {
         case .Road:
-            self.strokeColor = UIColor.whiteColor()
+            self.strokeColor = roadStrokeColor
             self.lineCap = kCGLineCapButt
         default:
             "" // Do nothing.

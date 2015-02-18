@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3313BBEE1A94AA8B00DC7B5E /* UIColor+Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3313BBED1A94AA8B00DC7B5E /* UIColor+Hex.swift */; };
 		3328FD4E1A8C32AF00AAE017 /* STPolylineRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3328FD4D1A8C32AF00AAE017 /* STPolylineRenderer.swift */; };
 		3328FD501A8C45B100AAE017 /* STPolygonRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3328FD4F1A8C45B100AAE017 /* STPolygonRenderer.swift */; };
 		3328FD541A8C4E9500AAE017 /* STPolygon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3328FD531A8C4E9500AAE017 /* STPolygon.swift */; };
@@ -42,6 +43,7 @@
 
 /* Begin PBXFileReference section */
 		23D462BEAC3BE6FEC16840B5 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		3313BBED1A94AA8B00DC7B5E /* UIColor+Hex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Hex.swift"; sourceTree = "<group>"; };
 		3328FD4D1A8C32AF00AAE017 /* STPolylineRenderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = STPolylineRenderer.swift; sourceTree = "<group>"; };
 		3328FD4F1A8C45B100AAE017 /* STPolygonRenderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = STPolygonRenderer.swift; sourceTree = "<group>"; };
 		3328FD531A8C4E9500AAE017 /* STPolygon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = STPolygon.swift; sourceTree = "<group>"; };
@@ -116,6 +118,7 @@
 			isa = PBXGroup;
 			children = (
 				33FC588F1A743332002505D5 /* NSNotificationCenter+RemoteConfiguration.swift */,
+				3313BBED1A94AA8B00DC7B5E /* UIColor+Hex.swift */,
 				338B849D1A6CB6D500B20258 /* STAppDelegate.swift */,
 				334338611A6D4E3C005AE689 /* STMapViewController.swift */,
 				334338631A6D50AD005AE689 /* STMasterTableViewController.swift */,
@@ -344,6 +347,7 @@
 				3328FD4E1A8C32AF00AAE017 /* STPolylineRenderer.swift in Sources */,
 				3328FD501A8C45B100AAE017 /* STPolygonRenderer.swift in Sources */,
 				3328FD541A8C4E9500AAE017 /* STPolygon.swift in Sources */,
+				3313BBEE1A94AA8B00DC7B5E /* UIColor+Hex.swift in Sources */,
 				33FC58C21A748735002505D5 /* STShuttleDataManager.swift in Sources */,
 				338B849E1A6CB6D500B20258 /* STAppDelegate.swift in Sources */,
 				334338621A6D4E3C005AE689 /* STMapViewController.swift in Sources */,
