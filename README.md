@@ -11,6 +11,9 @@ A universal iPhone / iPad shuttle tracker app written in Swift.
 * Map type selector control.
 * Several remotely-settable configuration variables for easy customization (e.g. data refresh interval, map center, shuttle animation duration).
 
+### Release Status ###
+Currently the Objective-C version of the app is available [on the App Store as Seton Hill Shuttle Tracker](https://itunes.apple.com/us/app/seton-hill-shuttle-tracker/id935409158?mt=8). That version supports back to iOS 5.1.1, and it'll continue to be available for devices that can't run iOS 8 after this Swift version replaces it. This Swift implementation will be the app supported for the latest available iOS version going forward.
+
 ### How does it work? ###
 Every five seconds, the app performs an HTTP request from a remote server for JSON-serialized data describing the university's shuttle bus locations. The devices are indicated on the screen as colored dots and their movements are animated across the screen.
 
