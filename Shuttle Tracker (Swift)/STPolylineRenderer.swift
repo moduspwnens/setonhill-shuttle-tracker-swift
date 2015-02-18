@@ -8,6 +8,9 @@
 
 import MapKit
 
+// This is a light brown that matches the road outlines in MapKit.
+let roadOutlineColor = UIColor(red: 200/255.0, green: 186/255.0, blue: 165/255.0, alpha: 1)
+
 class STPolylineRenderer: MKPolylineRenderer {
     
     var overlaySpecType : OverlaySpecificationType = .ParkingLot
@@ -35,6 +38,7 @@ class STPolylineRenderer: MKPolylineRenderer {
         switch self.overlaySpecType {
         case .Road:
             self.strokeColor = UIColor.whiteColor()
+            self.lineCap = kCGLineCapButt
         default:
             "" // Do nothing.
         }
@@ -44,9 +48,44 @@ class STPolylineRenderer: MKPolylineRenderer {
         super.applyStrokePropertiesToContext(context, atZoomScale: zoomScale)
         
         if self.overlaySpecType == .Road {
-            // These will be smaller roads, so let's make the lines a fraction of the road width at this scale.
-            let lineWidth = MKRoadWidthAtZoomScale(zoomScale) * 0.6
-            CGContextSetLineWidth(context, lineWidth)
+            
+            // First, let's decide how wide the line should be based on how far the map is zoomed in.
+            var baseWidth : CGFloat = 0
+            
+            if zoomScale < 0.03125 {
+                // We're zoomed out pretty far.
+                baseWidth = 0
+            }
+            else if zoomScale <= 0.0625 {
+                // We're zoomed out a little. MKRoadWidthAtZoomScale will return the size of a bigger road, so we need to adjust it to be smaller.
+                baseWidth = MKRoadWidthAtZoomScale(zoomScale) * 0.4
+            }
+            else {
+                // We're zoomed in pretty close. Base our width off of the default road width, but not the full size.
+                baseWidth = MKRoadWidthAtZoomScale(zoomScale) * 0.8
+            }
+            
+            /*
+                Method adapted from:
+                http://adrian.schoenig.me/blog/2013/02/21/drawing-multi-coloured-lines-on-an-mkmapview/
+            */
+            
+            // Draw the first (thicker) line, which will be the color of the outline.
+            CGContextAddPath(context, self.path);
+            CGContextSetStrokeColorWithColor(context, roadOutlineColor.CGColor);
+            CGContextSetLineWidth(context, baseWidth * 1.5);
+            CGContextSetLineCap(context, self.lineCap);
+            CGContextStrokePath(context);
+            
+            // Draw the main line, which will cover the middle of the previous line.
+            CGContextAddPath(context, self.path);
+            CGContextSetStrokeColorWithColor(context, self.strokeColor.CGColor);
+            CGContextSetLineWidth(context, baseWidth);
+            CGContextSetLineCap(context, self.lineCap);
+            CGContextStrokePath(context);
+            
         }
+        
+        
     }
 }
