@@ -178,7 +178,7 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
             let newOverlayArray = STRemoteConfigurationManager.getOverlaysFromOverlaySpecifications(newOverlaySpecArray)
             
             // Add the overlays to the map view.
-            self.mapView?.addOverlays(newOverlayArray)
+            self.mapView?.addOverlays(newOverlayArray, level: .AboveRoads)
             
             // Add the overlays to our array of static overlay objects.
             self.staticOverlayObjects += newOverlayArray
