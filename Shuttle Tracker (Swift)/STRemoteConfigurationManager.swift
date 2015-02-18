@@ -60,81 +60,99 @@ class STRemoteConfigurationManager: NSObject {
                 
                 STAppDelegate.didStopNetworking()
                 
-                if error != nil || JSON == nil {
+                if let error = error {
                     println("Unable to update remote configuration. An error occurred while contacting server.")
                     
                     // I don't have it alerting the user or anything because this is just the remote config. This method will be called again when they re-open the app, and unless there were big changes in the config, the app should still "just work."
                 }
-                else {
-                    // Received valid JSON response! Let's get the values out, save them to the defaults, and send notifications that they've been updated.
+                else if let JSON : AnyObject = JSON {
+                    // Received valid JSON response.
                     
-                    // Let's keep a counter so that we can log how many were changed.
-                    var defaultsUpdated = 0
                     
-                    for (eachKey, newValue) in JSON! as [String: AnyObject] {
-                        let oldValueWrapper : AnyObject? = NSUserDefaults.standardUserDefaults().objectForKey(eachKey)
+                    // Make sure it's a [String:AnyObject]  Dictionary like we're expecting.
+                    if let JSON : [String:AnyObject] = JSON as? [String:AnyObject] {
                         
-                        if oldValueWrapper == nil {
-                            // There is no value already set for this default, which means it wasn't in the base defaults. If it's not in the base defaults, there's no logic for doing anything with it, so it can be safely ignored.
-                            continue
+                        for (eachKey, newValue) in JSON {
+                            
+                            // Make sure a value for this configuration already exists. All values referenced in code will have been set previously by the base defaults or a previous server response.
+                            if let oldValue : AnyObject = NSUserDefaults.standardUserDefaults().objectForKey(eachKey) {
+                                
+                                // Let's keep track of whether or not it was updated. If it's the same, then we don't need to do anything.
+                                var valueWasUpdated = false
+                                
+                                // Let's also keep track of whether or not the value was validated, so we can log a problem if it's not.
+                                var valueWasValidated = false
+                                
+                                // Use datatype-specific equality comparisons.
+                                if let oldValue = oldValue as? NSNumber {
+                                    if let newValue = newValue as? NSNumber {
+                                        valueWasValidated = true
+                                        valueWasUpdated = oldValue != newValue
+                                    }
+                                }
+                                else if let oldValue = oldValue as? String {
+                                    if let newValue = newValue as? String {
+                                        valueWasValidated = true
+                                        valueWasUpdated = oldValue != newValue
+                                    }
+                                }
+                                else if let oldValue = oldValue as? NSArray {
+                                    if let newValue = newValue as? NSArray {
+                                        valueWasValidated = true
+                                        valueWasUpdated = !oldValue.isEqualToArray(newValue)
+                                    }
+                                }
+                                else if let oldValue = oldValue as? NSDictionary {
+                                    if let newValue = newValue as? NSDictionary {
+                                        valueWasValidated = true
+                                        valueWasUpdated = !oldValue.isEqualToDictionary(newValue)
+                                    }
+                                }
+                                
+                                if !valueWasValidated {
+                                    // The datatypes between the old and new value don't match. We should skip processing this because if code elsewhere is expecting, say, an array, and it finds a string, it will likely cause a crash.
+                                    println("Data type mismatch, or unknown data type for \(eachKey) : \(oldValue) : \(newValue)")
+                                    continue
+                                }
+                                
+                                if (valueWasUpdated) {
+                                    
+                                    // The value changed, so update the defaults.
+                                    NSUserDefaults.standardUserDefaults().setObject(newValue, forKey: eachKey)
+                                    
+                                    // Send along the key name, old value, and new value so the receiving function can determine what exactly changed (if necessary).
+                                    
+                                    // Send the notification.
+                                    NSNotificationCenter.defaultCenter()
+                                        .postRemoteConfigurationUpdateNotificationName(
+                                            eachKey,
+                                            object:self,
+                                            userInfo: [
+                                                "key" : eachKey,
+                                                "oldValue" : oldValue,
+                                                "newValue" : newValue
+                                            ]
+                                    )
+                                    
+                                }
+                            }
+                            else {
+                                println("Ignoring unknown configuration variable: \(eachKey).")
+                            }
                         }
                         
-                        // At this point, we may as well unwrap it since we know it's not nil.
-                        let oldValue : AnyObject = oldValueWrapper!
-                        
-                        // Let's keep track of whether or not it was updated. If it's the same, then we don't need to do anything.
-                        var valueWasUpdated = false
-                        
-                        // Use datatype-specific equality comparisons.
-                        if oldValue is NSNumber && newValue is NSNumber {
-                            valueWasUpdated = !( oldValue.isEqualToNumber(newValue as NSNumber) )
-                        }
-                        else if oldValue is String && newValue is String {
-                            valueWasUpdated = !( oldValue.isEqualToString(newValue as String) )
-                        }
-                        else if oldValue is NSArray && newValue is NSArray {
-                            valueWasUpdated = !( oldValue.isEqualToArray(newValue as NSArray) )
-                        }
-                        else if oldValue is NSDictionary && newValue is NSDictionary {
-                            valueWasUpdated = !( oldValue.isEqualToDictionary(newValue as NSDictionary) )
-                        }
-                        else {
-                            // The datatypes between the old and new value don't match. We should skip processing this because if code elsewhere is expecting, say, an array, and it finds a string, it will likely cause a crash.
-                            print("Data type mismatch, or unknown data type for \(eachKey) : \(oldValue) : \(newValue)")
-                            continue
-                        }
-                        
-                        if (valueWasUpdated) {
-                            
-                            // The value changed, so update the defaults.
-                            NSUserDefaults.standardUserDefaults().setObject(newValue, forKey: eachKey)
-                            
-                            // Update our counter.
-                            defaultsUpdated++
-                            
-                            // Send along the key name, old value, and new value so the receiving function can determine what exactly changed (if necessary).
-                            var notificationInfo : [NSObject : AnyObject]! = [
-                                "key" : eachKey,
-                                "oldValue" : oldValue,
-                                "newValue" : newValue
-                            ]
-                            
-                            // Send the notification.
-                            NSNotificationCenter.defaultCenter()
-                                .postRemoteConfigurationUpdateNotificationName(
-                                    eachKey,
-                                    object:self,
-                                    userInfo:notificationInfo
-                            )
-                            
-                        }
+                        // Send notification that remote config variable processing has completed.
+                        NSNotificationCenter.defaultCenter().postRemoteConfigurationCompleteNotification(
+                            object: self,
+                            userInfo: nil
+                        )
                     }
-                    
-                    // Send notification that remote config variable processing has completed.
-                    NSNotificationCenter.defaultCenter().postRemoteConfigurationCompleteNotification(
-                        object: self,
-                        userInfo: nil
-                    )
+                    else {
+                        println("JSON response not of type: [String:AnyObject].")
+                    }
+                }
+                else {
+                    println("No error, but JSON response object is nil.")
                 }
         }
     }
