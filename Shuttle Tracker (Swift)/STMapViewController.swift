@@ -67,6 +67,14 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
             object: nil
         )
         
+        // Listen for notification of when static overlays are updated.
+        NSNotificationCenter.defaultCenter().addObserverForRemoteConfigurationUpdate(
+            self,
+            selector: "staticOverlayColorChanged:",
+            names: ["RoadOverlayOutlineColor", "RoadOverlayMainColor", "BuildingOverlayMainColor", "ParkingLotOverlayMainColor"],
+            object: nil
+        )
+        
         // Listen for notification of when the app will enter the foreground.
         NSNotificationCenter.defaultCenter().addObserver(
             self,
@@ -450,6 +458,17 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
     
     func staticOverlaysChanged(notification: NSNotification) {
         // Only load overlays immediately if they've been loaded before and have now changed.
+        if self.loadedStaticOverlays {
+            self.loadStaticOverlays()
+            
+            self.evaluateOverlayVisibility()
+        }
+    }
+    
+    func staticOverlayColorChanged(notification: NSNotification) {
+        println("Static overlay color changed.")
+        
+        // Reload the static overlays if they've been loaded before.
         if self.loadedStaticOverlays {
             self.loadStaticOverlays()
             

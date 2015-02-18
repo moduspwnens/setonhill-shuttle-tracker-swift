@@ -8,10 +8,6 @@
 
 import MapKit
 
-// This is a light brown that matches the road outlines in MapKit.
-let roadOutlineColor = UIColor(rgba: "#C8BAB5")
-let roadStrokeColor = UIColor.whiteColor()
-
 class STPolylineRenderer: MKPolylineRenderer {
     
     var overlaySpecType : OverlaySpecificationType = .ParkingLot
@@ -38,7 +34,7 @@ class STPolylineRenderer: MKPolylineRenderer {
     func performDefaultInitialization() {
         switch self.overlaySpecType {
         case .Road:
-            self.strokeColor = roadStrokeColor
+            self.strokeColor = UIColor(rgba: NSUserDefaults.standardUserDefaults().stringForKey("RoadOverlayMainColor")!)
             self.lineCap = kCGLineCapButt
         default:
             "" // Do nothing.
@@ -73,7 +69,7 @@ class STPolylineRenderer: MKPolylineRenderer {
             
             // Draw the first (thicker) line, which will be the color of the outline.
             CGContextAddPath(context, self.path);
-            CGContextSetStrokeColorWithColor(context, roadOutlineColor.CGColor);
+            CGContextSetStrokeColorWithColor(context, UIColor(rgba: NSUserDefaults.standardUserDefaults().stringForKey("RoadOverlayOutlineColor")!).CGColor);
             CGContextSetLineWidth(context, baseWidth * 1.5);
             CGContextSetLineCap(context, self.lineCap);
             CGContextStrokePath(context);

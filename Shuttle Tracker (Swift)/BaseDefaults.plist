@@ -4,6 +4,8 @@
 <dict>
 	<key>AppConfigRemoteURL</key>
 	<string>http://s.setonhill.edu/ios/config.cfm</string>
+	<key>BuildingOverlayMainColor</key>
+	<string>#C51E3A</string>
 	<key>MapLayout</key>
 	<dict>
 		<key>MapDefaultCenterLatitude</key>
@@ -15,6 +17,12 @@
 		<key>MapDefaultZoomLongitudeDelta</key>
 		<real>0.0274</real>
 	</dict>
+	<key>ParkingLotOverlayMainColor</key>
+	<string>#C8C8C8</string>
+	<key>RoadOverlayMainColor</key>
+	<string>#FFFFFF</string>
+	<key>RoadOverlayOutlineColor</key>
+	<string>#C8BAB5</string>
 	<key>StaticOverlays</key>
 	<array/>
 	<key>ShowMapTypeSelector</key>

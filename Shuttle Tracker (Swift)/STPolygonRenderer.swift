@@ -8,9 +8,6 @@
 
 import MapKit
 
-let parkingLotColor = UIColor(rgba: "#C8C8C8")
-let buildingColor = UIColor(rgba: "#C51E3A")
-
 class STPolygonRenderer: MKPolygonRenderer {
     
     var overlaySpecType : OverlaySpecificationType = .ParkingLot
@@ -41,10 +38,10 @@ class STPolygonRenderer: MKPolygonRenderer {
         self.lineWidth = 0
         
         if self.overlaySpecType == .ParkingLot {
-            self.fillColor = parkingLotColor
+            self.fillColor = UIColor(rgba: NSUserDefaults.standardUserDefaults().stringForKey("ParkingLotOverlayMainColor")!)
         }
         else if self.overlaySpecType == .Building {
-            self.fillColor = buildingColor
+            self.fillColor = UIColor(rgba: NSUserDefaults.standardUserDefaults().stringForKey("BuildingOverlayMainColor")!)
         }
     }
     
