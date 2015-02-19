@@ -15,6 +15,8 @@ let kUserSelectedShowMapNotification = "kUserSelectedShowMapNotification"
 
 let kLastSelectedMapTypeKey = "LastSelectedMapType"
 
+let kLastSelectedMapLocationKey = "LastSelectedMapLocation"
+
 class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewControllerDelegate, UIAlertViewDelegate {
     
     @IBOutlet weak var mapView: MKMapView?
@@ -216,22 +218,8 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
     
     func centerAndZoomMap(animated: Bool) {
         
-        // Create the region from the variables saved in defaults.
-        let mapLayoutDictionary : NSDictionary = NSUserDefaults.standardUserDefaults().dictionaryForKey("MapLayout")!
-        
-        let defaultRegion = MKCoordinateRegionMake(
-            CLLocationCoordinate2DMake(
-                (mapLayoutDictionary.valueForKey("MapDefaultCenterLatitude") as NSNumber).doubleValue,
-                (mapLayoutDictionary.valueForKey("MapDefaultCenterLongitude") as NSNumber).doubleValue
-            ),
-            MKCoordinateSpanMake(
-                (mapLayoutDictionary.valueForKey("MapDefaultZoomLatitudeDelta") as NSNumber).doubleValue,
-                (mapLayoutDictionary.valueForKey("MapDefaultZoomLongitudeDelta") as NSNumber).doubleValue
-            )
-        )
-        
-        // Now set the mapview to use it.
-        self.mapView?.setRegion(defaultRegion, animated: animated)
+        // Set the map view to use the default region.
+        self.mapView?.setRegion(self.getDefaultMapRegion(), animated: animated)
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -602,6 +590,10 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
     }
     
     func mapView(mapView: MKMapView!, regionDidChangeAnimated animated: Bool) {
+        /*
+        println("Center: \(mapView.region.center.latitude) \(mapView.region.center.longitude)")
+        println("Span: \(mapView.region.span.latitudeDelta) \(mapView.region.span.longitudeDelta)")
+        */
         self.updateVisibleDeviceCount()
     }
     
@@ -691,6 +683,42 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
             }
         }
         
+    }
+    
+    func getDefaultMapRegion() -> MKCoordinateRegion {
+        
+        // Determine the default map region. This should basically be either the last map location the user selected, or the first location in the list.
+        
+        let mapLocationArray = NSUserDefaults.standardUserDefaults().arrayForKey("ShowLocations")! as [[String:AnyObject]]
+        
+        // Loop through the map location dictionaries for an ID that matches the one the user last selected.
+        var targetLocationDictionary : [String:AnyObject]?
+        if let lastSelectedLocationID = NSUserDefaults.standardUserDefaults().stringForKey(kLastSelectedMapLocationKey)? {
+            for eachLocationDictionary in mapLocationArray {
+                if let eachLocationID = eachLocationDictionary["ID"]? as? String {
+                    if eachLocationID == lastSelectedLocationID {
+                        targetLocationDictionary = eachLocationDictionary
+                        break
+                    }
+                }
+            }
+        }
+        
+        if targetLocationDictionary == nil {
+            // No location was previously selected, or if it was, it no longer exists. Use the first map location available.
+            targetLocationDictionary = mapLocationArray[0]
+        }
+        
+        let defaultRegion = MKCoordinateRegionMake(
+            CLLocationCoordinate2DMake(
+                (targetLocationDictionary!["Latitude"] as NSNumber).doubleValue,
+                (targetLocationDictionary!["Longitude"] as NSNumber).doubleValue),
+            MKCoordinateSpanMake(
+                (targetLocationDictionary!["LatitudeDelta"] as NSNumber).doubleValue,
+                (targetLocationDictionary!["LongitudeDelta"] as NSNumber).doubleValue)
+        )
+        
+        return defaultRegion
     }
 
 }

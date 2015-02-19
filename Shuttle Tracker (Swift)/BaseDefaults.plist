@@ -6,17 +6,6 @@
 	<string>http://s.setonhill.edu/ios/config.cfm</string>
 	<key>BuildingOverlayMainColor</key>
 	<string>#C51E3A</string>
-	<key>MapLayout</key>
-	<dict>
-		<key>MapDefaultCenterLatitude</key>
-		<real>40.3064196</real>
-		<key>MapDefaultCenterLongitude</key>
-		<real>-79.5507295</real>
-		<key>MapDefaultZoomLatitudeDelta</key>
-		<real>0.023</real>
-		<key>MapDefaultZoomLongitudeDelta</key>
-		<real>0.0274</real>
-	</dict>
 	<key>ParkingLotOverlayMainColor</key>
 	<string>#C8C8C8</string>
 	<key>RoadOverlayMainColor</key>
@@ -25,6 +14,37 @@
 	<string>#C8BAB5</string>
 	<key>StaticOverlays</key>
 	<array/>
+	<key>ShowLocations</key>
+	<array>
+		<dict>
+			<key>ID</key>
+			<string>shu-maincampus</string>
+			<key>Name</key>
+			<string>Seton Hill</string>
+			<key>Latitude</key>
+			<real>40.3102735</real>
+			<key>Longitude</key>
+			<real>-79.55498679999999</real>
+			<key>LatitudeDelta</key>
+			<real>0.0119</real>
+			<key>LongitudeDelta</key>
+			<real>0.0166</real>
+		</dict>
+		<dict>
+			<key>ID</key>
+			<string>shu-downtown</string>
+			<key>Name</key>
+			<string>Downtown</string>
+			<key>Latitude</key>
+			<real>40.3064196</real>
+			<key>Longitude</key>
+			<real>-79.5507295</real>
+			<key>LatitudeDelta</key>
+			<real>0.023</real>
+			<key>LongitudeDelta</key>
+			<real>0.0274</real>
+		</dict>
+	</array>
 	<key>ShowMapTypeSelector</key>
 	<false/>
 	<key>ShuttleAnimationDuration</key>

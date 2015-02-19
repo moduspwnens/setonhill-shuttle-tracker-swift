@@ -69,6 +69,14 @@ class STMasterTableViewController: UITableViewController, UISplitViewControllerD
             object: nil
         )
         
+        // Listen for notification and act appropriately if the remotely-specified ShowLocations variable changes.
+        NSNotificationCenter.defaultCenter().addObserverForRemoteConfigurationUpdate(
+            self,
+            selector: "showLocationsChanged:",
+            name: "ShowLocations",
+            object: nil
+        )
+        
         // Fix for the quick "jump" it otherwise makes to scoot itself under the navigation bar when it's first shown.
         self.edgesForExtendedLayout = .None
     }
@@ -125,7 +133,7 @@ class STMasterTableViewController: UITableViewController, UISplitViewControllerD
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // Return the number of rows in the section.
         if section == kShowMapTableSectionIndex {
-            return 1
+            return self.getShowMapLocations().count
         }
         else if section == kShuttleTableSectionIndex {
             return self.visibleShuttleArray.count
@@ -170,7 +178,9 @@ class STMasterTableViewController: UITableViewController, UISplitViewControllerD
                 cell = UITableViewCell(style: .Subtitle, reuseIdentifier: kTableViewShowMapCellReuseIdentifier)
             }
             
-            cell?.textLabel?.text = NSLocalizedString("Main Campus", comment:"")
+            let thisLocation = self.getShowMapLocations()[indexPath.row]
+            
+            cell?.textLabel?.text = thisLocation["Name"] as? String
             cell?.accessoryType = .DisclosureIndicator
         }
         else if indexPath.section == kShuttleTableSectionIndex {
@@ -263,10 +273,16 @@ class STMasterTableViewController: UITableViewController, UISplitViewControllerD
             // Send focus to detail view controller.
             self.splitViewController?.showDetailViewController(self.detailNavController!, sender: self)
             
-            // Re-center the map on main campus.
+            // Get the map location that corresponds to this row.
+            let thisLocation = self.getShowMapLocations()[indexPath.row]
+            
+            // Set the location's identifier as the "last selected" identifier.
+            NSUserDefaults.standardUserDefaults().setObject(thisLocation["ID"]! as String, forKey: kLastSelectedMapLocationKey)
+            
+            // Re-center the map on the "last selected" map location.
             NSNotificationCenter.defaultCenter().postNotificationName(
                 kUserSelectedShowMapNotification,
-                object: nil,
+                object: self,
                 userInfo: nil
             )
             
@@ -364,10 +380,19 @@ class STMasterTableViewController: UITableViewController, UISplitViewControllerD
         self.tableView.reloadSections(NSIndexSet(index: kSchedulesTableSectionIndex), withRowAnimation: .None)
     }
     
+    func showLocationsChanged(notification: NSNotification) {
+        // Tell table view to reload the table section that shows map locations.
+        self.tableView.reloadSections(NSIndexSet(index: kShowMapTableSectionIndex), withRowAnimation: .None)
+    }
+    
     // MARK: - Convenience methods
     
     func getShuttleScheduleLinks() -> [AnyObject] {
         return NSUserDefaults.standardUserDefaults().arrayForKey("ShuttleScheduleLinks")!
+    }
+    
+    func getShowMapLocations() -> [[String:AnyObject]] {
+        return NSUserDefaults.standardUserDefaults().arrayForKey("ShowLocations")! as [[String:AnyObject]]
     }
     
     dynamic var shouldShowMapTypeSelector:Bool {
