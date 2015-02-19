@@ -189,9 +189,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		338B84971A6CB6D500B20258 /* Shuttle Tracker (Swift) */ = {
+		338B84971A6CB6D500B20258 /* Shuttle Tracker */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 338B84B71A6CB6D500B20258 /* Build configuration list for PBXNativeTarget "Shuttle Tracker (Swift)" */;
+			buildConfigurationList = 338B84B71A6CB6D500B20258 /* Build configuration list for PBXNativeTarget "Shuttle Tracker" */;
 			buildPhases = (
 				AE58EFE3E46C948E4BA674BC /* Check Pods Manifest.lock */,
 				338B84941A6CB6D500B20258 /* Sources */,
@@ -204,7 +204,7 @@
 			);
 			dependencies = (
 			);
-			name = "Shuttle Tracker (Swift)";
+			name = "Shuttle Tracker";
 			productName = "Shuttle Tracker (Swift)";
 			productReference = 338B84981A6CB6D500B20258 /* Shuttle Tracker (Swift).app */;
 			productType = "com.apple.product-type.application";
@@ -259,7 +259,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				338B84971A6CB6D500B20258 /* Shuttle Tracker (Swift) */,
+				338B84971A6CB6D500B20258 /* Shuttle Tracker */,
 				338B84AC1A6CB6D500B20258 /* Shuttle Tracker (Swift)Tests */,
 			);
 		};
@@ -370,7 +370,7 @@
 /* Begin PBXTargetDependency section */
 		338B84AF1A6CB6D500B20258 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 338B84971A6CB6D500B20258 /* Shuttle Tracker (Swift) */;
+			target = 338B84971A6CB6D500B20258 /* Shuttle Tracker */;
 			targetProxy = 338B84AE1A6CB6D500B20258 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -548,7 +548,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		338B84B71A6CB6D500B20258 /* Build configuration list for PBXNativeTarget "Shuttle Tracker (Swift)" */ = {
+		338B84B71A6CB6D500B20258 /* Build configuration list for PBXNativeTarget "Shuttle Tracker" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				338B84B81A6CB6D500B20258 /* Debug */,
