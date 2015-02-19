@@ -33,7 +33,7 @@ install_framework()
     echo "rsync -av \"${SWIFT_STDLIB_PATH}/${lib}\" \"${destination}\""
     rsync -av "${SWIFT_STDLIB_PATH}/${lib}" "${destination}"
     if [ "${CODE_SIGNING_REQUIRED}" == "YES" ]; then
-        code_sign "${destination}/${lib}"
+      code_sign "${destination}/${lib}"
     fi
   done
 }

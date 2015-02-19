@@ -54,7 +54,7 @@
 		334338611A6D4E3C005AE689 /* STMapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = STMapViewController.swift; sourceTree = "<group>"; };
 		334338631A6D50AD005AE689 /* STMasterTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = STMasterTableViewController.swift; sourceTree = "<group>"; };
 		334338651A6D77DB005AE689 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
-		338B84981A6CB6D500B20258 /* Shuttle Tracker (Swift).app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Shuttle Tracker (Swift).app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		338B84981A6CB6D500B20258 /* Shuttle Tracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Shuttle Tracker.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		338B849C1A6CB6D500B20258 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		338B849D1A6CB6D500B20258 /* STAppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STAppDelegate.swift; sourceTree = "<group>"; };
 		338B84A21A6CB6D500B20258 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -108,7 +108,7 @@
 		338B84991A6CB6D500B20258 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				338B84981A6CB6D500B20258 /* Shuttle Tracker (Swift).app */,
+				338B84981A6CB6D500B20258 /* Shuttle Tracker.app */,
 				338B84AD1A6CB6D500B20258 /* Shuttle Tracker (Swift)Tests.xctest */,
 			);
 			name = Products;
@@ -206,7 +206,7 @@
 			);
 			name = "Shuttle Tracker";
 			productName = "Shuttle Tracker (Swift)";
-			productReference = 338B84981A6CB6D500B20258 /* Shuttle Tracker (Swift).app */;
+			productReference = 338B84981A6CB6D500B20258 /* Shuttle Tracker.app */;
 			productType = "com.apple.product-type.application";
 		};
 		338B84AC1A6CB6D500B20258 /* Shuttle Tracker (Swift)Tests */ = {
