@@ -428,6 +428,11 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0640;
+				TargetAttributes = {
+					9C058FE68F928E8FE7E1690C = {
+						DevelopmentTeam = LSS8D2J74J;
+					};
+				};
 			};
 			buildConfigurationList = 22E30155A5E73D606FE09F7D /* Build configuration list for PBXProject "Pods" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -520,7 +525,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 608F84D61AC01DA0287AE21E /* Pods.release.xcconfig */;
 			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -549,6 +554,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = D9CDCE15F786DEA296D18AC6 /* Pods-Alamofire-Private.xcconfig */;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
@@ -577,7 +583,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = D6019FF7F7E1F9F67213A35B /* Pods-MBProgressHUD-Private.xcconfig */;
 			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -592,6 +599,7 @@
 				MODULEMAP_FILE = "Target Support Files/Pods-MBProgressHUD/Pods-MBProgressHUD.modulemap";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_NAME = MBProgressHUD;
+				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -604,6 +612,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = D6019FF7F7E1F9F67213A35B /* Pods-MBProgressHUD-Private.xcconfig */;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
@@ -619,6 +628,7 @@
 				MODULEMAP_FILE = "Target Support Files/Pods-MBProgressHUD/Pods-MBProgressHUD.modulemap";
 				MTL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_NAME = MBProgressHUD;
+				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -631,7 +641,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 25C515F28BC6F616A6DDE5BB /* Pods-Reachability-Private.xcconfig */;
 			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -685,7 +695,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = D9CDCE15F786DEA296D18AC6 /* Pods-Alamofire-Private.xcconfig */;
 			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
