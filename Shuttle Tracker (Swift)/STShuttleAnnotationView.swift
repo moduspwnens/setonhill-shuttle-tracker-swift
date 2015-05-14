@@ -75,7 +75,7 @@ class STShuttleAnnotationView: MKAnnotationView {
     
     var shuttle:STShuttle? {
         get {
-            return self.annotation? as STShuttle?
+            return self.annotation as! STShuttle?
         }
         set {
             self.annotation = newValue

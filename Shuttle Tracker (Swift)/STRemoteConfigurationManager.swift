@@ -29,7 +29,7 @@ class STRemoteConfigurationManager: NSObject {
         let standardDefaults = NSUserDefaults.standardUserDefaults()
         
         // Set any values to the base defaults that haven't been set before.
-        for (eachKey, eachValue) in baseDefaultsDictionary! as [String: AnyObject] {
+        for (eachKey, eachValue) in baseDefaultsDictionary! as! [String: AnyObject] {
             if standardDefaults.objectForKey(eachKey) == nil {
                 standardDefaults.setObject(eachValue, forKey: eachKey)
             }
@@ -39,16 +39,16 @@ class STRemoteConfigurationManager: NSObject {
     func updateRemoteDefaults() {
         
         // Grab the URL from which we should be accessing remote config variables.
-        let requestURLString = NSUserDefaults.standardUserDefaults().objectForKey("AppConfigRemoteURL") as String
+        let requestURLString = NSUserDefaults.standardUserDefaults().objectForKey("AppConfigRemoteURL") as! String
         
         
         let requestParameters = [
             // Include the app's version and its UUID, so we can modify configuration remotely based on those things, if necessary.
-            "version" : NSBundle.mainBundle().infoDictionary?["CFBundleVersion"]! as String,
+            "version" : NSBundle.mainBundle().infoDictionary?["CFBundleVersion"]! as! String,
             "uuid" : UIDevice.currentDevice().identifierForVendor.UUIDString,
             
             // Include the app's selected localization, in case we want to make any changes to the configuration remotely because of it.
-            "locale" : NSBundle.mainBundle().preferredLocalizations[0] as String,
+            "locale" : NSBundle.mainBundle().preferredLocalizations[0] as! String,
             
             // Include the iOS version.
             "ios_version" : UIDevice.currentDevice().systemVersion,
@@ -105,13 +105,13 @@ class STRemoteConfigurationManager: NSObject {
                                 else if let oldValue = oldValue as? NSArray {
                                     if let newValue = newValue as? NSArray {
                                         valueWasValidated = true
-                                        valueWasUpdated = !oldValue.isEqualToArray(newValue)
+                                        valueWasUpdated = !oldValue.isEqualToArray(newValue as! [AnyObject])
                                     }
                                 }
                                 else if let oldValue = oldValue as? NSDictionary {
                                     if let newValue = newValue as? NSDictionary {
                                         valueWasValidated = true
-                                        valueWasUpdated = !oldValue.isEqualToDictionary(newValue)
+                                        valueWasUpdated = !oldValue.isEqualToDictionary(newValue as! [NSObject:AnyObject])
                                     }
                                 }
                                 
@@ -171,7 +171,7 @@ class STRemoteConfigurationManager: NSObject {
         var overlayArray : [MKOverlay] = []
         
         if let staticOverlaySpecs = NSUserDefaults.standardUserDefaults().arrayForKey("StaticOverlays") {
-            for eachSpec in staticOverlaySpecs as [NSDictionary] {
+            for eachSpec in staticOverlaySpecs as! [NSDictionary] {
                 if let overlayId = eachSpec.valueForKey("id") as? String {
                     if let overlayTypeNumber = eachSpec.valueForKey("type") as? NSNumber {
                         if let overlayType = OverlaySpecificationType(rawValue: overlayTypeNumber.integerValue) {

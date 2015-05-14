@@ -40,10 +40,10 @@ class STMasterTableViewController: UITableViewController, UISplitViewControllerD
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .Plain, target: nil, action: nil)
         
         // Keep a reference to our detail nav controller so we can manipulate its view controllers.
-        self.detailNavController = self.splitViewController?.viewControllers[1] as UINavigationController!
+        self.detailNavController = self.splitViewController?.viewControllers[1] as! UINavigationController!
         
         // Keep a reference to our map view controller so it doesn't need to be reloaded if we replace it in our nav controller.
-        self.mapViewController = self.detailNavController?.viewControllers.first as STMapViewController!
+        self.mapViewController = self.detailNavController?.viewControllers.first as! STMapViewController!
         
         // Set up listener for when the array of visible shuttles changes. This'll happen if shuttles go off-screen, disappear completely, or the user pans the map away from them.
         NSNotificationCenter.defaultCenter().addObserver(
@@ -205,7 +205,7 @@ class STMasterTableViewController: UITableViewController, UISplitViewControllerD
                 cell = UITableViewCell(style: .Default, reuseIdentifier: kTableViewScheduleCellReuseIdentifier)
             }
             
-            let thisScheduleLink = self.getShuttleScheduleLinks()[indexPath.row] as [String:String]
+            let thisScheduleLink = self.getShuttleScheduleLinks()[indexPath.row] as! [String:String]
             cell?.textLabel?.text = thisScheduleLink["title"]!
             cell?.accessoryType = .DisclosureIndicator
         }
@@ -250,7 +250,7 @@ class STMasterTableViewController: UITableViewController, UISplitViewControllerD
             }
             
             // This cell may or may not have been created before. Get its segmented control button to make sure its state is accurate.
-            let thisSegmentedControl = cell?.viewWithTag(kSegmentedControlViewTag) as UISegmentedControl
+            let thisSegmentedControl = cell?.viewWithTag(kSegmentedControlViewTag) as! UISegmentedControl
             
             // Assign existing value as currently selected.
             thisSegmentedControl.selectedSegmentIndex = Int(self.mapViewController!.mapType.rawValue)
@@ -277,7 +277,7 @@ class STMasterTableViewController: UITableViewController, UISplitViewControllerD
             let thisLocation = self.getShowMapLocations()[indexPath.row]
             
             // Set the location's identifier as the "last selected" identifier.
-            NSUserDefaults.standardUserDefaults().setObject(thisLocation["ID"]! as String, forKey: kLastSelectedMapLocationKey)
+            NSUserDefaults.standardUserDefaults().setObject(thisLocation["ID"]! as! String, forKey: kLastSelectedMapLocationKey)
             
             // Re-center the map on the "last selected" map location.
             NSNotificationCenter.defaultCenter().postNotificationName(
@@ -315,7 +315,7 @@ class STMasterTableViewController: UITableViewController, UISplitViewControllerD
         else if indexPath.section == kSchedulesTableSectionIndex {
             // The user tapped the name of a shuttle schedule.
             
-            let thisScheduleLink = self.getShuttleScheduleLinks()[indexPath.row] as [String:String]
+            let thisScheduleLink = self.getShuttleScheduleLinks()[indexPath.row] as! [String:String]
             let scheduleName = thisScheduleLink["title"]!
             let scheduleURL = NSURL(string: thisScheduleLink["url"]!)!
             
@@ -347,7 +347,7 @@ class STMasterTableViewController: UITableViewController, UISplitViewControllerD
     func visibleShuttlesUpdated(notification: NSNotification) {
         
         // Update cached shuttle array.
-        let newShuttleArray = notification.userInfo!["shuttles"] as [STShuttle]
+        let newShuttleArray = notification.userInfo!["shuttles"] as! [STShuttle]
         self.visibleShuttleArray.removeAll(keepCapacity: false)
         self.visibleShuttleArray += newShuttleArray
         
@@ -392,7 +392,7 @@ class STMasterTableViewController: UITableViewController, UISplitViewControllerD
     }
     
     func getShowMapLocations() -> [[String:AnyObject]] {
-        return NSUserDefaults.standardUserDefaults().arrayForKey("ShowLocations")! as [[String:AnyObject]]
+        return NSUserDefaults.standardUserDefaults().arrayForKey("ShowLocations")! as! [[String:AnyObject]]
     }
     
     dynamic var shouldShowMapTypeSelector:Bool {

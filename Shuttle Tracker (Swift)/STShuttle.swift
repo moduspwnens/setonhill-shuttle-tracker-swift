@@ -32,8 +32,8 @@ func ==(lhs: STShuttle, rhs: STShuttle) -> Bool {
 
 class STShuttle: NSObject, MKAnnotation, Hashable {
     var identifier : NSString?
-    dynamic var title : NSString?
-    dynamic var subtitle : NSString?
+    dynamic var title : String!
+    dynamic var subtitle : String!
     var statusMessage : NSString?
     var heading : Float = -1
     var speed : Float = 0

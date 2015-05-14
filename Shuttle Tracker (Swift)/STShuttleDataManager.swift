@@ -58,15 +58,15 @@ class STShuttleDataManager: NSObject {
     func updateData() {
         
         // Grab the URL from which we should be pulling shuttle locations and statuses.
-        let requestURLString = NSUserDefaults.standardUserDefaults().objectForKey("ShuttleStatusUpdateURL") as String
+        let requestURLString = NSUserDefaults.standardUserDefaults().objectForKey("ShuttleStatusUpdateURL") as! String
         
         let requestParameters = [
             // Include the app's version and its UUID, so we can modify configuration remotely based on those things, if necessary.
-            "version" : NSBundle.mainBundle().infoDictionary?["CFBundleVersion"]! as String,
+            "version" : NSBundle.mainBundle().infoDictionary?["CFBundleVersion"]! as! String,
             "uuid" : UIDevice.currentDevice().identifierForVendor.UUIDString,
             
             // Include the app's selected localization, in case we want to make any changes to the configuration remotely because of it.
-            "locale" : NSBundle.mainBundle().preferredLocalizations[0] as String,
+            "locale" : NSBundle.mainBundle().preferredLocalizations[0] as! String,
             
             // Include the iOS version.
             "ios_version" : UIDevice.currentDevice().systemVersion,
@@ -106,12 +106,12 @@ class STShuttleDataManager: NSObject {
                         
                         for eachItem in JSON {
                             
-                            if let vehicleDictionary = eachItem["vehicle"]? as? NSDictionary {
+                            if let vehicleDictionary = eachItem["vehicle"] as? NSDictionary {
                                 
                                 // Create a new STShuttle object and populate its properties with what we've received in the JSON.
                                 var newShuttle = STShuttle()
                                 
-                                if let newIdentifier = vehicleDictionary["id"]? as? String {
+                                if let newIdentifier = vehicleDictionary["id"] as? String {
                                     newShuttle.identifier = newIdentifier
                                 }
                                 else {
@@ -119,7 +119,7 @@ class STShuttleDataManager: NSObject {
                                     continue
                                 }
                                 
-                                if let newTitle = vehicleDictionary["name"]? as? String {
+                                if let newTitle = vehicleDictionary["name"] as? String {
                                     newShuttle.title = newTitle
                                 }
                                 else {
@@ -128,9 +128,9 @@ class STShuttleDataManager: NSObject {
                                 }
                                 
                                 // Subtitles are optional, so no need to complain if it's missing or invalid.
-                                newShuttle.subtitle = vehicleDictionary["subtitle"]? as? String
+                                newShuttle.subtitle = vehicleDictionary["subtitle"] as? String
                                 
-                                if let newShuttleTypeNumber = vehicleDictionary["type"]? as? NSNumber {
+                                if let newShuttleTypeNumber = vehicleDictionary["type"] as? NSNumber {
                                     if let newShuttleType = ShuttleType(rawValue: newShuttleTypeNumber.integerValue) {
                                         newShuttle.shuttleType = newShuttleType
                                     }
@@ -147,30 +147,30 @@ class STShuttleDataManager: NSObject {
                                 
                                 var updateTime : NSDate
                                 
-                                if let positionDictionary = vehicleDictionary["latest_position"]? as? NSDictionary {
+                                if let positionDictionary = vehicleDictionary["latest_position"] as? NSDictionary {
                                     
-                                    if let newLatitude = positionDictionary["latitude"]? as? NSNumber {
+                                    if let newLatitude = positionDictionary["latitude"] as? NSNumber {
                                         newShuttle.latitude = newLatitude.doubleValue
                                     }
                                     else {
                                         println("Invalid latitude. Should be a number. Skipping.")
                                     }
                                     
-                                    if let newLongitude = positionDictionary["longitude"]? as? NSNumber {
+                                    if let newLongitude = positionDictionary["longitude"] as? NSNumber {
                                         newShuttle.longitude = newLongitude.doubleValue
                                     }
                                     else {
                                         println("Invalid longitude. Should be a number. Skipping.")
                                     }
                                     
-                                    if let newHeading = positionDictionary["heading"]? as? NSNumber {
+                                    if let newHeading = positionDictionary["heading"] as? NSNumber {
                                         newShuttle.heading = newHeading.floatValue
                                     }
                                     else {
                                         println("Invalid heading. Should be a number. Skipping.")
                                     }
                                     
-                                    if let newSpeed = positionDictionary["speed"]? as? NSNumber {
+                                    if let newSpeed = positionDictionary["speed"] as? NSNumber {
                                         newShuttle.speed = newSpeed.floatValue
                                     }
                                     else {
@@ -178,13 +178,13 @@ class STShuttleDataManager: NSObject {
                                     }
                                     
                                     // Another totally optional string.
-                                    newShuttle.statusMessage = positionDictionary["public_status_msg"]? as? String
+                                    newShuttle.statusMessage = positionDictionary["public_status_msg"] as? String
                                     
                                     let dateFormatter = NSDateFormatter()
                                     dateFormatter.dateFormat = "yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'"
                                     dateFormatter.timeZone = NSTimeZone(forSecondsFromGMT: 0)
                                     
-                                    if let newTimestampString = positionDictionary["timestamp"]? as? String {
+                                    if let newTimestampString = positionDictionary["timestamp"] as? String {
                                         if let newUpdateTime = dateFormatter.dateFromString(newTimestampString) {
                                             updateTime = newUpdateTime
                                         }
@@ -253,7 +253,7 @@ class STShuttleDataManager: NSObject {
                             if !shuttleIdentifiersFound.containsObject(eachKey) {
                                 
                                 // This shuttle has been removed.
-                                let oldShuttleStatusInstance = self.shuttleDictionary.objectForKey(eachKey) as STShuttleStatusInstance
+                                let oldShuttleStatusInstance = self.shuttleDictionary.objectForKey(eachKey) as! STShuttleStatusInstance
                                 
                                 // Remove from our local cache of shuttles.
                                 self.shuttleDictionary.removeObjectForKey(eachKey)

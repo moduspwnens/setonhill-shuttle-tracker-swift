@@ -254,7 +254,7 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
         if var existingShuttle = self.getShuttleAnnotationWithIdentifier(newShuttle.identifier!) {
             // Existing annotation needs to be updated.
             
-            let animationDuration: NSTimeInterval = (NSUserDefaults.standardUserDefaults().valueForKey("ShuttleAnimationDuration") as NSNumber).doubleValue
+            let animationDuration: NSTimeInterval = (NSUserDefaults.standardUserDefaults().valueForKey("ShuttleAnimationDuration") as! NSNumber).doubleValue
             
             let animateChanges = (animationDuration > 0)
             
@@ -303,15 +303,15 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
             return
         }
         
-        // Get all visible annotations in the current mapView.
-        let annotationSet = self.mapView?.annotationsInMapRect(self.mapView!.visibleMapRect).allObjects
-        
         // We need an array of these shuttles, since we'll be passing them in a notification to other objects.
         var visibleShuttleArray = [STShuttle]()
         
-        for eachAnnotation in annotationSet as [MKAnnotation] {
-            if eachAnnotation is STShuttle {
-                visibleShuttleArray.append(eachAnnotation as STShuttle)
+        // Get all visible annotations in the current mapView.
+        if let annotationSet = self.mapView?.annotationsInMapRect(self.mapView!.visibleMapRect) {
+            for eachAnnotation in annotationSet {
+                if let shuttleAnnotation = eachAnnotation as? STShuttle {
+                    visibleShuttleArray.append(shuttleAnnotation)
+                }
             }
         }
         
@@ -352,9 +352,9 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
         // Pull out the notification. Find whether it was added, updated, or deleted, and then call the appropriate method.
         let userInfo = (notification.userInfo! as NSDictionary)
         
-        for eachNumberKey in userInfo.allKeys as [NSNumber] {
+        for eachNumberKey in userInfo.allKeys as! [NSNumber] {
             if let eachChangeType = ShuttleStatusChangeType(rawValue: eachNumberKey.integerValue) {
-                for eachShuttle in userInfo[eachNumberKey] as [STShuttle] {
+                for eachShuttle in userInfo[eachNumberKey] as! [STShuttle] {
                     
                     if !self.shuttleStatusDataLoadedAtLeastOnce {
                         // This is the first time we've loaded shuttles since they've been clear, so anything but a removal should be treated as an "add."
@@ -500,7 +500,7 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
     
     func shuttleSelected(notification: NSNotification) {
         
-        var selectedShuttle = notification.userInfo!["shuttle"] as STShuttle
+        var selectedShuttle = notification.userInfo!["shuttle"] as! STShuttle
         
         // Just to be safe, let's load the specific annotation instance from the mapView.
         if let annotationFromShuttle = self.getShuttleAnnotationWithIdentifier(selectedShuttle.identifier!) {
@@ -546,7 +546,7 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
         if annotation is STShuttle {
             var thisAnnotationView = mapView.dequeueReusableAnnotationViewWithIdentifier(kShuttleAnnotationViewIdentifier)
             if thisAnnotationView == nil {
-                thisAnnotationView = STShuttleAnnotationView(annotation as STShuttle)
+                thisAnnotationView = STShuttleAnnotationView(annotation as! STShuttle)
             }
             else {
                 thisAnnotationView.annotation = annotation
@@ -599,11 +599,11 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
     
     func mapView(mapView: MKMapView!, rendererForOverlay overlay: MKOverlay!) -> MKOverlayRenderer! {
         if overlay is STPolyline {
-            let lineRenderer = STPolylineRenderer(customPolyline: overlay as STPolyline)
+            let lineRenderer = STPolylineRenderer(customPolyline: overlay as! STPolyline)
             return lineRenderer
         }
         else if overlay is STPolygon {
-            let polygonRenderer = STPolygonRenderer(customPolygon: overlay as STPolygon)
+            let polygonRenderer = STPolygonRenderer(customPolygon: overlay as! STPolygon)
             return polygonRenderer
         }
         
@@ -632,7 +632,7 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
         
         for eachMapAnnotation in self.mapView!.annotations {
             if eachMapAnnotation is STShuttle {
-                var existingShuttleAnnotation = eachMapAnnotation as STShuttle
+                var existingShuttleAnnotation = eachMapAnnotation as! STShuttle
                 if existingShuttleAnnotation.identifier == identifier {
                     return existingShuttleAnnotation
                 }
@@ -644,7 +644,7 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
     func removeAllShuttles() {
         var annotationsToRemove: [MKAnnotation] = []
         
-        for eachMapAnnotation in self.mapView!.annotations as [MKAnnotation] {
+        for eachMapAnnotation in self.mapView!.annotations as! [MKAnnotation] {
             if eachMapAnnotation is STShuttle {
                 annotationsToRemove.append(eachMapAnnotation)
             }
@@ -658,7 +658,7 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
     
     func evaluateOverlayVisibility() {
         
-        for eachOverlay in self.mapView?.overlays as [MKOverlay] {
+        for eachOverlay in self.mapView?.overlays as! [MKOverlay] {
             var newAlpha : CGFloat = 1
             
             if let thisMapView = self.mapView {
@@ -689,13 +689,13 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
         
         // Determine the default map region. This should basically be either the last map location the user selected, or the first location in the list.
         
-        let mapLocationArray = NSUserDefaults.standardUserDefaults().arrayForKey("ShowLocations")! as [[String:AnyObject]]
+        let mapLocationArray = NSUserDefaults.standardUserDefaults().arrayForKey("ShowLocations")! as! [[String:AnyObject]]
         
         // Loop through the map location dictionaries for an ID that matches the one the user last selected.
         var targetLocationDictionary : [String:AnyObject]?
-        if let lastSelectedLocationID = NSUserDefaults.standardUserDefaults().stringForKey(kLastSelectedMapLocationKey)? {
+        if let lastSelectedLocationID = NSUserDefaults.standardUserDefaults().stringForKey(kLastSelectedMapLocationKey) {
             for eachLocationDictionary in mapLocationArray {
-                if let eachLocationID = eachLocationDictionary["ID"]? as? String {
+                if let eachLocationID = eachLocationDictionary["ID"] as? String {
                     if eachLocationID == lastSelectedLocationID {
                         targetLocationDictionary = eachLocationDictionary
                         break
@@ -711,11 +711,11 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
         
         let defaultRegion = MKCoordinateRegionMake(
             CLLocationCoordinate2DMake(
-                (targetLocationDictionary!["Latitude"] as NSNumber).doubleValue,
-                (targetLocationDictionary!["Longitude"] as NSNumber).doubleValue),
+                (targetLocationDictionary!["Latitude"] as! NSNumber).doubleValue,
+                (targetLocationDictionary!["Longitude"] as! NSNumber).doubleValue),
             MKCoordinateSpanMake(
-                (targetLocationDictionary!["LatitudeDelta"] as NSNumber).doubleValue,
-                (targetLocationDictionary!["LongitudeDelta"] as NSNumber).doubleValue)
+                (targetLocationDictionary!["LatitudeDelta"] as! NSNumber).doubleValue,
+                (targetLocationDictionary!["LongitudeDelta"] as! NSNumber).doubleValue)
         )
         
         return defaultRegion

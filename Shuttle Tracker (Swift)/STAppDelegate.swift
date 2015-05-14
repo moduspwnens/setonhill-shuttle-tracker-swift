@@ -114,7 +114,7 @@ class STAppDelegate: UIResponder, UIApplicationDelegate {
     
     // MARK: - Other event handlers
     func reachabilityStatusChanged(notification: NSNotification) {
-        let currentNetworkStatus = (notification.object as Reachability).currentReachabilityStatus()
+        let currentNetworkStatus = (notification.object as! Reachability).currentReachabilityStatus()
         if currentNetworkStatus != NetworkStatus.NotReachable && self.internetWasUnreachable {
             // The Internet just became available after previously being off. Immediately check for new shuttle status updates.
             self.shuttleStatusUpdateTimer?.fire()
@@ -139,7 +139,7 @@ class STAppDelegate: UIResponder, UIApplicationDelegate {
     
     class func didStartNetworking() {
         dispatch_async(dispatch_get_main_queue(),{
-            let appDelegate = UIApplication.sharedApplication().delegate as STAppDelegate
+            let appDelegate = UIApplication.sharedApplication().delegate as! STAppDelegate
             appDelegate.networkingCount++
             appDelegate.updateNetworkActivityIndicator()
         })
@@ -148,7 +148,7 @@ class STAppDelegate: UIResponder, UIApplicationDelegate {
 
     class func didStopNetworking() {
         dispatch_async(dispatch_get_main_queue(),{
-            let appDelegate = UIApplication.sharedApplication().delegate as STAppDelegate
+            let appDelegate = UIApplication.sharedApplication().delegate as! STAppDelegate
             appDelegate.networkingCount--
             appDelegate.updateNetworkActivityIndicator()
         })
