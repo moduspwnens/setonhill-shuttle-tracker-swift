@@ -1,5 +1,5 @@
 source 'https://github.com/CocoaPods/Specs.git'
-platform :ios, '8.0'
+platform :ios, '8.2'
 
 pod 'Reachability', '~> 3.2'
 pod 'Alamofire', '~> 1.2'
