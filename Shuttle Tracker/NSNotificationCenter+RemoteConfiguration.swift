@@ -1,6 +1,6 @@
 //
 //  NSNotificationCenter+RemoteConfiguration.swift
-//  Shuttle Tracker (Swift)
+//  Shuttle Tracker
 //
 //  Helper class for using notifications specifically for when remote configuration variables are updated.
 //

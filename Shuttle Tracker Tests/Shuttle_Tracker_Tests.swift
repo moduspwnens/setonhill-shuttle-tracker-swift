@@ -1,6 +1,6 @@
 //
-//  Shuttle_Tracker__Swift_Tests.swift
-//  Shuttle Tracker (Swift)Tests
+//  Shuttle_Tracker_Tests.swift
+//  Shuttle Tracker Tests
 //
 //  Created by Benn Linger on 1/18/15.
 //  Copyright (c) 2015 Seton Hill University. All rights reserved.
@@ -9,7 +9,7 @@
 import UIKit
 import XCTest
 
-class Shuttle_Tracker__Swift_Tests: XCTestCase {
+class Shuttle_Tracker_Tests: XCTestCase {
     
     override func setUp() {
         super.setUp()

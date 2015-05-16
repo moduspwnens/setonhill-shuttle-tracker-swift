@@ -21,7 +21,7 @@
 		338B84A31A6CB6D500B20258 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 338B84A11A6CB6D500B20258 /* Main.storyboard */; };
 		338B84A51A6CB6D500B20258 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 338B84A41A6CB6D500B20258 /* Images.xcassets */; };
 		338B84A81A6CB6D500B20258 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 338B84A61A6CB6D500B20258 /* LaunchScreen.xib */; };
-		338B84B41A6CB6D500B20258 /* Shuttle_Tracker__Swift_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 338B84B31A6CB6D500B20258 /* Shuttle_Tracker__Swift_Tests.swift */; };
+		338B84B41A6CB6D500B20258 /* Shuttle_Tracker_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 338B84B31A6CB6D500B20258 /* Shuttle_Tracker_Tests.swift */; };
 		33E28CBF1A8D8E1F001778CE /* STPolyline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33E28CBE1A8D8E1F001778CE /* STPolyline.swift */; };
 		33FC588C1A73EBFE002505D5 /* STRemoteConfigurationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33FC588B1A73EBFE002505D5 /* STRemoteConfigurationManager.swift */; };
 		33FC588E1A73FBCA002505D5 /* BaseDefaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = 33FC588D1A73FBCA002505D5 /* BaseDefaults.plist */; };
@@ -60,9 +60,9 @@
 		338B84A21A6CB6D500B20258 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		338B84A41A6CB6D500B20258 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		338B84A71A6CB6D500B20258 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
-		338B84AD1A6CB6D500B20258 /* Shuttle Tracker (Swift)Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Shuttle Tracker (Swift)Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		338B84AD1A6CB6D500B20258 /* Shuttle Tracker Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Shuttle Tracker Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		338B84B21A6CB6D500B20258 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		338B84B31A6CB6D500B20258 /* Shuttle_Tracker__Swift_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shuttle_Tracker__Swift_Tests.swift; sourceTree = "<group>"; };
+		338B84B31A6CB6D500B20258 /* Shuttle_Tracker_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shuttle_Tracker_Tests.swift; sourceTree = "<group>"; };
 		33C46B981A8711E500A51E93 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
 		33E28CBE1A8D8E1F001778CE /* STPolyline.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = STPolyline.swift; sourceTree = "<group>"; };
 		33FC588B1A73EBFE002505D5 /* STRemoteConfigurationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = STRemoteConfigurationManager.swift; sourceTree = "<group>"; };
@@ -97,8 +97,8 @@
 		338B848F1A6CB6D500B20258 = {
 			isa = PBXGroup;
 			children = (
-				338B849A1A6CB6D500B20258 /* Shuttle Tracker (Swift) */,
-				338B84B01A6CB6D500B20258 /* Shuttle Tracker (Swift)Tests */,
+				338B849A1A6CB6D500B20258 /* Shuttle Tracker */,
+				338B84B01A6CB6D500B20258 /* Shuttle Tracker Tests */,
 				338B84991A6CB6D500B20258 /* Products */,
 				9B46CE9D6AD0FA285861F5A8 /* Pods */,
 				647DF6555ACE503754367504 /* Frameworks */,
@@ -109,12 +109,12 @@
 			isa = PBXGroup;
 			children = (
 				338B84981A6CB6D500B20258 /* Shuttle Tracker.app */,
-				338B84AD1A6CB6D500B20258 /* Shuttle Tracker (Swift)Tests.xctest */,
+				338B84AD1A6CB6D500B20258 /* Shuttle Tracker Tests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		338B849A1A6CB6D500B20258 /* Shuttle Tracker (Swift) */ = {
+		338B849A1A6CB6D500B20258 /* Shuttle Tracker */ = {
 			isa = PBXGroup;
 			children = (
 				33FC588F1A743332002505D5 /* NSNotificationCenter+RemoteConfiguration.swift */,
@@ -137,7 +137,7 @@
 				338B84A61A6CB6D500B20258 /* LaunchScreen.xib */,
 				338B849B1A6CB6D500B20258 /* Supporting Files */,
 			);
-			path = "Shuttle Tracker (Swift)";
+			path = "Shuttle Tracker";
 			sourceTree = "<group>";
 		};
 		338B849B1A6CB6D500B20258 /* Supporting Files */ = {
@@ -151,13 +151,13 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		338B84B01A6CB6D500B20258 /* Shuttle Tracker (Swift)Tests */ = {
+		338B84B01A6CB6D500B20258 /* Shuttle Tracker Tests */ = {
 			isa = PBXGroup;
 			children = (
-				338B84B31A6CB6D500B20258 /* Shuttle_Tracker__Swift_Tests.swift */,
+				338B84B31A6CB6D500B20258 /* Shuttle_Tracker_Tests.swift */,
 				338B84B11A6CB6D500B20258 /* Supporting Files */,
 			);
-			path = "Shuttle Tracker (Swift)Tests";
+			path = "Shuttle Tracker Tests";
 			sourceTree = "<group>";
 		};
 		338B84B11A6CB6D500B20258 /* Supporting Files */ = {
@@ -209,9 +209,9 @@
 			productReference = 338B84981A6CB6D500B20258 /* Shuttle Tracker.app */;
 			productType = "com.apple.product-type.application";
 		};
-		338B84AC1A6CB6D500B20258 /* Shuttle Tracker (Swift)Tests */ = {
+		338B84AC1A6CB6D500B20258 /* Shuttle Tracker Tests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 338B84BA1A6CB6D500B20258 /* Build configuration list for PBXNativeTarget "Shuttle Tracker (Swift)Tests" */;
+			buildConfigurationList = 338B84BA1A6CB6D500B20258 /* Build configuration list for PBXNativeTarget "Shuttle Tracker Tests" */;
 			buildPhases = (
 				338B84A91A6CB6D500B20258 /* Sources */,
 				338B84AA1A6CB6D500B20258 /* Frameworks */,
@@ -222,9 +222,9 @@
 			dependencies = (
 				338B84AF1A6CB6D500B20258 /* PBXTargetDependency */,
 			);
-			name = "Shuttle Tracker (Swift)Tests";
+			name = "Shuttle Tracker Tests";
 			productName = "Shuttle Tracker (Swift)Tests";
-			productReference = 338B84AD1A6CB6D500B20258 /* Shuttle Tracker (Swift)Tests.xctest */;
+			productReference = 338B84AD1A6CB6D500B20258 /* Shuttle Tracker Tests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -246,7 +246,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 338B84931A6CB6D500B20258 /* Build configuration list for PBXProject "Shuttle Tracker (Swift)" */;
+			buildConfigurationList = 338B84931A6CB6D500B20258 /* Build configuration list for PBXProject "Shuttle Tracker" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -260,7 +260,7 @@
 			projectRoot = "";
 			targets = (
 				338B84971A6CB6D500B20258 /* Shuttle Tracker */,
-				338B84AC1A6CB6D500B20258 /* Shuttle Tracker (Swift)Tests */,
+				338B84AC1A6CB6D500B20258 /* Shuttle Tracker Tests */,
 			);
 		};
 /* End PBXProject section */
@@ -361,7 +361,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				338B84B41A6CB6D500B20258 /* Shuttle_Tracker__Swift_Tests.swift in Sources */,
+				338B84B41A6CB6D500B20258 /* Shuttle_Tracker_Tests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -481,12 +481,12 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				INFOPLIST_FILE = "Shuttle Tracker (Swift)/Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/Shuttle Tracker/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
-				SWIFT_OBJC_BRIDGING_HEADER = "Shuttle Tracker (Swift)/ST-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/Shuttle Tracker/ST-Bridging-Header.h";
 			};
 			name = Debug;
 		};
@@ -497,12 +497,12 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
-				INFOPLIST_FILE = "Shuttle Tracker (Swift)/Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/Shuttle Tracker/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
-				SWIFT_OBJC_BRIDGING_HEADER = "Shuttle Tracker (Swift)/ST-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/Shuttle Tracker/ST-Bridging-Header.h";
 			};
 			name = Release;
 		};
@@ -518,9 +518,9 @@
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = "Shuttle Tracker (Swift)Tests/Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/Shuttle Tracker Tests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "Shuttle Tracker Tests";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Shuttle Tracker.app/Shuttle Tracker";
 			};
 			name = Debug;
@@ -533,9 +533,9 @@
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = "Shuttle Tracker (Swift)Tests/Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/Shuttle Tracker Tests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "Shuttle Tracker Tests";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Shuttle Tracker.app/Shuttle Tracker";
 			};
 			name = Release;
@@ -543,7 +543,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		338B84931A6CB6D500B20258 /* Build configuration list for PBXProject "Shuttle Tracker (Swift)" */ = {
+		338B84931A6CB6D500B20258 /* Build configuration list for PBXProject "Shuttle Tracker" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				338B84B51A6CB6D500B20258 /* Debug */,
@@ -561,7 +561,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		338B84BA1A6CB6D500B20258 /* Build configuration list for PBXNativeTarget "Shuttle Tracker (Swift)Tests" */ = {
+		338B84BA1A6CB6D500B20258 /* Build configuration list for PBXNativeTarget "Shuttle Tracker Tests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				338B84BB1A6CB6D500B20258 /* Debug */,
