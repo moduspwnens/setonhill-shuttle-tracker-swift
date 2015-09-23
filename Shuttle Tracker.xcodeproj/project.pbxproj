@@ -233,7 +233,9 @@
 		338B84901A6CB6D500B20258 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0610;
+				LastSwiftMigration = 0700;
+				LastSwiftUpdateCheck = 0700;
+				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = "Seton Hill University";
 				TargetAttributes = {
 					338B84971A6CB6D500B20258 = {
@@ -415,6 +417,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -484,6 +487,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/Shuttle Tracker/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = edu.setonhill.shuttles;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/Shuttle Tracker/ST-Bridging-Header.h";
@@ -500,6 +504,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/Shuttle Tracker/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = edu.setonhill.shuttles;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/Shuttle Tracker/ST-Bridging-Header.h";
@@ -520,6 +525,7 @@
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/Shuttle Tracker Tests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "edu.setonhill.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "Shuttle Tracker Tests";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Shuttle Tracker.app/Shuttle Tracker";
 			};
@@ -535,6 +541,7 @@
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/Shuttle Tracker Tests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "edu.setonhill.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "Shuttle Tracker Tests";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Shuttle Tracker.app/Shuttle Tracker";
 			};

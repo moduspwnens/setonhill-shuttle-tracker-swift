@@ -63,10 +63,10 @@ class STShuttleDataManager: NSObject {
         let requestParameters = [
             // Include the app's version and its UUID, so we can modify configuration remotely based on those things, if necessary.
             "version" : NSBundle.mainBundle().infoDictionary?["CFBundleVersion"]! as! String,
-            "uuid" : UIDevice.currentDevice().identifierForVendor.UUIDString,
+            "uuid" : UIDevice.currentDevice().identifierForVendor!.UUIDString,
             
             // Include the app's selected localization, in case we want to make any changes to the configuration remotely because of it.
-            "locale" : NSBundle.mainBundle().preferredLocalizations[0] as! String,
+            "locale" : NSBundle.mainBundle().preferredLocalizations[0],
             
             // Include the iOS version.
             "ios_version" : UIDevice.currentDevice().systemVersion,
@@ -78,17 +78,17 @@ class STShuttleDataManager: NSObject {
         STAppDelegate.didStartNetworking()
         
         self.alamofireManager!.request(.GET, requestURLString, parameters: requestParameters)
-            .responseJSON { (request, response, JSON, error) in
+            .responseJSON { (_, _, result) in
                 
                 STAppDelegate.didStopNetworking()
                 
                 // There are several reasons a response might not be valid. Let's set a flag and then if it's still "false" at the end, we'll post a notification that an error occurred.
                 var validResponseConfirmed = false
                 
-                if let error = error {
-                    println("An error occurred while fetching shuttle data.")
+                if result.isFailure {
+                    print("An error occurred while fetching shuttle data.")
                 }
-                else if let JSON: AnyObject = JSON {
+                else if let JSON: AnyObject = result.value {
                     // Received valid JSON response!
                     
                     if let JSON : NSArray = JSON as? NSArray {
@@ -97,7 +97,7 @@ class STShuttleDataManager: NSObject {
                         validResponseConfirmed = true
                         
                         // Keep track of the ones we've found, so we can tell if any have been removed.
-                        var shuttleIdentifiersFound = NSMutableArray()
+                        let shuttleIdentifiersFound = NSMutableArray()
                         
                         var shuttlesToAdd : [STShuttle] = []
                         var shuttlesToUpdate : [STShuttle] = []
@@ -109,13 +109,13 @@ class STShuttleDataManager: NSObject {
                             if let vehicleDictionary = eachItem["vehicle"] as? NSDictionary {
                                 
                                 // Create a new STShuttle object and populate its properties with what we've received in the JSON.
-                                var newShuttle = STShuttle()
+                                let newShuttle = STShuttle()
                                 
                                 if let newIdentifier = vehicleDictionary["id"] as? String {
                                     newShuttle.identifier = newIdentifier
                                 }
                                 else {
-                                    println("Invalid id for shuttle. Skipping.")
+                                    print("Invalid id for shuttle. Skipping.")
                                     continue
                                 }
                                 
@@ -123,7 +123,7 @@ class STShuttleDataManager: NSObject {
                                     newShuttle.title = newTitle
                                 }
                                 else {
-                                    println("Invalid title for shuttle. Skipping.")
+                                    print("Invalid title for shuttle. Skipping.")
                                     continue
                                 }
                                 
@@ -135,12 +135,12 @@ class STShuttleDataManager: NSObject {
                                         newShuttle.shuttleType = newShuttleType
                                     }
                                     else {
-                                        println("Invalid shuttle type. Should be a valid enum integer. Skipping.")
+                                        print("Invalid shuttle type. Should be a valid enum integer. Skipping.")
                                         continue
                                     }
                                 }
                                 else {
-                                    println("Invalid shuttle type. Should be a number. Skipping.")
+                                    print("Invalid shuttle type. Should be a number. Skipping.")
                                     continue
                                 }
                                 
@@ -153,28 +153,28 @@ class STShuttleDataManager: NSObject {
                                         newShuttle.latitude = newLatitude.doubleValue
                                     }
                                     else {
-                                        println("Invalid latitude. Should be a number. Skipping.")
+                                        print("Invalid latitude. Should be a number. Skipping.")
                                     }
                                     
                                     if let newLongitude = positionDictionary["longitude"] as? NSNumber {
                                         newShuttle.longitude = newLongitude.doubleValue
                                     }
                                     else {
-                                        println("Invalid longitude. Should be a number. Skipping.")
+                                        print("Invalid longitude. Should be a number. Skipping.")
                                     }
                                     
                                     if let newHeading = positionDictionary["heading"] as? NSNumber {
                                         newShuttle.heading = newHeading.floatValue
                                     }
                                     else {
-                                        println("Invalid heading. Should be a number. Skipping.")
+                                        print("Invalid heading. Should be a number. Skipping.")
                                     }
                                     
                                     if let newSpeed = positionDictionary["speed"] as? NSNumber {
                                         newShuttle.speed = newSpeed.floatValue
                                     }
                                     else {
-                                        println("Invalid speed. Should be a number. Skipping.")
+                                        print("Invalid speed. Should be a number. Skipping.")
                                     }
                                     
                                     // Another totally optional string.
@@ -189,18 +189,18 @@ class STShuttleDataManager: NSObject {
                                             updateTime = newUpdateTime
                                         }
                                         else {
-                                            println("Invalid timestamp. Unable to parse. Skipping.")
+                                            print("Invalid timestamp. Unable to parse. Skipping.")
                                             continue
                                         }
                                     }
                                     else {
-                                        println("Invalid timestamp. Should be a string in the specified format. Skipping.")
+                                        print("Invalid timestamp. Should be a string in the specified format. Skipping.")
                                         continue
                                     }
                                     
                                 }
                                 else {
-                                    println("Invalid or no position specification. Skipping.")
+                                    print("Invalid or no position specification. Skipping.")
                                     continue
                                 }
                                 
@@ -242,7 +242,7 @@ class STShuttleDataManager: NSObject {
                                 }
                             }
                             else {
-                                println("Object in shuttle array doesn't contain 'vehicle' key pointing to an NSDictionary. \(eachItem)")
+                                print("Object in shuttle array doesn't contain 'vehicle' key pointing to an NSDictionary. \(eachItem)")
                             }
                         }
                         
@@ -277,12 +277,12 @@ class STShuttleDataManager: NSObject {
                         )
                     }
                     else {
-                        println("JSON response not of type: NSArray.")
+                        print("JSON response not of type: NSArray.")
                     }
                     
                 }
                 else {
-                    println("No error, but JSON response object is nil.")
+                    print("No error, but JSON response object is nil.")
                 }
                 
                 if !validResponseConfirmed {

@@ -1,16 +1,16 @@
 PODS:
-  - Alamofire (1.2.2)
+  - Alamofire (2.0.2)
   - MBProgressHUD (0.9.1)
   - Reachability (3.2)
 
 DEPENDENCIES:
-  - Alamofire (~> 1.2)
+  - Alamofire (~> 2.0)
   - MBProgressHUD (~> 0.8)
   - Reachability (~> 3.2)
 
 SPEC CHECKSUMS:
-  Alamofire: 11a6022f5089887d92ffb5a3014c97a0a915ab98
+  Alamofire: 8edbab00802a752bb5240cc2abe70e7e881488ad
   MBProgressHUD: c47f2c166c126cf2ce36498d80f33e754d4e93ad
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
 
-COCOAPODS: 0.37.1
+COCOAPODS: 0.38.2

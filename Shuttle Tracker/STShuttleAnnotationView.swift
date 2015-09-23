@@ -17,7 +17,7 @@ class STShuttleAnnotationView: MKAnnotationView {
     private var lastSetShuttleType = ShuttleType.Red
     
     // This apparently only needs to be fleshed out if I plan to use this class in a storyboard.
-    required init(coder: NSCoder) {
+    required init?(coder: NSCoder) {
         super.init(coder: coder)
     }
     

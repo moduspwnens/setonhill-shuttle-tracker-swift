@@ -30,10 +30,10 @@ func ==(lhs: STShuttle, rhs: STShuttle) -> Bool {
     return lhs.hashValue == rhs.hashValue
 }
 
-class STShuttle: NSObject, MKAnnotation, Hashable {
+class STShuttle: NSObject, MKAnnotation {
     var identifier : NSString?
-    dynamic var title : String!
-    dynamic var subtitle : String!
+    dynamic var title : String?
+    dynamic var subtitle : String?
     var statusMessage : NSString?
     var heading : Float = -1
     var speed : Float = 0

@@ -12,12 +12,12 @@ class STPolylineRenderer: MKPolylineRenderer {
     
     var overlaySpecType : OverlaySpecificationType = .ParkingLot
     
-    override init!(overlay: MKOverlay!) {
+    override init(overlay: MKOverlay) {
         super.init(overlay: overlay)
         self.performDefaultInitialization()
     }
     
-    override init!(polyline: MKPolyline!) {
+    override init(polyline: MKPolyline) {
         super.init(polyline: polyline)
         self.performDefaultInitialization()
     }
@@ -35,13 +35,13 @@ class STPolylineRenderer: MKPolylineRenderer {
         switch self.overlaySpecType {
         case .Road:
             self.strokeColor = UIColor(rgba: NSUserDefaults.standardUserDefaults().stringForKey("RoadOverlayMainColor")!)
-            self.lineCap = kCGLineCapButt
+            self.lineCap = CGLineCap.Butt
         default:
             "" // Do nothing.
         }
     }
     
-    override func applyStrokePropertiesToContext(context: CGContext!, atZoomScale zoomScale: MKZoomScale) {
+    override func applyStrokePropertiesToContext(context: CGContext, atZoomScale zoomScale: MKZoomScale) {
         super.applyStrokePropertiesToContext(context, atZoomScale: zoomScale)
         
         if self.overlaySpecType == .Road {
@@ -76,7 +76,7 @@ class STPolylineRenderer: MKPolylineRenderer {
             
             // Draw the main line, which will cover the middle of the previous line.
             CGContextAddPath(context, self.path);
-            CGContextSetStrokeColorWithColor(context, self.strokeColor.CGColor);
+            CGContextSetStrokeColorWithColor(context, self.strokeColor!.CGColor);
             CGContextSetLineWidth(context, baseWidth);
             CGContextSetLineCap(context, self.lineCap);
             CGContextStrokePath(context);

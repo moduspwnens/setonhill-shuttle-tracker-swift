@@ -32,7 +32,7 @@ class STWebViewController: UIViewController, UIWebViewDelegate, UIAlertViewDeleg
     }
     
     // The compiler is requiring me to implement this even though it won't be called.
-    required init(coder: NSCoder) {
+    required init?(coder: NSCoder) {
         fatalError("NSCoder initialization not supported.")
     }
     
@@ -87,7 +87,7 @@ class STWebViewController: UIViewController, UIWebViewDelegate, UIAlertViewDeleg
         self.webViewDidFinishOrFailLoad(webView)
     }
     
-    func webView(webView: UIWebView, didFailLoadWithError error: NSError) {
+    func webView(webView: UIWebView, didFailLoadWithError error: NSError?) {
         
         // Perform shared finished/failed functionality.
         self.webViewDidFinishOrFailLoad(webView)

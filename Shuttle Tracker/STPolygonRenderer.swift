@@ -12,12 +12,12 @@ class STPolygonRenderer: MKPolygonRenderer {
     
     var overlaySpecType : OverlaySpecificationType = .ParkingLot
    
-    override init!(overlay: MKOverlay!) {
+    override init(overlay: MKOverlay) {
         super.init(overlay: overlay)
         self.performDefaultInitialization()
     }
     
-    override init!(polygon: MKPolygon!) {
+    override init(polygon: MKPolygon) {
         super.init(polygon: polygon)
         self.performDefaultInitialization()
     }

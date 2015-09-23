@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>AppConfigRemoteURL</key>
-	<string>http://s.setonhill.edu/ios/config.cfm</string>
+	<string>https://s.setonhill.edu/ios/config.cfm</string>
 	<key>BuildingOverlayMainColor</key>
 	<string>#C51E3A</string>
 	<key>ParkingLotOverlayMainColor</key>
@@ -54,6 +54,6 @@
 	<key>ShuttleScheduleLinks</key>
 	<array/>
 	<key>ShuttleStatusUpdateURL</key>
-	<string>http://s.setonhill.edu/ios/shuttles.cfm</string>
+	<string>https://s.setonhill.edu/ios/shuttles.cfm</string>
 </dict>
 </plist>

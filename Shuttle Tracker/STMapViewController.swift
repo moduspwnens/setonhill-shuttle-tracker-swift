@@ -251,7 +251,7 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
     }
     
     func shuttleUpdated(newShuttle: STShuttle) {
-        if var existingShuttle = self.getShuttleAnnotationWithIdentifier(newShuttle.identifier!) {
+        if let existingShuttle = self.getShuttleAnnotationWithIdentifier(newShuttle.identifier!) {
             // Existing annotation needs to be updated.
             
             let animationDuration: NSTimeInterval = (NSUserDefaults.standardUserDefaults().valueForKey("ShuttleAnimationDuration") as! NSNumber).doubleValue
@@ -448,7 +448,7 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
     }
     
     func defaultMapLayoutChanged(notification: NSNotification) {
-        println("Default map layout changed. Re-centering map.")
+        print("Default map layout changed. Re-centering map.")
         self.centerAndZoomMap(true)
     }
     
@@ -493,14 +493,14 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
         let maxTimeIntervalAllowable : NSTimeInterval = NSUserDefaults.standardUserDefaults().doubleForKey("ShuttleDataRefreshInterval") * Double(maxAllowableConsecutiveStatusUpdateFailures+1)
         
         if timeSinceLastSuccessfulUpdate > maxTimeIntervalAllowable {
-            println("Assuming shuttle locations are out-of-date. Clearing.")
+            print("Assuming shuttle locations are out-of-date. Clearing.")
             self.removeAllShuttles()
         }
     }
     
     func shuttleSelected(notification: NSNotification) {
         
-        var selectedShuttle = notification.userInfo!["shuttle"] as! STShuttle
+        let selectedShuttle = notification.userInfo!["shuttle"] as! STShuttle
         
         // Just to be safe, let's load the specific annotation instance from the mapView.
         if let annotationFromShuttle = self.getShuttleAnnotationWithIdentifier(selectedShuttle.identifier!) {
@@ -510,19 +510,19 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
     
     // MARK: - MKMapViewDelegate methods
     
-    func mapViewWillStartLoadingMap(mapView: MKMapView!) {
+    func mapViewWillStartLoadingMap(mapView: MKMapView) {
         STAppDelegate.didStartNetworking()
     }
     
-    func mapViewDidFinishLoadingMap(mapView: MKMapView!) {
+    func mapViewDidFinishLoadingMap(mapView: MKMapView) {
         STAppDelegate.didStopNetworking()
     }
     
-    func mapViewDidFailLoadingMap(mapView: MKMapView!, withError error: NSError!) {
+    func mapViewDidFailLoadingMap(mapView: MKMapView, withError error: NSError) {
         STAppDelegate.didStopNetworking()
     }
     
-    func mapViewDidFinishRenderingMap(mapView: MKMapView!, fullyRendered: Bool) {
+    func mapViewDidFinishRenderingMap(mapView: MKMapView, fullyRendered: Bool) {
         
         // Only add overlays if the map rendered. Otherwise, we'll be drawing additional roads that won't make sense without the map tiles.
         if fullyRendered {
@@ -540,7 +540,7 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
         }
     }
     
-    func mapView(mapView: MKMapView!, viewForAnnotation annotation: MKAnnotation!) -> MKAnnotationView! {
+    func mapView(mapView: MKMapView, viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView? {
         
         // Only provide annotations for shuttle annotations.
         if annotation is STShuttle {
@@ -549,7 +549,7 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
                 thisAnnotationView = STShuttleAnnotationView(annotation as! STShuttle)
             }
             else {
-                thisAnnotationView.annotation = annotation
+                thisAnnotationView?.annotation = annotation
                 thisAnnotationView?.setNeedsLayout()
                 thisAnnotationView?.layoutIfNeeded()
             }
@@ -559,7 +559,7 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
         return nil
     }
     
-    func mapViewWillStartLocatingUser(mapView: MKMapView!) {
+    func mapViewWillStartLocatingUser(mapView: MKMapView) {
         
         // Check authorization status
         let authStatus = CLLocationManager.authorizationStatus()
@@ -589,7 +589,7 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
         }
     }
     
-    func mapView(mapView: MKMapView!, regionDidChangeAnimated animated: Bool) {
+    func mapView(mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
         /*
         println("Center: \(mapView.region.center.latitude) \(mapView.region.center.longitude)")
         println("Span: \(mapView.region.span.latitudeDelta) \(mapView.region.span.longitudeDelta)")
@@ -597,7 +597,7 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
         self.updateVisibleDeviceCount()
     }
     
-    func mapView(mapView: MKMapView!, rendererForOverlay overlay: MKOverlay!) -> MKOverlayRenderer! {
+    func mapView(mapView: MKMapView, rendererForOverlay overlay: MKOverlay) -> MKOverlayRenderer {
         if overlay is STPolyline {
             let lineRenderer = STPolylineRenderer(customPolyline: overlay as! STPolyline)
             return lineRenderer
@@ -607,7 +607,7 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
             return polygonRenderer
         }
         
-        return nil
+        return MKOverlayRenderer.init(overlay: overlay)
     }
     
     // MARK: - Custom setters and getters
@@ -632,7 +632,7 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
         
         for eachMapAnnotation in self.mapView!.annotations {
             if eachMapAnnotation is STShuttle {
-                var existingShuttleAnnotation = eachMapAnnotation as! STShuttle
+                let existingShuttleAnnotation = eachMapAnnotation as! STShuttle
                 if existingShuttleAnnotation.identifier == identifier {
                     return existingShuttleAnnotation
                 }
@@ -644,7 +644,7 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
     func removeAllShuttles() {
         var annotationsToRemove: [MKAnnotation] = []
         
-        for eachMapAnnotation in self.mapView!.annotations as! [MKAnnotation] {
+        for eachMapAnnotation in self.mapView!.annotations {
             if eachMapAnnotation is STShuttle {
                 annotationsToRemove.append(eachMapAnnotation)
             }
@@ -658,7 +658,7 @@ class STMapViewController: UIViewController, MKMapViewDelegate, UISplitViewContr
     
     func evaluateOverlayVisibility() {
         
-        for eachOverlay in self.mapView?.overlays as! [MKOverlay] {
+        for eachOverlay in self.mapView!.overlays as [MKOverlay] {
             var newAlpha : CGFloat = 1
             
             if let thisMapView = self.mapView {

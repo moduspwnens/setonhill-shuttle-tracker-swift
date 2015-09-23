@@ -45,10 +45,10 @@ class STRemoteConfigurationManager: NSObject {
         let requestParameters = [
             // Include the app's version and its UUID, so we can modify configuration remotely based on those things, if necessary.
             "version" : NSBundle.mainBundle().infoDictionary?["CFBundleVersion"]! as! String,
-            "uuid" : UIDevice.currentDevice().identifierForVendor.UUIDString,
+            "uuid" : UIDevice.currentDevice().identifierForVendor!.UUIDString,
             
             // Include the app's selected localization, in case we want to make any changes to the configuration remotely because of it.
-            "locale" : NSBundle.mainBundle().preferredLocalizations[0] as! String,
+            "locale" : NSBundle.mainBundle().preferredLocalizations[0],
             
             // Include the iOS version.
             "ios_version" : UIDevice.currentDevice().systemVersion,
@@ -62,16 +62,16 @@ class STRemoteConfigurationManager: NSObject {
         STAppDelegate.didStartNetworking()
         
         Alamofire.request(.GET, requestURLString, parameters: requestParameters)
-            .responseJSON { (request, response, JSON, error) in
+            .responseJSON { (_, _, result) in
                 
                 STAppDelegate.didStopNetworking()
                 
-                if let error = error {
-                    println("Unable to update remote configuration. An error occurred while contacting server.")
+                if result.isFailure {
+                    print("Unable to update remote configuration. An error occurred while contacting server.")
                     
                     // I don't have it alerting the user or anything because this is just the remote config. This method will be called again when they re-open the app, and unless there were big changes in the config, the app should still "just work."
                 }
-                else if let JSON : AnyObject = JSON {
+                else if let JSON : AnyObject = result.value {
                     // Received valid JSON response.
                     
                     
@@ -105,19 +105,19 @@ class STRemoteConfigurationManager: NSObject {
                                 else if let oldValue = oldValue as? NSArray {
                                     if let newValue = newValue as? NSArray {
                                         valueWasValidated = true
-                                        valueWasUpdated = !oldValue.isEqualToArray(newValue as! [AnyObject])
+                                        valueWasUpdated = !oldValue.isEqualToArray(newValue as [AnyObject])
                                     }
                                 }
                                 else if let oldValue = oldValue as? NSDictionary {
                                     if let newValue = newValue as? NSDictionary {
                                         valueWasValidated = true
-                                        valueWasUpdated = !oldValue.isEqualToDictionary(newValue as! [NSObject:AnyObject])
+                                        valueWasUpdated = !oldValue.isEqualToDictionary(newValue as [NSObject:AnyObject])
                                     }
                                 }
                                 
                                 if !valueWasValidated {
                                     // The datatypes between the old and new value don't match. We should skip processing this because if code elsewhere is expecting, say, an array, and it finds a string, it will likely cause a crash.
-                                    println("Data type mismatch, or unknown data type for \(eachKey) : \(oldValue) : \(newValue)")
+                                    print("Data type mismatch, or unknown data type for \(eachKey) : \(oldValue) : \(newValue)")
                                     continue
                                 }
                                 
@@ -143,7 +143,7 @@ class STRemoteConfigurationManager: NSObject {
                                 }
                             }
                             else {
-                                println("Ignoring unknown configuration variable: \(eachKey).")
+                                print("Ignoring unknown configuration variable: \(eachKey).")
                             }
                         }
                         
@@ -154,11 +154,11 @@ class STRemoteConfigurationManager: NSObject {
                         )
                     }
                     else {
-                        println("JSON response not of type: [String:AnyObject].")
+                        print("JSON response not of type: [String:AnyObject].")
                     }
                 }
                 else {
-                    println("No error, but JSON response object is nil.")
+                    print("No error, but JSON response object is nil.")
                 }
         }
     }
@@ -172,7 +172,7 @@ class STRemoteConfigurationManager: NSObject {
         
         if let staticOverlaySpecs = NSUserDefaults.standardUserDefaults().arrayForKey("StaticOverlays") {
             for eachSpec in staticOverlaySpecs as! [NSDictionary] {
-                if let overlayId = eachSpec.valueForKey("id") as? String {
+                if let _ = eachSpec.valueForKey("id") as? String {
                     if let overlayTypeNumber = eachSpec.valueForKey("type") as? NSNumber {
                         if let overlayType = OverlaySpecificationType(rawValue: overlayTypeNumber.integerValue) {
                             if let coordinateStringArray = eachSpec.valueForKey("coordinates") as? [String] {

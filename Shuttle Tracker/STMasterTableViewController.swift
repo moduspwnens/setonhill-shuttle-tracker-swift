@@ -104,7 +104,7 @@ class STMasterTableViewController: UITableViewController, UISplitViewControllerD
     
     // MARK: - Split view controller delegate
     
-    func splitViewController(splitViewController: UISplitViewController, collapseSecondaryViewController secondaryViewController: UIViewController!, ontoPrimaryViewController primaryViewController: UIViewController!) -> Bool {
+    func splitViewController(splitViewController: UISplitViewController, collapseSecondaryViewController secondaryViewController: UIViewController, ontoPrimaryViewController primaryViewController: UIViewController) -> Bool {
         // This makes sure that on devices that show a collapsed split view controller (iPhones other than 6+ in landscape), the map view controller is shown by default.
         return false
     }
@@ -173,7 +173,7 @@ class STMasterTableViewController: UITableViewController, UISplitViewControllerD
         if indexPath.section == kShowMapTableSectionIndex {
             
             
-            cell = tableView.dequeueReusableCellWithIdentifier(kTableViewShowMapCellReuseIdentifier) as? UITableViewCell
+            cell = tableView.dequeueReusableCellWithIdentifier(kTableViewShowMapCellReuseIdentifier)
             if cell == nil {
                 cell = UITableViewCell(style: .Subtitle, reuseIdentifier: kTableViewShowMapCellReuseIdentifier)
             }
@@ -186,7 +186,7 @@ class STMasterTableViewController: UITableViewController, UISplitViewControllerD
         else if indexPath.section == kShuttleTableSectionIndex {
             // This is a table view cell for a specific shuttle.
             
-            cell = tableView.dequeueReusableCellWithIdentifier(kTableViewShuttleCellReuseIdentifier) as? UITableViewCell
+            cell = tableView.dequeueReusableCellWithIdentifier(kTableViewShuttleCellReuseIdentifier)
             if cell == nil {
                 cell = UITableViewCell(style: .Subtitle, reuseIdentifier: kTableViewShuttleCellReuseIdentifier)
             }
@@ -200,7 +200,7 @@ class STMasterTableViewController: UITableViewController, UISplitViewControllerD
         else if indexPath.section == kSchedulesTableSectionIndex {
             // This is a table view cell for a shuttle schedule link.
             
-            cell = tableView.dequeueReusableCellWithIdentifier(kTableViewScheduleCellReuseIdentifier) as? UITableViewCell
+            cell = tableView.dequeueReusableCellWithIdentifier(kTableViewScheduleCellReuseIdentifier)
             if cell == nil {
                 cell = UITableViewCell(style: .Default, reuseIdentifier: kTableViewScheduleCellReuseIdentifier)
             }
@@ -212,7 +212,7 @@ class STMasterTableViewController: UITableViewController, UISplitViewControllerD
         else if indexPath.section == kMapTypeSelectSectionIndex {
             // This is a table view cell for the map type selector.
             
-            cell = tableView.dequeueReusableCellWithIdentifier(kTableViewMapTypeCellReuseIdentifier) as? UITableViewCell
+            cell = tableView.dequeueReusableCellWithIdentifier(kTableViewMapTypeCellReuseIdentifier)
             if cell == nil {
                 cell = UITableViewCell(style: .Default, reuseIdentifier: kTableViewMapTypeCellReuseIdentifier)
                 
@@ -237,7 +237,7 @@ class STMasterTableViewController: UITableViewController, UISplitViewControllerD
                     cell!.frame.size.height - defaultPadding
                 )
                 newSegmentedControl.center = cell!.center
-                newSegmentedControl.autoresizingMask = .FlexibleHeight | .FlexibleWidth
+                newSegmentedControl.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
                 
                 // Assign tag (so we can access this control quickly later).
                 newSegmentedControl.tag = kSegmentedControlViewTag
